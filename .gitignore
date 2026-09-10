@@ -35,7 +35,13 @@ zk.code-workspace
 .vscode/.mcp.json
 
 .agents/
-.claude/
+.claude/*
+!.claude/rules/
+!.claude/skills/
+!.claude/agents/
+# third-party skills are installed per machine (skills CLI -> .agents/); their symlinks stay untracked
+.claude/skills/show-me
+.claude/skills/zul-writer
 .mcp.json
 .vscode/mcp.json
 docs/
