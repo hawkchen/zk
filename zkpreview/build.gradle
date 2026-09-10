@@ -53,6 +53,6 @@ description = 'ZK Marble preview host'
 
 gretty {
 	httpPort = project.hasProperty('httpPort') ? Integer.parseInt(project.httpPort) : 8085
-	contextPath = '/zkpreview'
+	contextPath = '/'
 	reloadOnClassChange = false
 }

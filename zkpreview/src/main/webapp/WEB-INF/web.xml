@@ -19,6 +19,16 @@ Copyright (C) 2004 Potix Corporation. All Rights Reserved.
 	<description><![CDATA[ZK Marble Preview]]></description>
 	<display-name>zkpreview</display-name>
 
+	<!-- The preview pages live under /web; answer /<page>.zul at the context root too (D47) -->
+	<filter>
+		<filter-name>previewPath</filter-name>
+		<filter-class>org.zkoss.zkpreview.http.PreviewPathFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>previewPath</filter-name>
+		<url-pattern>*.zul</url-pattern>
+	</filter-mapping>
+
 	<!-- //// -->
 	<!-- ZK -->
 	<listener>
