@@ -75,6 +75,9 @@ cd zktest && ./gradlew test --tests "org.zkoss.zktest.zats.test2.B104_ZK_6047Tes
 # If the test has @ForkJVMTestOnly or @Tag("ForkJVMTestOnly") annotation (requires Docker)
 cd zktest && ./gradlew testGroupForkJVMTestOnly --tests "org.zkoss.zktest.zats.test2.B101_ZK_5716Test" -PmaxParallelForks=1 --console=plain --no-daemon
 
+# IceBlue-only tests (@Tag("IceBlueOnly")) are skipped by test; run them on purpose with
+cd zktest && ./gradlew testIceBlueOnly -PmaxParallelForks=1 --console=plain --no-daemon
+
 # Full test suite (excludes WCAG and ForkJVMTestOnly)
 cd zktest && ./gradlew test
 
@@ -82,7 +85,7 @@ cd zktest && ./gradlew test
 cd zktest && ./gradlew testWCAGOnly
 ```
 
-**Important:** Check the test file for `@ForkJVMTestOnly` or `@Tag("ForkJVMTestOnly")` annotation to decide whether to use `test` or `testGroupForkJVMTestOnly`.
+**Important:** Check the test file for `@ForkJVMTestOnly` or `@Tag("ForkJVMTestOnly")` annotation to decide whether to use `test` or `testGroupForkJVMTestOnly`. Tests tagged `@Tag("IceBlueOnly")` assert IceBlue-specific behaviour and are skipped by `test` while the default theme is Marble — never delete or rewrite them (see `.claude/rules/iceblue-tests.md`).
 
 ### Location & Naming Convention
 - Path: `zktest/src/test/java/org/zkoss/zktest/zats/test2/`
