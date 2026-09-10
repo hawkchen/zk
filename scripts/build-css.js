@@ -348,12 +348,10 @@ const WCS_SERVED_ALLOWLIST = new Set([
 // dead-CSS allowlist: a future no-css-uri file that matches nothing SHOULD trip the guard
 // below so someone decides delete-vs-fix.
 
-// Empty stubs for unimplemented zkex/zkmax/font components.
+// Empty stubs for unimplemented zkex/zkmax components.
 // These prevent FileNotFoundException errors at runtime. Filtered to the selected module
 // by path prefix at the point of use (see build() stage 0a).
 const stubPaths = [
-    // zul/font
-    'zul/font/font-awesome.css.dsp',
     // NOTE: confirmpopup, breadcrumb, and carousel graduated out of this stub
     // list — they now ship real Marble CSS at js/zul/wgt/css/confirmpopup.css /
     // breadcrumb.css / carousel.css (auto-scanned 1:1; css-uri-backed below).

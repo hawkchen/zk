@@ -14,7 +14,7 @@
 //                        widget's JS package: <widget-package>, else derived from <widget-class>
 //                        (drop the class segment).  Full = js/<pkg-as-path>/<css-uri>.
 //   absolute css-uri   → "~./<path>" / "/<path>" used as-is.
-//   global bundles     → ZK core convention: norm.css.dsp + font-awesome.css.dsp from the zk.wcs
+//   global bundles     → ZK core convention: norm.css.dsp from the zk.wcs
 //                        <stylesheet> list; footer.css.dsp hard-coded in WcsExtendlet.java.
 //                        Required only for --module zul (the module that owns those bundles).
 //
@@ -35,8 +35,8 @@
 // ZKCML_ROOT = path.resolve(ZK_ROOT, '../zkcml') (the enterprise sibling repo), unless
 // overridden by --zk-home <workspace-root-containing-both-zk-and-zkcml>.
 //
-// font-awesome.css.dsp is OUT OF SCOPE: ZK 11 dropped its line from zul/css/zk.wcs
-// (Marble renders icons via Lucide masks), so ZK never requests it.
+// font-awesome.css.dsp is neither requested nor built: ZK 11 dropped its line from zul/css/zk.wcs
+// (Marble renders icons via Lucide masks) and build-css.js emits no stub for it (item 1.10).
 //
 // Usage:
 //   node scripts/check-css-dsp.js --module zul|zkmax|zkex [--theme-dir <dir>] [--zk-home <dir>]
@@ -175,11 +175,10 @@ function main() {
     // 2. Resolve + dedup to the set of theme-relative paths the module must ship.
     const required = new Map(); // path → {sources:Set, langFiles:Set}
     const unresolved = [];      // relative css-uri with no derivable package
-    const skipped = [];         // resolved but not under a themed prefix / font-awesome
+    const skipped = [];         // resolved but not under a themed prefix
     const forward = new Map();  // resolved but a newer-ZK-version component (out of scope now)
     for (const r of raw) {
         if (!r.resolved) { unresolved.push(r); continue; }
-        if (r.resolved.endsWith('font-awesome.css.dsp')) { skipped.push(r.resolved); continue; }
         if (FORWARD_VERSION_SKIP.has(r.resolved)) { forward.set(r.resolved, FORWARD_VERSION_SKIP.get(r.resolved)); continue; }
         if (!isThemed(r.resolved)) { skipped.push(r.resolved); continue; }
         if (!required.has(r.resolved)) required.set(r.resolved, new Set());
@@ -203,12 +202,12 @@ function main() {
     }
 
     // 4. (info) build dsp not requested by any css-uri/bundle — not a failure (see parity doc §2).
-    const built = listDsp(THEME_DIR).filter(p => !p.endsWith('font-awesome.css.dsp'));
+    const built = listDsp(THEME_DIR);
     const extra = built.filter(p => !required.has(p));
 
     // ---- report ----
     console.log(`\nCSS.DSP coverage check  (--module ${moduleName}, ZK_ROOT=${ZK_ROOT})`);
-    console.log(`  required by ZK : ${required.size}  (lang css-uri + ${GLOBAL_BUNDLES.length} global bundles, font-awesome excluded)`);
+    console.log(`  required by ZK : ${required.size}  (lang css-uri + ${GLOBAL_BUNDLES.length} global bundles)`);
     console.log(`  present (real) : ${present.length}`);
     console.log(`  present (stub) : ${emptyStub.length}`);
     console.log(`  MISSING        : ${missing.length}`);
