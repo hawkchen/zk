@@ -147,6 +147,14 @@ function extractRequired(xml, langFile) {
     while ((lu = langUriRe.exec(remainder))) {
         out.push({ cssuri: lu[1].trim(), pkg: undefined, comp: '(language-level)', langFile, resolved: resolveCssUri(lu[1], undefined) });
     }
+    // Global <stylesheet href="~./…css.dsp"> declared at language level (outside any component):
+    // ZK links it on every page, so it must exist too — zkex's skeleton.css.dsp dangled this way
+    // after the LESS retirement (ZK-6112, F62).
+    const sheetRe = /<stylesheet\b[^>]*\bhref="([^"]+\.css\.dsp)"[^>]*\/?>/g;
+    let sh;
+    while ((sh = sheetRe.exec(remainder))) {
+        out.push({ cssuri: sh[1].trim(), pkg: undefined, comp: '(global <stylesheet>)', langFile, resolved: resolveCssUri(sh[1], undefined) });
+    }
     return out;
 }
 

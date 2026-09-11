@@ -330,6 +330,9 @@ const CSS_URI_BACKED = new Set([
     // zkex (EE)
     'colorbox.css.dsp', 'columnlayout.css.dsp', 'fisheye.css.dsp', 'pdfviewer.css.dsp',
     'rangeslider.css.dsp', 'sliderbuttons.css.dsp',
+    // skeleton.css.dsp is requested by a GLOBAL <stylesheet href> in zkex's lang-addon.xml (ZK-6099), not
+    // by a css-uri; the LESS retirement dropped its source unnoticed (ZK-6112, F62) — hence this entry.
+    'skeleton.css.dsp',
 ]);
 
 // No `css-uri`, NOT in any bundle list — but a runtime `document.styleSheets` probe (2026-06-30)
