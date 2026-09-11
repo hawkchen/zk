@@ -71,7 +71,7 @@ The only structural differences from `timebox`:
 
 ## Contract
 
-`src/main/resources/web/js/zkmax/inp/css/timepicker.css`
+`../zkcml/zkmax/src/main/resources/web/js/zkmax/inp/css/timepicker.css`
 
 This is a standalone file (not bundled into `combo.css.dsp`). It must be registered in `lang-addon.xml` under the zkmax package.
 

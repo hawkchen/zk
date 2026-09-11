@@ -74,7 +74,7 @@ widget — their styling is governed by their own skill entries.
 
 ## Contract
 
-`src/main/resources/web/js/zkmax/layout/css/tablelayout.css` (new file; standalone, not merged
+`../zkcml/zkmax/src/main/resources/web/js/zkmax/layout/css/tablelayout.css` (new file; standalone, not merged
 into another `.css.dsp`).
 
 The ZK default theme CSS for this component contains exactly one rule: `vertical-align: top` on `.z-tablechildren`.

@@ -20,4 +20,4 @@ ZK writes inline `style="top: ...; left: ...; width: ...; height: ..."` on each 
 ## Note
 
 Stub entry — full documentation pending spec-author run (Phase 3/4).
-See `doc/spec-author-pipeline-plan.md`.
+See `doc/spec-author-pipeline-plan.md (retired with the template)`.

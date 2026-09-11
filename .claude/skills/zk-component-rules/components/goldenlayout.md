@@ -94,7 +94,7 @@ During drag, a `.z-goldenlayout-dragProxy` div is appended to the document root 
 
 ## Contract
 
-`goldenlayout.css.dsp` — shipped as `src/main/resources/web/js/zkmax/goldenlayout/css/goldenlayout.css`, which ZK loads as `goldenlayout.css.dsp`.
+`goldenlayout.css.dsp` — shipped as `../zkcml/zkmax/src/main/resources/web/js/zkmax/goldenlayout/css/goldenlayout.css`, which ZK loads as `goldenlayout.css.dsp`.
 
 ## Edition
 

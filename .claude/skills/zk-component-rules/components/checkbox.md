@@ -62,7 +62,7 @@ The default mold's checked state comes from `:checked` on the inner `<input type
 }
 ```
 
-(The exact selector depends on the DOM rendered by the version; check `doc/component-dom-structures.md`.)
+(The exact selector depends on the DOM rendered by the version; check `doc/component-dom-structures.md (retired with the template)`.)
 
 For switch and toggle, the on/off state IS class-based: `.z-checkbox-switch-on` / `.z-checkbox-switch-off` etc.
 

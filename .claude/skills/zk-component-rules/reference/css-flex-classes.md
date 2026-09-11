@@ -9,7 +9,7 @@ A theme that omits or renames these classes **silently breaks `hflex`/`vflex` ev
 
 ## Required CSS (define verbatim)
 
-Every ZK theme MUST ship this block exactly, loaded late in the cascade. Stock source of truth: `zk/zul/src/main/resources/web/zul/less/footer.less`. Marble location: `src/main/resources/web/zul/css/base/_cssflex.css` (bundled into `footer.css.dsp` via `footerFiles` in `scripts/build-css.js`).
+Every ZK theme MUST ship this block exactly, loaded late in the cascade. Stock source of truth: `zk/zul/src/main/resources/web/zul/less/footer.less`. Marble location: `zul/src/main/resources/web/zul/css/base/_cssflex.css` (bundled into `footer.css.dsp` via `footerFiles` in `scripts/build-css.js`).
 
 ```css
 .z-flex { display: flex; }

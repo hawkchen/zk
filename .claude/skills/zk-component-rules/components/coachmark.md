@@ -114,7 +114,7 @@ none — novel guided-tour card pattern. No ZK sibling shares primitives with co
 ## Contract
 
 `zkmax/nav/css/coachmark.css` (separate file, zkmax-specific — NOT bundled in any standard `.css.dsp`).
-The theme provides this file under `src/main/resources/web/js/zkmax/nav/css/coachmark.css`.
+The theme provides this file under `../zkcml/zkmax/src/main/resources/web/js/zkmax/nav/css/coachmark.css`.
 
 ## Edition
 
@@ -122,9 +122,9 @@ PE (zkmax package — requires PE license or higher per ZKDoc edition badge)
 
 ## Notes
 
-- The old contract incorrectly listed `shared-css-file: src/main/resources/web/js/zkmax/wgt/css/coachmark.css`
+- The old contract incorrectly listed `shared-css-file: ../zkcml/zkmax/src/main/resources/web/js/zkmax/wgt/css/coachmark.css`
   and selectors `.z-coachmark-title`, `.z-coachmark-body`, `.z-coachmark-button`. None of these exist in the
-  live DOM. The real CSS file is `src/main/resources/web/js/zkmax/nav/css/coachmark.css`.
+  live DOM. The real CSS file is `../zkcml/zkmax/src/main/resources/web/js/zkmax/nav/css/coachmark.css`.
 - Children rendered inside `.z-coachmark-content` are arbitrary ZK widgets (`.z-label`, `.z-button`, etc.)
   placed by the ZUL author. The theme does not control their class names — style them via child combinators
   or the children's own component CSS files.

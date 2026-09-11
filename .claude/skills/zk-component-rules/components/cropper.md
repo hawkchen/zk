@@ -78,7 +78,7 @@ No ZK component sibling shares this CSS file. The toolbar button row (`.z-croppe
 
 ## Contract
 
-`cropper.css.dsp` — shipped as `src/main/resources/web/js/zkmax/cropper/css/cropper.css`, auto-scanned and emitted as `cropper.css.dsp` by the build.
+`cropper.css.dsp` — shipped as `../zkcml/zkmax/src/main/resources/web/js/zkmax/cropper/css/cropper.css`, auto-scanned and emitted as `cropper.css.dsp` by the build.
 
 ## Edition
 

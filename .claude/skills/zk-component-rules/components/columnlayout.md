@@ -42,6 +42,6 @@ time and write it inline. No CSS rule needed — same inline-block path.
 
 ## CSS file
 
-`src/main/resources/web/js/zul/layout/css/layout.css` → bundled to
+`zul/src/main/resources/web/js/zul/layout/css/layout.css` → bundled to
 `layout.css.dsp` (note: the EE `columnlayout.css.dsp` slot in iceblue exists
 for module-isolation, but in this theme the rules live in `zul/layout/css/layout.css`).

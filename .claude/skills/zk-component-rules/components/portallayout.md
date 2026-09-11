@@ -80,7 +80,7 @@ States rely exclusively on the classes above — no pseudo-class-only state chan
 ## Contract
 
 `portallayout.css.dsp` — dedicated file; not bundled with other components.
-Expected output path: `src/main/resources/web/js/zkmax/layout/css/portallayout.css`
+Expected output path: `../zkcml/zkmax/src/main/resources/web/js/zkmax/layout/css/portallayout.css`
 
 ## Edition
 

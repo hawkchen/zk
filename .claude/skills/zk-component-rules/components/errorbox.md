@@ -9,7 +9,7 @@ Errorbox styles are duplicated in two source files:
 - `js/zul/wgt/css/errorbox.css` → `errorbox.css.dsp`
 - `js/zul/inp/css/input.css`     → `input.css.dsp`  ← **this is the one the widget actually loads**
 
-`Errorbox` is a `zul.inp.*` widget, so its styling is served from the **inp** bundle (`input.css.dsp`). Editing only `wgt/css/errorbox.css` changes nothing visible. Always fix `inp/css/input.css` (and keep the wgt copy in sync so they don't diverge). Verify against the served `target/.../js/zul/inp/css/input.css.dsp`.
+`Errorbox` is a `zul.inp.*` widget, so its styling is served from the **inp** bundle (`input.css.dsp`). Editing only `wgt/css/errorbox.css` changes nothing visible. Always fix `inp/css/input.css` (and keep the wgt copy in sync so they don't diverge). Verify against the served `zul/codegen/resources/web/js/zul/inp/css/input.css.dsp`.
 
 ## The pointer arrow must NOT be hidden with stylesheet `display:none`
 

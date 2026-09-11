@@ -138,7 +138,7 @@ rounded lane at ~6% on-surface, painted behind the thumb — keeps the scroll re
 perceptible when the thumb is compressed into a corner by the scale=1 cap); a rounded
 translucent `-drag` thumb; arrow buttons `display:none`; `-endbar`
 `position:absolute; visibility:hidden` (kept boxed for the clamp math); `-pos`
-boxed-but-invisible. See `doc/contracts/biglistbox.html` for the theme-specific values.
+boxed-but-invisible. See `doc/contracts/biglistbox.md` for the theme-specific values.
 
 **Verification gotcha — the horizontal bar hides below the page fold.** The vertical bar
 runs the right edge *from the top*, so it shows as soon as the component's top is on screen.

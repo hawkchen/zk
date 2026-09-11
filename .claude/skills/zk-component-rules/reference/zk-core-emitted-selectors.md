@@ -8,7 +8,7 @@ This file lists the known ZK-core-emitted selectors and the bundling rule themes
 
 In this theme, `scripts/build-css.js` does two things for component CSS:
 
-1. **Per-widget 1:1 auto-scan**: every `src/main/resources/web/js/zul/**/css/<name>.css` is copied to `target/.../<name>.css.dsp`. ZK loads each file only when a widget on the page is bound to it (`lang.xml` `css-uri` registration or convention).
+1. **Per-widget 1:1 auto-scan**: every `zul/src/main/resources/web/js/zul/**/css/<name>.css` is copied to `zul/codegen/resources/web/<name>.css.dsp`. ZK loads each file only when a widget on the page is bound to it (`lang.xml` `css-uri` registration or convention).
 2. **Global bundle (`norm.css.dsp`)**: an explicit list of files (`normFiles` in `build-css.js`) concatenated into `zul/css/norm.css.dsp`. This bundle is part of `zk.wcs` and is loaded on *every* page.
 
 If a selector is emitted by ZK core (not a widget), nothing on the page triggers the per-widget load — so the per-widget `.css.dsp` is dead weight. The rules MUST live in a file that is in `normFiles`, otherwise `zk.wcs` will not contain them.

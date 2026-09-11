@@ -244,7 +244,7 @@ iceblue CSS 的取得路徑不固定（取決於使用者本機展開了哪個�
    ```
 2. **ZK source tree**（如果使用者把 ZK source 放在工作站）：`/Users/hawk/Documents/workspace/ZK*/zk*/src/main/resources/web/js/**/<comp>.css*`
    ```bash
-   find /Users/hawk/Documents/workspace -path "*src/main/resources/web/js*" -name "<comp>.css*" 2>/dev/null
+   find /Users/hawk/Documents/workspace -path "*zul/src/main/resources/web/js*" -name "<comp>.css*" 2>/dev/null
    ```
 3. **使用者目前未配置 iceblue CSS** → 在 conversation 印出：
    ```

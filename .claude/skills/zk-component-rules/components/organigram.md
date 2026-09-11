@@ -122,7 +122,7 @@ No bundling overlap with another component — organigram is the sole occupant o
 
 `organigram.css.dsp` — declared in zkmax's `lang-addon.xml` as the `css-uri` for the `organigram` widget's `default` mold. The companion widgets (`orgchildren`, `orgitem`, `orgnode`) have no `css-uri` of their own; every rule for the four-widget set rides in `organigram.css.dsp`.
 
-Source layout convention: a single CSS file under `src/main/resources/web/js/zkmax/layout/css/organigram.css` covers the four widgets.
+Source layout convention: a single CSS file under `../zkcml/zkmax/src/main/resources/web/js/zkmax/layout/css/organigram.css` covers the four widgets.
 
 ## Edition
 

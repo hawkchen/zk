@@ -68,7 +68,7 @@ their effect onto a component root that ZK JS manages.
 /* .z-renderdefer — see decorative section (spinner background-image) */
 ```
 
-Marble location for the flex block: `src/main/resources/web/zul/css/base/_cssflex.css`
+Marble location for the flex block: `zul/src/main/resources/web/zul/css/base/_cssflex.css`
 (bundled into `footer.css.dsp` via `footerFiles` in `scripts/build-css.js`).
 This is byte-equivalent to stock — **do not modify**.
 

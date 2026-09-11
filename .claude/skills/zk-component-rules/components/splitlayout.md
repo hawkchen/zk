@@ -93,7 +93,7 @@ Caves are **wrapper flex children** (`fcc != c` in `zk/flex.ts applyCSSFlex`): t
 
 ## Contract
 
-`splitlayout.css.dsp` — served from `js/zkmax/layout/css/splitlayout.css`. Marble theme file must live at `src/main/resources/web/js/zkmax/layout/css/splitlayout.css`.
+`splitlayout.css.dsp` — served from `js/zkmax/layout/css/splitlayout.css`. Marble theme file must live at `../zkcml/zkmax/src/main/resources/web/js/zkmax/layout/css/splitlayout.css`.
 
 ## Edition
 

@@ -100,7 +100,7 @@ No ZK component shares this component's bundling or structural primitives. This 
 
 ## Bundle
 
-`zkmax/layout/css/linelayout.css` → served as `linelayout.css.dsp`. This is a new file that does not yet exist in the Marble theme. The CSS must be placed at `src/main/resources/web/js/zkmax/layout/css/linelayout.css` so ZK's override mechanism serves it in place of the stock version.
+`zkmax/layout/css/linelayout.css` → served as `linelayout.css.dsp`. This is a new file that does not yet exist in the Marble theme. The CSS must be placed at `../zkcml/zkmax/src/main/resources/web/js/zkmax/layout/css/linelayout.css` so ZK's override mechanism serves it in place of the stock version.
 
 The CSS covers both `<linelayout>` (`.z-linelayout`) and `<lineitem>` (`.z-lineitem`) markup — there is no separate CSS file for lineitem.
 

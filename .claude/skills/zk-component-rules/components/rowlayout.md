@@ -99,7 +99,7 @@ file has no `width` declarations; inline styles are the sole sizing mechanism.
 
 ## Contract
 
-Own CSS file: `src/main/resources/web/js/zkmax/layout/css/rowlayout.css`
+Own CSS file: `../zkcml/zkmax/src/main/resources/web/js/zkmax/layout/css/rowlayout.css`
 Delivered as: `zkmax/layout/css/rowlayout.css.dsp` (registered via `zkmax/lang-addon.xml`
 `<css-uri>css/rowlayout.css.dsp</css-uri>`).
 

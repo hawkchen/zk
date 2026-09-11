@@ -68,9 +68,9 @@ those widgets is governed by their own skill entries.
 `layout.css.dsp` — shared with borderlayout, hlayout/vlayout, and splitter.
 
 The canonical source file for Marble is:
-`src/main/resources/web/js/zul/layout/css/anchorlayout.css`
+`zul/src/main/resources/web/js/zul/layout/css/anchorlayout.css`
 
-(Ignore the stray copy at `src/main/resources/web/js/zul/layout/anchorlayout.css` — it is not
+(Ignore the stray copy at `zul/src/main/resources/web/js/zul/layout/anchorlayout.css` — it is not
 read by the build pipeline.)
 
 ## Edition

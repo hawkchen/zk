@@ -20,11 +20,11 @@ A change to `combo.css.dsp` cascades to all 6 components in the input bundle. Th
 A common mistake: assuming components that share a `.css.dsp` output also share a source file. **They do not.** Inside `combo.css.dsp` the build concatenates six independent source files:
 
 ```
-src/main/resources/web/js/zul/inp/css/combobox.css
-src/main/resources/web/js/zul/inp/css/bandbox.css
-src/main/resources/web/js/zul/inp/css/datebox.css
-src/main/resources/web/js/zul/inp/css/timebox.css
-src/main/resources/web/js/zul/inp/css/spinner.css    (covers spinner + doublespinner)
+zul/src/main/resources/web/js/zul/inp/css/combobox.css
+zul/src/main/resources/web/js/zul/inp/css/bandbox.css
+zul/src/main/resources/web/js/zul/inp/css/datebox.css
+zul/src/main/resources/web/js/zul/inp/css/timebox.css
+zul/src/main/resources/web/js/zul/inp/css/spinner.css    (covers spinner + doublespinner)
 ```
 
 A rule written in `combobox.css` is delivered in the same `.css.dsp` as `datebox.css`, but it does NOT apply to datebox because the selectors are `.z-combobox-*`. A behavior all six components need (e.g. `buttonVisible="false"` hide rule) **must be added to each source file independently** — there is no shared file for "all combo-family inputs" to live in.
@@ -61,4 +61,4 @@ When fixing a single component's check:
 
 ## Token files
 
-Tokens live in `src/main/resources/web/zul/css/tokens/_*.css` and bundle into `norm.css.dsp`. Component CSS should reference tokens via `var(--zk-*)`, never hard-code values. If a token's resolved value is wrong, fix the token file, not every component that uses it (token-rooted vs component-rooted distinction — see harness docs).
+Tokens live in `zul/src/main/resources/web/zul/css/tokens/_*.css` and bundle into `norm.css.dsp`. Component CSS should reference tokens via `var(--zk-*)`, never hard-code values. If a token's resolved value is wrong, fix the token file, not every component that uses it (token-rooted vs component-rooted distinction — see harness docs).

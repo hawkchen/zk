@@ -102,7 +102,7 @@ The popup-item expand icon also uses `.z-cascader-icon` but is scoped as `.z-cas
 
 ## Bundle
 
-`cascader.css.dsp` — dedicated file in `zkmax/inp/css/`. Not shared with searchbox (which has its own `searchbox.css.dsp`). The project theme file is `src/main/resources/web/js/zkmax/inp/css/cascader.css`.
+`cascader.css.dsp` — dedicated file in `zkmax/inp/css/`. Not shared with searchbox (which has its own `searchbox.css.dsp`). The project theme file is `../zkcml/zkmax/src/main/resources/web/js/zkmax/inp/css/cascader.css`.
 
 ## Keyboard model
 
