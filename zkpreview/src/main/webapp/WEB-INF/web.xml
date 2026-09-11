@@ -81,6 +81,9 @@ Copyright (C) 2004 Potix Corporation. All Rights Reserved.
 	</servlet-mapping>
 
 	<welcome-file-list>
+		<!-- index.zul is the link index of every preview page; smoke.zul stays as the
+		     minimal "did the server and the theme come up" fallback. -->
+		<welcome-file>index.zul</welcome-file>
 		<welcome-file>smoke.zul</welcome-file>
 	</welcome-file-list>
 </web-app>

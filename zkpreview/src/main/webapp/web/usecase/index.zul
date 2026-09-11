@@ -88,6 +88,7 @@
                 </nav>
                 <nav label="Navigation" open="@load(vm.openNavLabel eq 'Navigation')">
                     <navitem label="Anchornav"             selected="@load(vm.currentPage eq '~./anchornav.zul')" onClick="@command('navigate', page='~./anchornav.zul')" />
+                    <navitem label="Breadcrumb"            selected="@load(vm.currentPage eq '~./breadcrumb.zul')" onClick="@command('navigate', page='~./breadcrumb.zul')" />
                     <navitem label="Coachmark"             selected="@load(vm.currentPage eq '~./coachmark.zul')" onClick="@command('navigate', page='~./coachmark.zul')" />
                     <navitem label="Drawer"                selected="@load(vm.currentPage eq '~./drawer.zul')" onClick="@command('navigate', page='~./drawer.zul')" />
                     <navitem label="Fisheyebar"            selected="@load(vm.currentPage eq '~./fisheyebar.zul')" onClick="@command('navigate', page='~./fisheyebar.zul')" />
@@ -145,6 +146,7 @@
                     <navitem label="Barcode Scanner" selected="@load(vm.currentPage eq '~./barcodescanner.zul')" onClick="@command('navigate', page='~./barcodescanner.zul')" />
                     <navitem label="Camera"          selected="@load(vm.currentPage eq '~./camera.zul')" onClick="@command('navigate', page='~./camera.zul')" />
                     <navitem label="Captcha"         selected="@load(vm.currentPage eq '~./captcha.zul')" onClick="@command('navigate', page='~./captcha.zul')" />
+                    <navitem label="Carousel"        selected="@load(vm.currentPage eq '~./carousel.zul')" onClick="@command('navigate', page='~./carousel.zul')" />
                     <navitem label="Cropper"         selected="@load(vm.currentPage eq '~./cropper.zul')" onClick="@command('navigate', page='~./cropper.zul')" />
                     <navitem label="Drop Upload"     selected="@load(vm.currentPage eq '~./dropupload.zul')" onClick="@command('navigate', page='~./dropupload.zul')" />
                     <navitem label="File Upload"     selected="@load(vm.currentPage eq '~./fileupload.zul')" onClick="@command('navigate', page='~./fileupload.zul')" />

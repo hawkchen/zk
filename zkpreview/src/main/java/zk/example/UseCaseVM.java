@@ -40,7 +40,7 @@ public class UseCaseVM {
             PAGE_TO_NAV.put(p, "Data");
         }
         for (String p : new String[]{"menubar", "toolbar", "tabbox", "tabbox-misc",
-                "navbar", "anchornav",
+                "navbar", "anchornav", "breadcrumb",
                 "fisheyebar", "coachmark", "stepbar", "drawer"}) {
             PAGE_TO_NAV.put(p, "Navigation");
         }
@@ -59,7 +59,7 @@ public class UseCaseVM {
         }
         for (String p : new String[]{"fileupload", "dropupload", "audio", "video", "camera",
                 "barcode", "barcodescanner", "imagemap", "pdfviewer", "cropper", "signature",
-                "tbeditor", "captcha", "html", "iframe", "avatar"}) {
+                "tbeditor", "captcha", "html", "iframe", "avatar", "carousel"}) {
             PAGE_TO_NAV.put(p, "Media & Upload");
         }
         for (String p : new String[]{
