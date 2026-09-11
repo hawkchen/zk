@@ -37,7 +37,7 @@ To update version:
 npm run build        # build all TS/JS (gulp)
 npm run dev          # watch mode
 npm run type-check   # type check only, no output
-npm run lint -- .    # ESLint on .js and .ts files (path argument required)
+npm run lint -- <module>/src/main/resources/web/js   # ESLint per module (what CI's jscheck runs); the repo-wide form cannot pass and rewrites files
 ```
 
 ### Java
@@ -140,6 +140,6 @@ public class B100_ZK_5529Test extends WebDriverTestCase {
 4. Register the ZUL page in `zktest/src/main/webapp/test2/config.properties`
 5. Implement the fix
 6. If ZUL component API changed (attribute/element added or removed), update `zul/src/main/resources/metainfo/xml/zul.xsd`
-7. Run `npm run lint -- . && ./gradlew checkstyleMain`
+7. Run `npm run lint -- <module>/src/main/resources/web/js && npm run type-check && ./gradlew checkstyleMain` (per module — the repo-wide lint cannot pass on any checkout and rewrites files through zk/preferNativeClass)
 8. Verify the test passes
 9. PR title must reference the issue ID
