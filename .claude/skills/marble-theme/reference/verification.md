@@ -19,6 +19,7 @@ Override the port with `-PhttpPort=<n>` on the `appRun` command below; there is 
 ## Launching
 
 ```bash
+cd zkpreview && ./start.sh          # wraps the command below; carries the same three gotchas
 cd zkpreview && ./gradlew appRun -PhttpPort=8085 --console=plain
 ```
 
@@ -27,7 +28,11 @@ returns. `appRun` waits for a key on stdin and treats EOF as that key, so keep s
 in an interactive terminal, or hold a FIFO open from a script. The first start builds the composite
 build (minutes); a warm start serves in about 10 s.
 
-Stop by pressing a key in the `appRun` terminal, or run `./gradlew appStop` from `zkpreview/`.
+Stop by pressing a key in the `appRun` terminal (closing stdin has the same effect).
+**`./gradlew appStop` does not work against an `appRun` server** — it fails with
+`java.net.ConnectException: Connection refused`. Under `appRun` only the `statusPort` in
+`build/gretty_ports.properties` listens; the `servicePort` that `appStop` dials never opens. If you
+lose the terminal, kill the `org.akhikhl.gretty.Runner` process instead.
 
 **How to tell which theme is actually being served:** read the theme stylesheet href in the served
 HTML. Marble is zk's core theme, so the reset link carries **no theme segment** —

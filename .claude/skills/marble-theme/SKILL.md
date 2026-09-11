@@ -109,16 +109,23 @@ four skill scripts above. Details and the Playwright projects: `reference/verifi
 
 ## ZK version coordinates
 
+`zkpreview` resolves **no published ZK artifact**. Its `settings.gradle` points every `org.zkoss.*`
+module at the working trees in `../../zk` and `../../zkcml` via `includeBuild` +
+`dependencySubstitution`, so what you preview is the source you just edited. There is no
+`zkpreview/pom.xml` and no `<zk.version>` to bump — the version lives in `gradle.properties`.
+
+Everything below applies only to a **separate** app that consumes published FL/Eval jars, not to
+anything in this repository.
+
 ZK's FL/Eval builds publish **two servlet flavours under distinct version strings** in the eval
 repository, and `dependency:resolve` succeeding does **not** tell you which one you got:
 
 - javax (legacy): `11.0.0.FL.<date>-Eval`
 - jakarta: `11.0.0-jakarta.FL.<date>-Eval` — `-jakarta` sits **before** `.FL`, not at the end
 
-The preview app is Spring Boot 3 and needs the **jakarta** flavour; the wrong one fails at
-startup with `Failed to introspect … ZkAutoConfiguration: javax/servlet/…`. `pom.xml`'s
-`<zk.version>` is currently `11.0.0-jakarta.FL.20260909` — the `pom.xml` is authoritative, and the
-root `CLAUDE.md` still names an older version. List candidates with
+A Spring Boot 3 app needs the **jakarta** flavour; the wrong one fails at startup with
+`Failed to introspect … ZkAutoConfiguration: javax/servlet/…`. `zkpreview` is the opposite case:
+it compiles against `javax.servlet:servlet-api:2.4` and runs on gretty/Jetty. List candidates with
 `curl -s https://mavensync.zkoss.org/eval/org/zkoss/zk/zk/maven-metadata.xml | grep '<version>11'`;
 check a resolved jar's flavour with
 `unzip -p <zk.jar> 'org/zkoss/zk/ui/http/*.class' | strings | grep -c javax/servlet`.
