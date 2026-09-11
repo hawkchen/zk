@@ -298,9 +298,9 @@ test.describe('input focus (no layout shift)', () => {
     await page.waitForLoadState('networkidle');
     const css = await page.evaluate(async () => {
       const link = [...document.querySelectorAll('link[rel="stylesheet"]')]
-        .map(l => (l as HTMLLinkElement).href).find(h => h.includes('/marble/'));
+        .map(l => (l as HTMLLinkElement).href).find(h => h.includes('/zul/css/reset.css'));
       if (!link) return null;
-      const prefix = link.slice(0, link.indexOf('/marble/') + '/marble'.length);
+      const prefix = link.slice(0, link.indexOf('/zul/css/reset.css'));
       const res = await fetch(prefix + '/js/zul/inp/css/combo.css.dsp');
       return res.ok ? await res.text() : null;
     });
@@ -361,9 +361,9 @@ test.describe('input focus (no layout shift)', () => {
     await page.waitForLoadState('networkidle');
     const css = await page.evaluate(async () => {
       const link = [...document.querySelectorAll('link[rel="stylesheet"]')]
-        .map(l => (l as HTMLLinkElement).href).find(h => h.includes('/marble/'));
+        .map(l => (l as HTMLLinkElement).href).find(h => h.includes('/zul/css/reset.css'));
       if (!link) return null;
-      const prefix = link.slice(0, link.indexOf('/marble/') + '/marble'.length);
+      const prefix = link.slice(0, link.indexOf('/zul/css/reset.css'));
       const res = await fetch(prefix + '/js/zul/inp/css/combo.css.dsp');
       return res.ok ? await res.text() : null;
     });
