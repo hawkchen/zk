@@ -87,7 +87,7 @@ currently produces — that's the invariant the Evaluator asserts.
 ### 3 — Launch the app (the runtime oracle)
 
 ```bash
-withjdk.sh 17 mvn test exec:java@preview-app     # ${PREVIEW_URL}
+cd zkpreview && ./gradlew appRun -PhttpPort=8085 --console=plain     # ${PREVIEW_URL}
 ```
 
 The *running app* is the oracle for "what inline style does ZK actually set" and "does the
@@ -157,10 +157,12 @@ were identical without the keyword. Removed, each with a computed-style guard.
 
 ## Bundled scripts
 
-Both scripts live in this skill's `scripts/` directory.
+Both scripts live in this skill's `scripts/` directory. Run them from the zk repo root;
+`count-important.js` scans `zul/src/main/resources/web` unless a root is given, and EE CSS lives in
+`../zkcml` instead.
 
-- `scripts/count-important.js` — comment-aware inventory (step 1).
-- `scripts/probe.js` — computed-style + inline-style A/B probe (step 4). Run from the repo
+- `.claude/skills/marble-theme/scripts/count-important.js` — comment-aware inventory (step 1).
+- `.claude/skills/marble-theme/scripts/probe.js` — computed-style + inline-style A/B probe (step 4). Run from the repo
   root, or `export NODE_PATH=<repo>/node_modules` if run from elsewhere.
 
 ## When to stop

@@ -15,8 +15,8 @@ are **78** such entries, 100% hard-wired to `.css.dsp`, with zero exceptions:
 | `zkcml/zkmax/src/main/resources/metainfo/zk/lang-addon.xml` | 35 | 31 |
 | `zkcml/zkex/src/main/resources/metainfo/zk/lang-addon.xml` | 8 | 7 |
 
-Plus two hard-wired in `zul/css/zk.wcs` (`font-awesome.css.dsp`, `norm.css.dsp`), and the entry
-point itself is fixed: `StandardThemeProvider.DEFAULT_WCS = "~./zul/css/zk.wcs"`.
+Plus one hard-wired in `zul/css/zk.wcs` (`norm.css.dsp`), and the entry point itself is fixed:
+`StandardThemeProvider.DEFAULT_WCS = "~./zul/css/zk.wcs"`.
 
 **Path resolution:** a relative `<css-uri>` resolves against the widget's JS package —
 `<widget-package>` if declared, else derived from `<widget-class>` with the class segment dropped.
@@ -110,11 +110,8 @@ Watch for body-level nodes (`lm_transition_indicator`, dragProxy) that scoped se
 for specificity traps where a structural rule like `.lm_maximised{position:absolute}` is outranked
 by the theme's own `.lm_item.lm_stack{position:relative}`.
 
-## Version drift silently un-themes the app
+## Version drift (template-only)
 
-The theme version is declared in several coordinated places — `pom.xml`,
-`src/main/resources/metainfo/zk/config.xml`, `package.json` and `Version.java` — and they must
-agree. A mismatch between `config.xml` and `Version.java` does not error: the app simply loads no
-theme. **There is currently no `check:version` script** (`scripts/` holds `check-css-dsp.js`,
-`check-doc-links.js`, `check-forced-colors.js` and no version guard), so this is a manual check
-today, and a gap worth closing.
+zk has no theme-jar version coordination to drift — Marble ships inside `zul` and `zkmax`/`zkex`,
+not as a separately versioned theme jar. The template's four-location (`pom.xml` / `config.xml` /
+`package.json` / `Version.java`) drift check does not apply here.

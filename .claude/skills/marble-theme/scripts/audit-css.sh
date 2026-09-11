@@ -36,7 +36,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # .claude/skills/marble-theme/scripts -> project root is four levels up.
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 
-WEB="$PROJECT_ROOT/src/main/resources/web"
+WEB="$PROJECT_ROOT/zul/src/main/resources/web"
 PREFIX="--zk-"
 TOKENS_DIR="$WEB/zul/css/tokens"
 CSS_ROOT="$WEB"

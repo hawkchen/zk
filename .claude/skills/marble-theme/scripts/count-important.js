@@ -7,13 +7,13 @@
  * reflects REAL declarations only — the authoritative number to plan against.
  *
  * Usage:  node count-important.js [cssRootDir]
- *   cssRootDir defaults to src/main/resources/web (run from the repo root).
+ *   cssRootDir defaults to zul/src/main/resources/web (run from the repo root).
  * Output: per-file counts (desc), a total, and every real declaration line.
  */
 const fs = require('fs');
 const path = require('path');
 
-const root = process.argv[2] || 'src/main/resources/web';
+const root = process.argv[2] || 'zul/src/main/resources/web';
 
 function walk(dir, acc = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {

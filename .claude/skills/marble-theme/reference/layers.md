@@ -32,11 +32,11 @@ Tokens, the tablet stylesheet, `_cssflex` / `_dnd`, and the customer's own CSS a
 unlayered — so a customer override wins without `!important`, which is the point of the design.
 
 The same rule is a hazard in the other direction. **Any framework CSS that reaches the page
-unlayered beats the theme's layered components.** Marble is a *complete* CSS replacement: it
-ships an **empty** `zul/font/font-awesome.css.dsp` stub (`build-css.js` `stubPaths`) so ZK's own
-icon-font CSS never loads, and draws icons itself via `mask-image` and generated `.z-icon-* {
---_icon }` rules from `lucide-static` in `base/_icons.css`. That "no coexisting unreachable
-framework CSS" property is what makes the layer scheme safe.
+unlayered beats the theme's layered components.** Marble is a *complete* CSS replacement: in zk there is no icon-font CSS to suppress — the
+IceBlue-only `font-awesome.css.dsp` stub the template ships for it was removed in P1 (D39) — and
+Marble draws icons itself via `mask-image` and generated `.z-icon-* { --_icon }` rules from
+`lucide-static` in `base/_icons.css`. That "no coexisting unreachable framework CSS" property is
+what makes the layer scheme safe.
 
 **On the next ZK upgrade** — the version that deprecates Font Awesome for native Lucide — re-check
 whether ZK now emits a Lucide stylesheet the theme does not stub. If it does, it loads unlayered,

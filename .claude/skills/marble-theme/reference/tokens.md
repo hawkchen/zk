@@ -137,7 +137,7 @@ was a contract authoring error, not a gap. Do not create the family to make such
 ## What counts as a token consumer
 
 When deciding whether a `--zk-*` token is an orphan, **"referenced" means referenced by component
-CSS under `src/main/resources/web/`.** A hit from a preview or demo ZUL — especially an inline
+CSS under `zul/src/main/resources/web/`.** A hit from a preview or demo ZUL — especially an inline
 `style="…var(--zk-token)…"` — is **not** a consumer; it is theme debt. Fix the ZUL to use a
 built-in utility, then delete the token. Self-contained `:root` snapshots inside
 `doc/contracts/*.html` are independent copies and do not block deletion either. Graduated scales

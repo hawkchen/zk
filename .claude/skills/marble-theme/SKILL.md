@@ -42,41 +42,53 @@ vocabulary Marble does not share (see `reference/iceblue-parity.md`).
 
 ## Where things live
 
+CE (this checkout):
+
 ```
-src/main/resources/web/
-├── zul/css/                    → the zk/zul module (CE) — 87 files
-│   ├── tokens/  _colors _typography _spacing _sizing _shape _elevation
-│   │            _motion _zindex _fonts _splitter _component-theme _forced-colors
-│   ├── base/    _reset _icons _cssflex _dnd
-│   └── utility/ _colors _spacing _layout _typography _borders _elevation
-│                _components _stack _print
-├── js/zul/<pkg>/css/           → per-component CSS, 1:1 with a .css.dsp output
-├── js/zkmax/<pkg>/css/         → zkcml/zkmax (EE) — 27 files
-├── js/zkex/<pkg>/css/          → zkcml/zkex (PE) — 5 files
-└── zkmax/css/tablet/           → concatenated into one tablet.css.dsp (EE-injected)
+zul/src/main/resources/web/zul/css/
+├── tokens/  _colors _typography _spacing _sizing _shape _elevation
+│            _motion _zindex _fonts _splitter _component-theme _forced-colors
+├── base/    _reset _icons _cssflex _dnd
+└── utility/ _colors _spacing _layout _typography _borders _elevation
+             _components _stack _print
+
+zul/src/main/resources/web/js/zul/<pkg>/css/   → per-component CSS, 1:1 with a .css.dsp output
 ```
 
-Build output lands in `target/classes/web/marble/`. `_`-prefixed files are **partials** —
-they are bundled by `build-css.js`, never shipped individually.
+EE/PE (sibling checkout `../zkcml`):
+
+```
+../zkcml/zkmax/src/main/resources/web/js/zkmax/<pkg>/css/   → zkmax (EE)
+../zkcml/zkex/src/main/resources/web/js/zkex/<pkg>/css/     → zkex (PE)
+../zkcml/zkmax/src/main/resources/web/zkmax/css/tablet/     → concatenated into one tablet.css.dsp (EE-injected)
+```
+
+Build output lands in `zul/codegen/resources/web/` (CE) and `../zkcml/zkmax/codegen/resources/web/`
+/ `../zkcml/zkex/codegen/resources/web/` (EE/PE). `_`-prefixed files are **partials** — they are
+bundled by `build-css.js`, never shipped individually.
 
 ## Commands
 
 ```bash
-npm install                                    # first time
-npm run build:css                              # build the theme CSS
-npm run watch                                  # rebuild + live-reload on change
-npm run check:css-dsp                          # verify ZK's <css-uri> requests all resolve
-npm run check:forced-colors                    # Windows High-Contrast a11y guards
-npm run check:doc-links                        # dead links in doc/
-npm run lint:css                               # stylelint
-npm run audit:css                              # hardcoded px / orphan tokens
-withjdk.sh 17 mvn test exec:java@preview-app   # preview app — JDK 17, one line, see below
-mvn clean package                              # jar (add -Dmaven.test.skip=true on JDK 11)
+node scripts/build-css.js --module zul                            # build CE theme CSS (--module required, exit 2 on misuse)
+node scripts/build-css.js --module zkmax                          # or zkex — EE/PE, run from ../zkcml
+./gradlew :zul:compileMarbleCss                                    # the Gradle task the builder is wired into
+                                                                    # (../zkcml: :zkmax:compileMarbleCss / :zkex:compileMarbleCss);
+                                                                    # also runs inside every ./gradlew build
+node scripts/check-css-dsp.js --module zul --zk-home /Users/hawk/Documents/workspace/ZK10   # coverage check (also zkmax, zkex)
+bash .claude/skills/marble-theme/scripts/audit-css.sh --out <file>                # hardcoded px / orphan tokens
+node .claude/skills/marble-theme/scripts/check-default-display.js --out <file>    # check 5 of the audit
+node .claude/skills/marble-theme/scripts/count-important.js [<css root>]          # !important inventory
+node .claude/skills/marble-theme/scripts/probe.js …                              # needs the preview module up
+cd zkpreview && ./gradlew appRun -PhttpPort=8085 --console=plain   # preview app — keep stdin open, see below
 ```
 
-**The preview app is on `http://127.0.0.1:8081`** and the IceBlue baseline app on `:8082`. Use
-`127.0.0.1`, never `localhost`. `withjdk.sh 17` must be chained on one line — a bare `setjdk`
-does not outlive the call. Details and the Playwright projects: `reference/verification.md`.
+**The preview app is on `http://127.0.0.1:8085`.** Use `127.0.0.1`, never `localhost`. `appRun`
+waits for a key on stdin and treats EOF as that key, so keep stdin open (interactive terminal, or a
+FIFO held open in scripts); **never `appStart`** — under gretty 3.1.1 on Gradle 8.10 its client
+never returns. There is no `npm run build:css`, `watch`, `lint:css`, `audit:css`,
+`check:forced-colors` or `check:doc-links` script in zk — the audit and `!important` tooling is the
+four skill scripts above. Details and the Playwright projects: `reference/verification.md`.
 
 ## Reference
 
@@ -124,9 +136,9 @@ and so on). This path is machine-local; after migration, re-home or re-fetch the
 
 This skill's tooling lives in `scripts/`.
 
-- `scripts/audit-css.sh` — mechanical hygiene pass; `npm run audit:css`.
-- `scripts/check-default-display.js` — check 5 of the audit; resolves root tags from ZK molds.
-- `scripts/count-important.js` — comment-aware `!important` inventory.
-- `scripts/probe.js` — computed-style A/B probe against the running preview app.
+- `.claude/skills/marble-theme/scripts/audit-css.sh` — mechanical hygiene pass; `npm run audit:css`.
+- `.claude/skills/marble-theme/scripts/check-default-display.js` — check 5 of the audit; resolves root tags from ZK molds.
+- `.claude/skills/marble-theme/scripts/count-important.js` — comment-aware `!important` inventory.
+- `.claude/skills/marble-theme/scripts/probe.js` — computed-style A/B probe against the running preview app.
 
 `doc/spec/index.md` remains the normative index for the specifications this skill summarises.

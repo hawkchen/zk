@@ -4,52 +4,47 @@
 
 | App | Port | Entry point |
 |---|---|---|
-| **Marble preview** | **8081** | `src/test/java/zk/example/ThemePreviewApp.java` |
-| **IceBlue baseline** | **8082** | `src/test/java/zk/example/iceblue/ThemePreviewIceblueApp.java` |
-| Live-reload client | 50000 | started by `npm run watch` |
+| **Marble preview** | **8085** | `zkpreview/build.gradle` (`httpPort`) |
 
-Both run simultaneously, which is what makes the cross-theme side-by-side comparison work.
-`playwright.config.ts` uses `baseURL: process.env.PREVIEW_URL ?? 'http://localhost:8081'`.
+The IceBlue baseline app exists only in the template until P4 — `zkpreview` has no IceBlue
+counterpart yet.
 
 **Use `127.0.0.1`, not `localhost`.** Chrome resolves `localhost` to IPv6 `::1` while the preview
-app binds IPv4. CLAUDE.md documents the base as `${PREVIEW_URL}` = `http://127.0.0.1:8081` rather
-than hardcoding a port, so set `export PREVIEW_URL=http://127.0.0.1:8081` or paste the address.
+app binds IPv4. CLAUDE.md documents the base as `${PREVIEW_URL}` = `http://127.0.0.1:8085` rather
+than hardcoding a port, so set `export PREVIEW_URL=http://127.0.0.1:8085` or paste the address.
 
-**The port lives in each `main()`, deliberately — do not move it to
-`application.properties`.** That file is on the *shared* test classpath, so a `server.port` there
-would also be inherited by the IceBlue app, and because `application.properties` out-ranks
-`setDefaultProperties` it would silently override that app's own declaration. `setDefaultProperties`
-is Spring Boot's lowest-precedence source, so `-Dserver.port=…` still overrides it either way.
+Override the port with `-PhttpPort=<n>` on the `appRun` command below; there is no
+`application.properties` to edit.
 
 ## Launching
 
 ```bash
-withjdk.sh 17 mvn test exec:java@preview-app
+cd zkpreview && ./gradlew appRun -PhttpPort=8085 --console=plain
 ```
 
-**Chain `withjdk.sh 17` on one line.** The preview app is Spring Boot 3.2.6 and needs JDK 17; this
-machine defaults to 11, and a bare `setjdk` does not outlive the call. Expect
-`Tomcat started on port 8081 (http)`.
+**`appRun`, never `appStart`.** Under gretty 3.1.1 on Gradle 8.10, `appStart`'s client never
+returns. `appRun` waits for a key on stdin and treats EOF as that key, so keep stdin open — run it
+in an interactive terminal, or hold a FIFO open from a script. The first start builds the composite
+build (minutes); a warm start serves in about 10 s.
 
-The IceBlue baseline needs **both** flags or `:8082` silently serves Marble:
-
-```bash
-withjdk.sh 17 mvn exec:java@preview-app-iceblue \
-  -Dspring.profiles.active=iceblue -Dorg.zkoss.theme.preferred=iceblue
-```
+Stop by pressing a key in the `appRun` terminal, or run `./gradlew appStop` from `zkpreview/`.
 
 **How to tell which theme is actually being served:** read the theme stylesheet href in the served
-HTML. Marble → `/zkau/web/<v>/marble/zul/css/reset.css` (note the `marble` segment); stock IceBlue
-→ `/zkau/web/<v>/zul/css/reset.css`, with no theme segment.
+HTML. Marble is zk's core theme, so the reset link carries **no theme segment** —
+`/zkres/web/<v>/zul/css/reset.css` (or `reset-embed.css` when
+`org.zkoss.zul.theme.browserDefault=true`) — and it precedes `zk.wcs`. `screenshot.spec.ts` derives
+the theme prefix from that `reset.css` link.
 
-`npm run watch` starts automatically via Maven's `process-resources` phase. It rebuilds theme CSS
-and hot-swaps without a reload; ZUL/JS/image changes reload the page.
+**No live-reload.** `zkpreview` has no watcher and no live-reload client. After a CSS change,
+rebuild (`./gradlew :zul:compileMarbleCss`, or the matching `zkcml` task for EE) and restart
+`appRun`; the two live-reload `<script>` tags some preview pages still carry are inert.
 
 ## Preview pages
 
-`http://127.0.0.1:8081/{component}.zul` — the `.zul` extension is required, since the catch-all is
-restricted to `*.zul` so it does not intercept static resources. Sources live in
-`src/test/resources/web/*.zul`.
+`http://127.0.0.1:8085/<page>.zul` — the module answers at the context root; a filter forwards
+`/<page>.zul` to `/web/<page>.zul` when the page exists, and `~./` class-web resources resolve
+unchanged. Sources live in `zkpreview/src/main/webapp/web/*.zul` (159 pages). Smoke page:
+`/smoke.zul`.
 
 The **UseCase SPA** supports hash deep-links: `usecase/index.zul#<bookmark>`, where the bookmark is
 the target ZUL's path relative to the web root minus `.zul` (`usecase/ops-dashboard`, or just
@@ -62,7 +57,7 @@ reaches the server. Nothing in the harness uses a query string.
 
 ## Playwright projects
 
-Config: `src/test/playwright/playwright.config.ts`.
+Config: `zkpreview/src/test/playwright/playwright.config.ts`.
 
 | Project | Covers |
 |---|---|
@@ -81,16 +76,22 @@ Config: `src/test/playwright/playwright.config.ts`.
 | `tablet` | needs a mobile UA to trigger `tablet.css.dsp` injection |
 
 ```bash
-npm run screenshot:test              # whole suite
-npm run screenshot:update            # re-cut baselines
-npx playwright test --config src/test/playwright/playwright.config.ts --project=gallery
+npx playwright test --config zkpreview/src/test/playwright/playwright.config.ts --project=<project>
 ```
 
 ## Screenshot baselines — the parts that bite
 
-- **`doc/screenshots/` holds 199 compared baselines plus 100 `*-forced-colors.png`.** The
-  forced-colors images are **human-review artifacts that are always dirty** and never compared.
-  Never quote "299 baselines" as a cost.
+- **183 compared baselines plus 99 `*-forced-colors.png` review captures (the 2026-09-11 re-cut)
+  will live beside `focus-ring-known-clips.json`, in `zkpreview`'s own `doc/` — but not yet.**
+  `playwright.config.ts:13`'s `snapshotDir: '../../../doc/screenshots'` resolves, from
+  `zkpreview/src/test/playwright/`, to that directory; it arrives with item 3.18b after the P2 gate,
+  so until then a run can only *create* baselines, never compare. The forced-colors images are
+  **human-review artifacts that are always dirty** and never compared.
+- The harness resolves its `doc/` paths three levels up from `zkpreview/src/test/playwright/` — the MODULE root (`zkpreview/` in zk, the template's own root in the template), never the repository root; the baselines directory above and `focus-ring-known-clips.json` both live there. (Planner addendum after the 3.5 verdict, 2026-09-11 — see the migration's gates/3.5.md.)
+- **The zero-tolerance comparison (P2 items 2.6–2.8) is the equivalence check that was actually
+  run**: the template's unchanged specs against `zkpreview`, every PNG compared at `threshold: 0,
+  maxDiffPixels: 0` with the tracked tools under `zkThemeTemplate/doc/migration/tools/zero-tolerance/`
+  — the gallery (98), state (55) and tablet (30) families came back byte-identical.
 - **Always `await document.fonts.ready`.** A uniform vertical drift across every page is the Inter
   font-load race, not a CSS change. Baselines are flat files in one directory, not nested.
 - **Tolerance is not one number.** `gallery-scan.spec.ts` allows `maxDiffPixelRatio: 0.01` —
@@ -120,6 +121,10 @@ are trying to catch.
 
 Also: disable transitions before measuring focus rings, and never open `/preview` in the
 Chrome automation session.
+
+**Geometry claims are read off the captured PNG, never the live DOM (F57).**
+`getBoundingClientRect` at `networkidle` runs before the gallery spec's font-settle wait and read
+1 px wide on the splitter page while every shot showed the settled width.
 
 ## The tablet stylesheet is gated client-side, not by server UA
 
@@ -163,6 +168,9 @@ no change applied — check that before trusting the gate. Run ad-hoc probes wit
 `NODE_PATH="$(pwd)/node_modules" node script.cjs` using `require('playwright')`.
 
 ## Cross-theme A/B: the determinism floor
+
+The IceBlue baseline app is template-only until P4 — `zkpreview` has no IceBlue counterpart to run
+this comparison against yet.
 
 Serving Marble's preview corpus under a different theme jar needs no edit here: ZK's
 `Library.getProperty` falls back to `System.getProperty`, and the IceBlue baseline app leaves the
@@ -224,6 +232,6 @@ or put probes in a throwaway file from the start.
 
 ## Theme-done criterion
 
-The theme is complete only when **every preview page** under `src/test/resources/web/*.zul` is
+The theme is complete only when **every preview page** under `zkpreview/src/main/webapp/web/*.zul` is
 verified. The page set, not the component list, is the checklist — see
 `reference/zul-authoring.md` for why.

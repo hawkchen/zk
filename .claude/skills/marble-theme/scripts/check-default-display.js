@@ -46,7 +46,7 @@ const SCRIPT_DIR = __dirname;
 // .claude/skills/marble-theme/scripts -> project root is four levels up.
 const PROJECT_ROOT = path.resolve(SCRIPT_DIR, '../../../..');
 
-let COMPONENT_ROOT = path.join(PROJECT_ROOT, 'src/main/resources/web/js/zul');
+let COMPONENT_ROOT = path.join(PROJECT_ROOT, 'zul/src/main/resources/web/js/zul');
 let ZK_SOURCE = '/Users/hawk/Documents/workspace/ZK10/zk/zul/src/main/resources/web/js/zul';
 let OUT = '';
 
@@ -284,7 +284,7 @@ emit('');
 emit('### G2. Restates default — VERIFY before removing (`block`/`inline-block` on a same-default element)');
 emit('');
 emit('> May be a defensive anchor vs ZK runtime `.z-flex` class toggling or `@layer` cascade.');
-emit('> Prove render-neutral on the live app before deleting (see reference/important-reduction.md and scripts/probe.js).');
+emit('> Prove render-neutral on the live app before deleting (see reference/important-reduction.md and .claude/skills/marble-theme/scripts/probe.js).');
 emit('');
 if (verify.length) {
   for (const x of verify) emit(`- \`${rel(x.file)}:${x.line}\`  \`.z-${x.name} { display: ${x.value} }\` → <${x.tag}> default is \`${x.def}\``);

@@ -15,7 +15,7 @@ findings cited throughout: the goldenlayout 3-warning split, the
 
 The audit deliberately mixes two kinds of work:
 
-- **Mechanical checks** a script can decide on its own — run `scripts/audit-css.sh`.
+- **Mechanical checks** a script can decide on its own — run `.claude/skills/marble-theme/scripts/audit-css.sh`.
 - **Human-judgment calls** a script must NOT make alone (is this orphan token safe
   to delete? does this bare color map to a semantic token?) — you triage these.
 
@@ -42,12 +42,15 @@ per theme** is the token prefix and where tokens/CSS live. Defaults assume:
 | Parameter | Default | Flag to override |
 |---|---|---|
 | Token prefix | `--zk-` | `--prefix` |
-| Token definitions | `src/main/resources/web/zul/css/tokens` | `--tokens-dir` |
-| Root scanned for `var()` refs | `src/main/resources/web` | `--css-root` |
-| Root scanned for hardcoded values | `src/main/resources/web/js/zul` | `--component-root` |
+| Token definitions | `zul/src/main/resources/web/zul/css/tokens` | `--tokens-dir` |
+| Root scanned for `var()` refs | `zul/src/main/resources/web` | `--css-root` |
+| Root scanned for hardcoded values | `zul/src/main/resources/web/js/zul` | `--component-root` |
 
 If a new theme renames its prefix or moves directories, pass the flags — the
 script has no other theme-specific assumptions.
+
+Run the script from the zk repo root; the defaults above are the CE (`zul`) locations — pass the
+matching `../zkcml/zkmax/...` or `../zkcml/zkex/...` paths to audit EE/PE CSS instead.
 
 ## Step 1 — Mechanical pass (automated)
 
@@ -72,7 +75,7 @@ It emits an A–F report skeleton with these checks filled in:
 5. **Default-value redundancy (§G)** — `display` declarations on a bare `.z-<name>`
    root that merely restate the browser default of the element the widget renders
    (`.z-span { display: inline }` on a `<span>`). Delegated to
-   `scripts/check-default-display.js`, which resolves each root tag from the ZK
+   `.claude/skills/marble-theme/scripts/check-default-display.js`, which resolves each root tag from the ZK
    **mold files** (`--zk-source`) and buckets hits into safe no-ops (§G1),
    verify-first candidates (§G2), skipped replaced/form elements (§G3), and
    unresolved sub-elements (§G4).
@@ -89,7 +92,7 @@ commands (run from the repo root):
 npm run lint:css
 
 # orphan tokens — count var() refs for every defined token
-cd src/main/resources/web
+cd zul/src/main/resources/web
 for v in $(grep -rhoE --include='*.css' -e '--zk-[a-z0-9-]+:' zul/css/tokens | sed 's/:$//' | sort -u); do
   n=$(grep -rohE --include='*.css' -e "var\($v[,)]" . | wc -l | tr -d ' ')
   [ "$n" -eq 0 ] && echo "ORPHAN: $v"
@@ -166,7 +169,7 @@ covers widgets whose mold declares no tag (e.g. `div.js`).
   the default, but the value can be a **defensive anchor**: ZK toggles framework
   display classes at runtime (the `.z-flex` family) and the `@layer` cascade can
   reorder who wins. Prove render-neutral on the live app before deleting — reuse
-  `scripts/probe.js` from `reference/important-reduction.md` ("remove → build →
+  `.claude/skills/marble-theme/scripts/probe.js` from `reference/important-reduction.md` ("remove → build →
   measure computed style"); if the computed `display` is unchanged with the line
   gone, it was redundant. `.z-cell { display: table-cell }` on a `<td>` is the same
   shape.
