@@ -46,3 +46,6 @@ zk.code-workspace
 .vscode/mcp.json
 docs/
 skills-lock.json
+
+# macOS Finder metadata — ignored by the repository, not only via a machine-local core.excludesFile (D71-A, 2026-09-11)
+.DS_Store
