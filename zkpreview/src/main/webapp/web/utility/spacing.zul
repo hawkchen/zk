@@ -106,19 +106,19 @@
         <label value="Padding" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-4 z-flex-wrap">
             <div style="text-align:center">
-                <div class="z-bg-secondary-container z-rounded-xs z-d-inline-block"><div sclass="z-bg-primary-container z-rounded-xs z-text-xs z-fw-medium z-text-nowrap z-p-4"><label value="z-p-4"/></div></div>
+                <div class="z-bg-secondary-container z-rounded-xs z-d-inline-block"><div sclass="z-bg-primary-container z-rounded-xs z-text-nowrap z-p-4"><label sclass="z-text-xs z-fw-medium" value="z-p-4"/></div></div>
                 <label value="all sides" sclass="z-text-muted z-text-xs z-d-block z-mt-1"/>
             </div>
             <div style="text-align:center">
-                <div class="z-bg-secondary-container z-rounded-xs z-d-inline-block"><div sclass="z-bg-primary-container z-rounded-xs z-text-xs z-fw-medium z-text-nowrap z-px-6 z-py-1"><label value="z-px-6 z-py-1"/></div></div>
+                <div class="z-bg-secondary-container z-rounded-xs z-d-inline-block"><div sclass="z-bg-primary-container z-rounded-xs z-text-nowrap z-px-6 z-py-1"><label sclass="z-text-xs z-fw-medium" value="z-px-6 z-py-1"/></div></div>
                 <label value="horizontal / vertical" sclass="z-text-muted z-text-xs z-d-block z-mt-1"/>
             </div>
             <div style="text-align:center">
-                <div class="z-bg-secondary-container z-rounded-xs z-d-inline-block"><div sclass="z-bg-primary-container z-rounded-xs z-text-xs z-fw-medium z-text-nowrap z-pt-6 z-pb-1 z-px-3"><label value="z-pt-6 z-pb-1"/></div></div>
+                <div class="z-bg-secondary-container z-rounded-xs z-d-inline-block"><div sclass="z-bg-primary-container z-rounded-xs z-text-nowrap z-pt-6 z-pb-1 z-px-3"><label sclass="z-text-xs z-fw-medium" value="z-pt-6 z-pb-1"/></div></div>
                 <label value="top / bottom" sclass="z-text-muted z-text-xs z-d-block z-mt-1"/>
             </div>
             <div style="text-align:center">
-                <div class="z-bg-secondary-container z-rounded-xs z-d-inline-block"><div sclass="z-bg-primary-container z-rounded-xs z-text-xs z-fw-medium z-text-nowrap z-ps-6 z-pe-2 z-py-2"><label value="z-ps-6 z-pe-2"/></div></div>
+                <div class="z-bg-secondary-container z-rounded-xs z-d-inline-block"><div sclass="z-bg-primary-container z-rounded-xs z-text-nowrap z-ps-6 z-pe-2 z-py-2"><label sclass="z-text-xs z-fw-medium" value="z-ps-6 z-pe-2"/></div></div>
                 <label value="inline-start / end" sclass="z-text-muted z-text-xs z-d-block z-mt-1"/>
             </div>
         </div>
@@ -131,17 +131,17 @@
         <label value="Margin" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <label value="Each box has the utility class applied — the gap between boxes shows the margin." sclass="z-text-secondary z-text-sm z-mb-3"/>
         <div sclass="z-bg-surface-variant z-p-2 z-rounded-md" style="display:inline-block">
-            <div sclass="z-bg-primary-container z-rounded-xs z-text-xs z-fw-medium z-text-nowrap" style="display:inline-block;padding:8px 12px"><label value="z-mt-0"/></div>
-            <div sclass="z-bg-primary-container z-rounded-xs z-text-xs z-fw-medium z-text-nowrap z-mt-4" style="display:inline-block;padding:8px 12px"><label value="z-mt-4"/></div>
-            <div sclass="z-bg-primary-container z-rounded-xs z-text-xs z-fw-medium z-text-nowrap z-mt-8" style="display:inline-block;padding:8px 12px"><label value="z-mt-8"/></div>
+            <div sclass="z-bg-primary-container z-rounded-xs z-text-nowrap" style="display:inline-block;padding:8px 12px"><label sclass="z-text-xs z-fw-medium" value="z-mt-0"/></div>
+            <div sclass="z-bg-primary-container z-rounded-xs z-text-nowrap z-mt-4" style="display:inline-block;padding:8px 12px"><label sclass="z-text-xs z-fw-medium" value="z-mt-4"/></div>
+            <div sclass="z-bg-primary-container z-rounded-xs z-text-nowrap z-mt-8" style="display:inline-block;padding:8px 12px"><label sclass="z-text-xs z-fw-medium" value="z-mt-8"/></div>
         </div>
         <div sclass="z-mt-4 z-bg-surface-variant z-p-2 z-rounded-md z-d-flex">
-            <div sclass="z-bg-primary-container z-rounded-xs z-text-xs z-fw-medium z-text-nowrap z-me-0" style="padding:8px 12px"><label value="z-me-0"/></div>
-            <div sclass="z-bg-primary-container z-rounded-xs z-text-xs z-fw-medium z-text-nowrap z-ms-4" style="padding:8px 12px"><label value="z-ms-4"/></div>
-            <div sclass="z-bg-primary-container z-rounded-xs z-text-xs z-fw-medium z-text-nowrap z-ms-8" style="padding:8px 12px"><label value="z-ms-8"/></div>
+            <div sclass="z-bg-primary-container z-rounded-xs z-text-nowrap z-me-0" style="padding:8px 12px"><label sclass="z-text-xs z-fw-medium" value="z-me-0"/></div>
+            <div sclass="z-bg-primary-container z-rounded-xs z-text-nowrap z-ms-4" style="padding:8px 12px"><label sclass="z-text-xs z-fw-medium" value="z-ms-4"/></div>
+            <div sclass="z-bg-primary-container z-rounded-xs z-text-nowrap z-ms-8" style="padding:8px 12px"><label sclass="z-text-xs z-fw-medium" value="z-ms-8"/></div>
         </div>
         <div sclass="z-mt-4">
-            <div sclass="z-bg-primary-container z-rounded-xs z-text-xs z-fw-medium z-text-nowrap z-mx-auto" style="padding:8px 12px;display:block;width:fit-content"><label value="z-mx-auto (centered)"/></div>
+            <div sclass="z-bg-primary-container z-rounded-xs z-text-nowrap z-mx-auto" style="padding:8px 12px;display:block;width:fit-content"><label sclass="z-text-xs z-fw-medium" value="z-mx-auto (centered)"/></div>
         </div>
     </div>
 

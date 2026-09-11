@@ -42,41 +42,41 @@
             <div>
                 <label value=".z-vstack-sm  (8px)" sclass="z-d-block z-text-sm z-text-secondary z-mb-2"/>
                 <div sclass="z-bg-surface-variant z-rounded z-p-3 z-vstack-sm">
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 1</div>
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 2</div>
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 3</div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 1"/></div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 2"/></div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 3"/></div>
                 </div>
             </div>
             <div>
                 <label value=".z-vstack    (12px)" sclass="z-d-block z-text-sm z-text-secondary z-mb-2"/>
                 <div sclass="z-bg-surface-variant z-rounded z-p-3 z-vstack">
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 1</div>
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 2</div>
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 3</div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 1"/></div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 2"/></div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 3"/></div>
                 </div>
             </div>
             <div>
                 <label value=".z-vstack-md (16px)" sclass="z-d-block z-text-sm z-text-secondary z-mb-2"/>
                 <div sclass="z-bg-surface-variant z-rounded z-p-3 z-vstack-md">
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 1</div>
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 2</div>
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 3</div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 1"/></div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 2"/></div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 3"/></div>
                 </div>
             </div>
             <div>
                 <label value=".z-vstack-lg (24px)" sclass="z-d-block z-text-sm z-text-secondary z-mb-2"/>
                 <div sclass="z-bg-surface-variant z-rounded z-p-3 z-vstack-lg">
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 1</div>
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 2</div>
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 3</div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 1"/></div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 2"/></div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 3"/></div>
                 </div>
             </div>
             <div>
                 <label value=".z-vstack-0   (0)" sclass="z-d-block z-text-sm z-text-secondary z-mb-2"/>
                 <div sclass="z-bg-surface-variant z-rounded z-p-3 z-vstack-0">
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 1</div>
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 2</div>
-                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3 z-text-sm z-fw-medium">Item 3</div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 1"/></div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 2"/></div>
+                    <div sclass="z-bg-primary-container z-rounded z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="Item 3"/></div>
                 </div>
             </div>
         </div>
