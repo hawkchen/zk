@@ -367,6 +367,8 @@ const stubPaths = [
     // per-widget CSS lookup.
     'js/zkex/slider/css/sliderbuttons.css.dsp',
     // zkmax
+    // NOTE: scrollview graduated out of this stub list — it now ships real Marble
+    // CSS at js/zkmax/layout/css/scrollview.css (auto-scanned 1:1; css-uri-backed).
     // NOTE: zkmax/css/tablet.css.dsp is NOT stubbed — it is built for real from
     // the web/zkmax/css/tablet/_*.css partials (see tabletFiles + build stage 5).
     'js/zkmax/inp/css/cascader.css.dsp',
@@ -377,7 +379,6 @@ const stubPaths = [
     'js/zkmax/layout/css/linelayout.css.dsp',
     'js/zkmax/layout/css/portallayout.css.dsp',
     'js/zkmax/layout/css/rowlayout.css.dsp',
-    'js/zkmax/layout/css/scrollview.css.dsp',
     'js/zkmax/layout/css/splitlayout.css.dsp',
     'js/zkmax/layout/css/tablelayout.css.dsp',
     'js/zkmax/med/css/video.css.dsp',
