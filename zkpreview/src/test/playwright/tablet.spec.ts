@@ -454,6 +454,10 @@ const visualCases: VisualCase[] = [
   { name: 'tablet-slider',        url: '/slider.zul' },
   // no tablet CSS — width-834 regression guard only
   { name: 'tablet-selectbox',     url: '/selectbox.zul' },
+  // NOTE: scrollview is deliberately NOT here. A goto-and-shoot never paints its
+  // overlay scrollbar (_barPos parks it at opacity 0 at rest), so a generic case
+  // would bank a baseline of the very thing it is meant to show. Its baseline is
+  // cut in the tablet-scrollview-affordance block below, with the bar revealed.
 ];
 
 for (const { name, url, maxDiffPixelRatio } of visualCases) {
@@ -529,5 +533,161 @@ test.describe('tablet-colorbox-dismiss', () => {
         })
         .map(e => e.className.toString()));
     expect(visibleArtifacts).toEqual([]);
+  });
+});
+
+// -------------------------------------------------------
+// Scrollview — the touch path is where its styling actually lives.
+// On a DESKTOP UA `bind_()` writes an inline `overflow: auto` and the browser
+// scrolls natively, so the stylesheet contributes nothing visible and the desktop
+// gallery shot is byte-identical with or without it. On a MOBILE UA the root stays
+// `overflow: hidden` while `_move()` translates the cave, and `_addBar()` builds an
+// overlay scrollbar that is the ONLY scroll affordance the user gets.
+//
+// These guard doc/contracts/scrollview.md M1-M6. They exist because the contract
+// previously asserted only `overflow` and `background-color` — two values ZK's own
+// JS and the CSS defaults already produce — so scrollview was recorded VERIFIED
+// while its stylesheet was an empty placeholder file (doc/harness/work-status.md).
+// Every row below FAILS against that empty stylesheet.
+// -------------------------------------------------------
+test.describe('tablet-scrollview-affordance', () => {
+  test('the overlay scrollbar is present, proportional and inert to touch', async ({ page }) => {
+    await page.goto('/scrollview.zul');
+    await page.waitForLoadState('networkidle');
+    expect(await tabletCssLoaded(page)).toBe(true);
+    // _refresh() builds the bar from a 200ms timer fired by onSize; wait for the
+    // element rather than racing a fixed sleep.
+    await page.waitForSelector('.z-scrollview-scrollbar', { state: 'attached', timeout: 10000 });
+
+    const m = await page.evaluate(() => {
+      const root = document.querySelector('.z-scrollview') as HTMLElement;
+      const cave = root.querySelector('.z-scrollview-content') as HTMLElement;
+      const bar = root.querySelector('.z-scrollview-scrollbar') as HTMLElement;
+      const ind = root.querySelector('.z-scrollview-scrollbar-indicator') as HTMLElement;
+      const load = root.querySelector('.z-scrollview-load') as HTMLElement;
+      const rs = getComputedStyle(root), is = getComputedStyle(ind);
+      const rr = root.getBoundingClientRect(), br = bar.getBoundingClientRect(),
+            ir = ind.getBoundingClientRect();
+      // M5: who actually receives a touch at the thumb's centre?
+      const hit = document.elementFromPoint(ir.left + ir.width / 2, ir.top + ir.height / 2);
+      const alpha = (c: string) => {
+        const mm = c.match(/rgba?\(([^)]+)\)/);
+        if (!mm) return 1;
+        const p = mm[1].split(',').map(s => parseFloat(s));
+        return p.length > 3 ? p[3] : 1;
+      };
+      return {
+        // M1
+        rootH: rr.height, overflow: rs.overflow,
+        scrollDelta: root.scrollHeight - root.clientHeight,
+        // M2
+        rootBgAlpha: alpha(rs.backgroundColor),
+        rootBorders: [rs.borderTopWidth, rs.borderRightWidth, rs.borderBottomWidth, rs.borderLeftWidth]
+          .map(v => parseFloat(v)),
+        rootShadow: rs.boxShadow,
+        // M3
+        barW: br.width, barH: br.height,
+        barInFrame: br.right <= rr.right + 0.5 && br.top >= rr.top - 0.5 && br.bottom <= rr.bottom + 0.5,
+        // M4
+        trackH: bar.clientHeight, thumbH: ir.height, caveH: cave.offsetHeight,
+        thumbAlpha: alpha(is.backgroundColor),
+        // M5
+        hitIsBar: !!hit && !!hit.closest('.z-scrollview-scrollbar'),
+        // M6
+        loadArea: load ? (() => { const r = load.getBoundingClientRect(); return r.width * r.height; })() : 0,
+      };
+    });
+
+    // M1 — a real scroll container holding more than it shows.
+    expect(m.rootH, 'root has height').toBeGreaterThan(0);
+    expect(['auto', 'hidden', 'scroll']).toContain(m.overflow);
+    expect(m.scrollDelta, 'content must exceed the viewport').toBeGreaterThanOrEqual(1);
+
+    // M2 — a viewport, not a card: no surface of its own.
+    expect(m.rootBgAlpha, 'root background must be transparent').toBe(0);
+    expect(m.rootBorders, 'root must have no border').toEqual([0, 0, 0, 0]);
+    expect(m.rootShadow, 'root must have no elevation').toBe('none');
+
+    // M3 — the overlay bar is present and inside the root.
+    expect(m.barW, `bar width ${m.barW}px`).toBeGreaterThanOrEqual(4);
+    expect(m.barH, 'bar height').toBeGreaterThan(0);
+    expect(m.barInFrame, 'bar must sit inside the root bbox').toBe(true);
+
+    // M4 — the thumb is a proportional position indicator, and visible.
+    expect(m.thumbH, `thumb ${m.thumbH}px`).toBeGreaterThanOrEqual(8);
+    expect(m.thumbH, 'thumb must be shorter than its track').toBeLessThanOrEqual(m.trackH - 1);
+    expect(m.thumbAlpha, 'thumb must have a visible fill').toBeGreaterThan(0);
+    const ratio = m.thumbH / m.trackH, expected = m.trackH / m.caveH;
+    expect(Math.abs(ratio - expected),
+      `thumb/track ${ratio.toFixed(3)} vs track/content ${expected.toFixed(3)}`)
+      .toBeLessThanOrEqual(0.05);
+
+    // M5 — a read-out, not a drag handle: it must not swallow the touch stream.
+    expect(m.hitIsBar, 'the scrollbar must not receive the touch at its own centre').toBe(false);
+
+    // M6 — the load hint takes no layout space until an overscroll reveals it.
+    expect(m.loadArea, 'load hint must be zero-area at rest').toBe(0);
+  });
+
+  // M8 — the touch path must actually scroll. Playwright's touchscreen API has
+  // no drag, so the touch sequence is driven through CDP. Found 2026-09-12: with
+  // the cave's transform at `none`, doTouchStart_ parsed the computed matrix to
+  // NaN and every later _move() wrote an invalid translate3d — the bar appeared,
+  // the content never moved, and M1–M6 above all stayed green. Presence and
+  // geometry are not the interaction; this row performs it.
+  test('a touch drag moves the content', async ({ page }) => {
+    await page.goto('/scrollview.zul');
+    await page.waitForLoadState('networkidle');
+    await page.waitForSelector('.z-scrollview-scrollbar', { state: 'attached', timeout: 10000 });
+
+    // Scroll-axis offset of the cave, from its computed transform (`none` → 0).
+    const caveY = () => page.evaluate(() => {
+      const t = getComputedStyle(document.querySelector('.z-scrollview-content') as HTMLElement).transform;
+      const m = t.match(/matrix\(([^)]+)\)/);
+      return m ? parseFloat(m[1].split(',')[5]) : 0;
+    });
+    const before = await caveY();
+    const [x, y] = await page.evaluate(() => {
+      const r = (document.querySelector('.z-scrollview') as HTMLElement).getBoundingClientRect();
+      return [r.left + r.width / 2, r.top + r.height / 2];
+    });
+
+    const cdp = await page.context().newCDPSession(page);
+    const at = (yy: number) => ({ touchPoints: [{ x, y: yy, id: 1 }] });
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', ...at(y) });
+    for (let i = 1; i <= 10; i++) {
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', ...at(y - i * 20) });
+      await page.waitForTimeout(16);
+    }
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await page.waitForTimeout(500);
+
+    const after = await caveY();
+    const pos = await page.evaluate(() =>
+      (window as unknown as { zk: { Widget: { $: (n: Element | null) => { _pos: number[] } } } })
+        .zk.Widget.$(document.querySelector('.z-scrollview'))._pos);
+    expect(pos.every(Number.isFinite), `_pos must be finite, got [${pos}]`).toBe(true);
+    expect(before - after, `content must move up by >= 50px, moved ${before - after}px`)
+      .toBeGreaterThanOrEqual(50);
+  });
+
+  // The only baseline that can SEE this component's styling. The desktop gallery
+  // shot is identical with or without the stylesheet (the desktop path is all
+  // structure), and at rest ZK parks the bar at opacity 0 — so reveal it, at the
+  // resting scroll position, before shooting. Same reasoning as the pop-up-layer
+  // captures: a state that only exists transiently still has to be pinned.
+  test('gallery — overlay scrollbar revealed', async ({ page }) => {
+    await page.goto('/scrollview.zul');
+    await page.waitForLoadState('networkidle');
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+    await page.waitForSelector('.z-scrollview-scrollbar', { state: 'attached', timeout: 10000 });
+    await page.evaluate(() => {
+      // _barPos(pos, dir, true) hides the bar after _addBar(); it only turns
+      // opaque while a touch drag is in flight. Force the visible state WITHOUT
+      // scrolling, so the shot stays deterministic (no in-flight transform).
+      const bar = document.querySelector('.z-scrollview-scrollbar') as HTMLElement;
+      bar.style.opacity = '1';
+    });
+    await expect(page.locator('.z-p-8').first()).toHaveScreenshot('scrollview-tablet.png');
   });
 });
