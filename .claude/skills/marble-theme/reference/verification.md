@@ -103,6 +103,13 @@ npx playwright test --config zkpreview/src/test/playwright/playwright.config.ts 
   thousands of pixels on a full page — and `tablet.spec.ts` opts into 2%. That is a *regression*
   gate. An equivalence check (did a refactor or a move change anything?) needs a one-off
   **zero-tolerance** run with every diff explained.
+- **A preview `.zul` edit dirties two baseline families, not one.** Every page is shot by the
+  `gallery` project (desktop) *and*, for the pages listed in `tablet.spec.ts`'s `visualCases`, by
+  the `tablet` project. The 2026-09-11 typography sweep re-cut its 4 desktop diffs and re-verified
+  `gallery` green — and left 29 stale tablet baselines behind, found only when an unrelated server
+  restart ran the full `tablet` project the next day. After any change under
+  `zkpreview/src/main/webapp/web/*.zul`, run **both** `--project gallery` and `--project tablet`
+  before committing, and re-cut with `--update-snapshots=changed` so only the mismatching files move.
 - **`git log -1 -- <png>` lies when a commit only renamed the file.** Do not date a baseline that
   way.
 - **The UseCase SPA hangs on `networkidle`.** Use `domcontentloaded`, then wait on a text marker,

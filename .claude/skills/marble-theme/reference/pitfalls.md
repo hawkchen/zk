@@ -152,3 +152,28 @@ change to the minifier, the minifier version, or a CSS feature that is new to th
 
 **Rule:** never trust a version-pinned comment claiming a workaround is still needed. Re-verify
 empirically. The `!important` reduction pass took the count from 37 to 33 by doing this.
+
+## 12. A "no-op" legacy declaration can be load-bearing for JS that parses computed style
+
+Re-authoring `scrollview.less` into Marble CSS dropped `.z-scrollview-content { transform:
+translate3d(0,0,0) }` as visually inert. `Scrollview.doTouchStart_` seeds the scroll position by
+parsing that element's **computed** transform matrix; with no transform the browser reports `none`,
+the parse yields `NaN`, and every later `_move()` writes `translate3d(NaNpx, …)`, which the browser
+silently rejects. Touch scrolling was dead while every probe and all six outcome rows stayed green —
+they measured presence and geometry (bar exists, thumb proportional), never the interaction. Found by
+hand on a phone (2026-09-12), not by the harness.
+
+**Rule:** before replacing a widget's legacy CSS, grep its `.ts` for what it *reads* and keep every
+declaration those reads depend on, with a comment naming the reading line:
+
+```
+grep -n "getComputedStyle\|\.style\[\|\.css(" <Widget>.ts
+```
+
+An inline write (`.style[x] = …`) tells you which properties JS owns; a read tells you which CSS
+values are *inputs* to JS. Only the second kind can turn a dropped declaration into a dead feature.
+
+**Rule:** for any component whose purpose *is* an interaction (scroll, drag, resize, toggle), at
+least one outcome row must perform the interaction and assert that state changed. Playwright's
+touchscreen API has no drag — drive it through CDP `Input.dispatchTouchEvent` (see
+`zkpreview/src/test/playwright/tablet.spec.ts`, "a touch drag moves the content").
