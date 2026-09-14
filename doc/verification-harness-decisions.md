@@ -99,3 +99,53 @@ Key mechanisms adopted:
 ### Migration
 Rows marked `VERIFIED` before 2026-06-04 passed Gate 1 only (76 rows). They are **grandfathered**;
 Gate 2 backfill happens opportunistically. Pilot component: goldenlayout.
+
+---
+
+## DR-3: Screenshot Tolerance Is Per-Gate, Never Global (2026-09-14)
+
+Scope note: DR-1 and DR-2 shape the **agent harness** (authoring-time contract verification). This one
+shapes the **Playwright suite** (the regression guard). Full working:
+`doc/screenshot-tolerance-policy.md`.
+
+### Trigger
+Three screenshot pairs from the zero-tolerance equivalence run — `progressmeter-gallery` (202 differing
+px), `timepicker-gallery` (6 px) and `selectbox-focus` (2 px) — were judged visually negligible by eye,
+and the question was whether the project can ignore differences of that size.
+
+### Diagnosis
+"The harness" is three gates with three different answers, and the images came from the one that is
+*designed* to ignore nothing:
+
+1. The **zero-tolerance equivalence run** (`threshold: 0, maxDiffPixels: 0`) answers "did the move
+   change a single pixel?". No suite setting reaches it. Reading its output as a gate failure is a
+   category error.
+2. The **`gallery` project** already allowed `maxDiffPixelRatio: 0.01` — 9 228 px on progressmeter's
+   1280×721 shot, 6 118 px on timepicker's 1280×478. Both of those differences passed the real gate
+   all along.
+3. The **state shots** (`screenshot.spec.ts`'s `padShot()`, every hover/focus/active capture) compared
+   at zero tolerance on a small high-contrast crop — precisely where a 1–2 px anti-aliasing flicker on
+   a focus ring lands. That was the only true gap.
+
+`playwright.config.ts` has no global `expect` block and no `retries`, so each spec's own options are
+the whole policy — which is why the answer differed per gate in the first place.
+
+### Decision (user, 2026-09-14)
+`padShot()` passes `maxDiffPixels: 20`; nothing else changes.
+
+- **Absolute count, not a ratio.** These crops run about 9 000 px, where `maxDiffPixelRatio: 0.01`
+  would be 92 px — enough to hide a whole mis-rendered ring segment. Ratios suit full-page shots;
+  small crops need a floor.
+- **Rejected: a global `expect.toHaveScreenshot` default.** Fewer edits, but it also relaxes the
+  `tablet` baselines that are deliberately at zero and the two per-case `0.02` opt-ins, turning one
+  explicit policy into two overlapping ones.
+- **Rejected: `retries: 2`.** Clears a true flake, does nothing for a stable sub-pixel difference, and
+  doubles wall-clock on every genuine failure.
+- **Unchanged: the equivalence run stays at zero.** When it is re-run (a move, a refactor, a version
+  bump), every differing pair still needs an individual explanation.
+
+### Verification
+The preview server was down, so no state shot was re-run. The option's semantics were proved directly
+instead: a 100×100 page differing from its baseline by an exact pixel count, compared at
+`maxDiffPixels: 20` — **10 differing px passes, 30 differing px fails**. The floor absorbs AA flicker
+and still catches anything larger.
