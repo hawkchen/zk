@@ -27,8 +27,8 @@ async function padShot(page: Page, target: Locator, name: string | string[]) {
     animations: 'disabled',
     // Absolute floor for anti-aliasing flicker. These crops are small (a selectbox
     // focus shot is 144x64) and high-contrast at the ring's edge, so a 1-2px AA
-    // flicker that no eye can see turns the shot red run to run (chat D80; see
-    // tasks/marble-screenshot-diffs/05-selectbox-focus, 2 differing px). An absolute
+    // flicker that no eye can see turns the shot red run to run (chat D80; the
+    // selectbox focus shot differed by 2px — doc/screenshot-tolerance-policy.md). An absolute
     // count, not maxDiffPixelRatio: 1% of ~9000px would be 92px — enough to hide a
     // whole mis-rendered ring segment. The gallery/tablet projects keep their own
     // ratio-based policy; this applies to state shots only.

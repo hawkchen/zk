@@ -107,9 +107,9 @@ called here` / `Total: 0 tests` — which looks exactly like a broken spec.
 - **Tolerance is not one number.** `gallery-scan.spec.ts` allows `maxDiffPixelRatio: 0.01` —
   thousands of pixels on a full page — `tablet.spec.ts` opts into 2% for `tabbox` and `window`, and
   `screenshot.spec.ts`'s `padShot()` carries `maxDiffPixels: 20` for every hover/focus/active shot
-  (chat D80, 2026-09-14). The state shots use an absolute count, not a ratio: those crops run about
-  9 000 px, where 1% would be 92 px — enough to hide a whole mis-rendered focus ring. That is a
-  *regression* gate. An equivalence check (did a refactor or a move change anything?) needs a one-off
+  (chat D80, 2026-09-14 — `doc/screenshot-tolerance-policy.md`). The state shots use an absolute
+  count, not a ratio: those crops run about 9 000 px, where 1% would be 92 px — enough to hide a
+  whole mis-rendered focus ring. That is a *regression* gate. An equivalence check (did a refactor or a move change anything?) needs a one-off
   **zero-tolerance** run with every diff explained.
 - **A preview `.zul` edit dirties two baseline families, not one.** Every page is shot by the
   `gallery` project (desktop) *and*, for the pages listed in `tablet.spec.ts`'s `visualCases`, by
