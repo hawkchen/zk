@@ -81,17 +81,22 @@ Config: `zkpreview/src/test/playwright/playwright.config.ts`.
 | `tablet` | needs a mobile UA to trigger `tablet.css.dsp` injection |
 
 ```bash
-npx playwright test --config zkpreview/src/test/playwright/playwright.config.ts --project=<project>
+cd zkpreview && npx playwright test --config src/test/playwright/playwright.config.ts --project=<project>
 ```
+
+**Run it from `zkpreview/`, not the repository root.** From the root, npx resolves a second copy of
+`@playwright/test` and every spec dies with `Playwright Test did not expect test.describe() to be
+called here` / `Total: 0 tests` — which looks exactly like a broken spec.
 
 ## Screenshot baselines — the parts that bite
 
-- **183 compared baselines plus 99 `*-forced-colors.png` review captures (the 2026-09-11 re-cut)
-  will live beside `focus-ring-known-clips.json`, in `zkpreview`'s own `doc/` — but not yet.**
+- **The baselines are in place: 184 compared PNGs plus 99 `*-forced-colors.png` review captures, in
+  `zkpreview/doc/screenshots/`, beside `focus-ring-known-clips.json`.** They arrived with item 3.18b,
+  so a run now *compares* — the earlier "can only create, never compare" caveat is gone.
   `playwright.config.ts:13`'s `snapshotDir: '../../../doc/screenshots'` resolves, from
-  `zkpreview/src/test/playwright/`, to that directory; it arrives with item 3.18b after the P2 gate,
-  so until then a run can only *create* baselines, never compare. The forced-colors images are
-  **human-review artifacts that are always dirty** and never compared.
+  `zkpreview/src/test/playwright/`, to that directory. The forced-colors images are **human-review
+  artifacts that are always dirty** and never compared. (183 at the 2026-09-11 re-cut;
+  `scrollview-tablet.png` made 184.)
 - The harness resolves its `doc/` paths three levels up from `zkpreview/src/test/playwright/` — the MODULE root (`zkpreview/` in zk, the template's own root in the template), never the repository root; the baselines directory above and `focus-ring-known-clips.json` both live there. (Planner addendum after the 3.5 verdict, 2026-09-11 — see the migration's gates/3.5.md.)
 - **The zero-tolerance comparison (P2 items 2.6–2.8) is the equivalence check that was actually
   run**: the template's unchanged specs against `zkpreview`, every PNG compared at `threshold: 0,
@@ -100,8 +105,11 @@ npx playwright test --config zkpreview/src/test/playwright/playwright.config.ts 
 - **Always `await document.fonts.ready`.** A uniform vertical drift across every page is the Inter
   font-load race, not a CSS change. Baselines are flat files in one directory, not nested.
 - **Tolerance is not one number.** `gallery-scan.spec.ts` allows `maxDiffPixelRatio: 0.01` —
-  thousands of pixels on a full page — and `tablet.spec.ts` opts into 2%. That is a *regression*
-  gate. An equivalence check (did a refactor or a move change anything?) needs a one-off
+  thousands of pixels on a full page — `tablet.spec.ts` opts into 2% for `tabbox` and `window`, and
+  `screenshot.spec.ts`'s `padShot()` carries `maxDiffPixels: 20` for every hover/focus/active shot
+  (chat D80, 2026-09-14). The state shots use an absolute count, not a ratio: those crops run about
+  9 000 px, where 1% would be 92 px — enough to hide a whole mis-rendered focus ring. That is a
+  *regression* gate. An equivalence check (did a refactor or a move change anything?) needs a one-off
   **zero-tolerance** run with every diff explained.
 - **A preview `.zul` edit dirties two baseline families, not one.** Every page is shot by the
   `gallery` project (desktop) *and*, for the pages listed in `tablet.spec.ts`'s `visualCases`, by
