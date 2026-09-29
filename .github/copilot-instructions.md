@@ -51,9 +51,12 @@ npm run lint -- <module>/src/main/resources/web/js   # ESLint per module (what C
 ## Code Style
 
 ### TypeScript / JavaScript
-- ESLint config: `.eslintrc.js` (root)
+- ESLint config: `eslint.config.js` (root, flat config — ESLint 9). It loads the legacy
+  `.eslintrc.js` through `FlatCompat`, so rule changes usually belong in `.eslintrc.js`.
 - Custom rules: `eslint-plugin-zk/` — do not disable without review
-- Microsoft SDL plugin is enabled — security patterns are enforced
+- Microsoft SDL plugin is enabled for `**/*.ts` only, declared natively in `eslint.config.js`
+  (`FlatCompat` cannot load SDL v1.1.0, so the legacy config's SDL entries are filtered out) —
+  security patterns are enforced
 - **ESLint errors block CI** — fix all errors before committing
 
 ### Java

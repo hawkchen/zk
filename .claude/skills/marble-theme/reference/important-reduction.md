@@ -104,7 +104,7 @@ For each remove candidate:
      ${PREVIEW_URL}/<page>.zul '<selector>' 'display,width,…'
    ```
    Note the inline `style` in the output — if ZK set the property inline, it's category B → keep.
-2. **Generator**: delete just the `!important` (keep the declaration), `npm run build:css`.
+2. **Generator**: delete just the `!important` (keep the declaration), `node scripts/build-css.js --module zul`.
 3. **Re-measure.** Identical computed values → removable. Any change → load-bearing → revert.
 4. For **behavioral** cases (popup open/dismiss, collapse, view toggle, mobile UA), the
    static probe isn't enough — write a small bespoke Playwright script that drives the
@@ -125,8 +125,8 @@ check before writing a new one.)
 
 ### 6 — Gates, record, commit
 
-- Gates: `npm run lint:css` (no *new* issues), `npm run check:css-dsp` (exit 0),
-  `npm run audit:css` (advisory).
+- Gates: `npm run lint:css` (no *new* issues), `node scripts/check-css-dsp.js --module zul --zk-home /Users/hawk/Documents/workspace/ZK10`
+  (exit 0), `bash .claude/skills/marble-theme/scripts/audit-css.sh --out <file>` (advisory).
 - Record every verdict + evidence + guard-test name in `doc/spec/important-inventory.md`
   (the durable anti-re-investigation record) and append a row to `doc/skill-gaps.md`.
 - Fix any stale version-pinned comment you touched; correct `CLAUDE.md`'s ZK version if drifted.

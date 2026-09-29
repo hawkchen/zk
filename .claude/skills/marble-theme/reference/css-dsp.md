@@ -29,7 +29,7 @@ bundles come from ZK core convention, not from lang files.
 
 | Guard | Direction | Where |
 |---|---|---|
-| `npm run check:css-dsp` | ZK registers it → the file **must exist** | `scripts/check-css-dsp.js` |
+| `node scripts/check-css-dsp.js --module zul --zk-home /Users/hawk/Documents/workspace/ZK10` | ZK registers it → the file **must exist** | `scripts/check-css-dsp.js` |
 | `assertNoOrphanComponentCss()` | No `css-uri` → must **not** be emitted as an orphan; **fails the build** | `build-css.js:596–620` |
 
 Together they make a silently-dead or silently-missing stylesheet impossible.

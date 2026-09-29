@@ -449,7 +449,8 @@ PASS iff exit 0 AND ≥ 1 test ran. **"No tests found" is a FAIL** — it means 
 ```bash
 npx playwright test --config zkpreview/src/test/playwright/playwright.config.ts --project=forced-colors-gallery -g "^<component>$"
 ```
-PASS iff `doc/screenshots/<component>-forced-colors.png` exists with size > 0. Append that path to `visual_artefacts` so §3d reviews it — and when `fc-risk` names risks, §3d MUST check each named risk in that snapshot (mask glyphs still visible? focus/selection still distinguishable?). Additionally, if the latest `doc/harness/gen-reports/<component>.md` touched `tokens/_forced-colors.css`, run `npm run test:forced-colors` and FAIL this row if the suite is red (central-guard regression).
+PASS iff `doc/screenshots/<component>-forced-colors.png` exists with size > 0. Append that path to `visual_artefacts` so §3d reviews it — and when `fc-risk` names risks, §3d MUST check each named risk in that snapshot (mask glyphs still visible? focus/selection still distinguishable?). Additionally, if the latest `doc/harness/gen-reports/<component>.md` touched `tokens/_forced-colors.css`, run `cd zkpreview && npm run test:forced-colors` and FAIL this row if the suite is red
+(the script and Playwright live in `zkpreview/package.json`, not the repo root) (central-guard regression).
 
 **x-brand-decl** — declaration-level token discipline (computed-value equality is NOT enough):
 1. `grep -nE "#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\(|oklch\(" <shared-css-file>` — discard comment lines and matches that are `var(--zk-…)`-rooted (including `oklch(from var(--zk-…))` derivations). Every remaining color literal must be whitelisted in the contract's `brand-allowed-literals`; any other hit → FAIL with the line numbers.

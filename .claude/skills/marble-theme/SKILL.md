@@ -34,7 +34,7 @@ vocabulary Marble does not share (see `reference/iceblue-parity.md`).
    `zk-base < zk-components < zk-utilities`. Reset rules **must** land in `zk-base`.
    `build-css.js`'s `assertLayer()` enforces this and fails the build.
 4. **Source is `.css`; the shipped artifact is `.css.dsp`.** ZK does not discover component CSS
-   by convention — 78 `<css-uri>` entries name each file individually. See
+   by convention — every file is named individually by a `<css-uri>` entry in `lang.xml`. See
    `reference/css-dsp.md` before adding, renaming or removing any file.
 5. **Surgical changes.** Touch only what the task requires; match the surrounding style. When a
    theme-global invention collides with a ZK JS assumption, the first option to evaluate is
@@ -76,6 +76,7 @@ node scripts/build-css.js --module zkmax                          # or zkex — 
                                                                     # (../zkcml: :zkmax:compileMarbleCss / :zkex:compileMarbleCss);
                                                                     # also runs inside every ./gradlew build
 node scripts/check-css-dsp.js --module zul --zk-home /Users/hawk/Documents/workspace/ZK10   # coverage check (also zkmax, zkex)
+npm run lint:css                                                  # stylelint hygiene pass (CE; EE/PE from ../zkcml)
 bash .claude/skills/marble-theme/scripts/audit-css.sh --out <file>                # hardcoded px / orphan tokens
 node .claude/skills/marble-theme/scripts/check-default-display.js --out <file>    # check 5 of the audit
 node .claude/skills/marble-theme/scripts/count-important.js [<css root>]          # !important inventory
@@ -86,9 +87,11 @@ cd zkpreview && ./gradlew appRun -PhttpPort=8085 --console=plain   # preview app
 **The preview app is on `http://127.0.0.1:8085`.** Use `127.0.0.1`, never `localhost`. `appRun`
 waits for a key on stdin and treats EOF as that key, so keep stdin open (interactive terminal, or a
 FIFO held open in scripts); **never `appStart`** — under gretty 3.1.1 on Gradle 8.10 its client
-never returns. There is no `npm run build:css`, `watch`, `lint:css`, `audit:css`,
-`check:forced-colors` or `check:doc-links` script in zk — the audit and `!important` tooling is the
-four skill scripts above. Details and the Playwright projects: `reference/verification.md`.
+never returns. `npm run lint:css` runs stylelint over the CE theme CSS (`.stylelintrc.json`;
+EE/PE has its own in `../zkcml`). There is no `npm run build:css`, `watch`, `audit:css`,
+`check:forced-colors` or `check:doc-links` script in zk — the builder takes `--module`, so it is
+called directly, and the audit and `!important` tooling is the four skill scripts above. Details
+and the Playwright projects: `reference/verification.md`.
 
 ## Reference
 
@@ -101,10 +104,10 @@ four skill scripts above. Details and the Playwright projects: `reference/verifi
 | `reference/density.md` | Compact / data-dense mode; anything about control heights |
 | `reference/css-dsp.md` | Adding or renaming a CSS file; a component renders unstyled; a stylesheet 404s |
 | `reference/verification.md` | Running the preview app, the Playwright suite, or screenshot baselines; the tablet gate; A/B against another theme |
-| `reference/pitfalls.md` | **Read this before any non-trivial change.** Eleven mistakes already made once |
+| `reference/pitfalls.md` | **Read this before any non-trivial change.** Mistakes already made once |
 | `reference/bug-filing.md` | The defect is ZK's, not the theme's, and needs a Jira ticket |
 | `reference/iceblue-parity.md` | Questions about IceBlue, the `--zk-*` public API break, or Theme Pack palettes |
-| `reference/css-audit.md` | Auditing CSS hygiene — orphan tokens, hardcoded colours, repeated shadows, `display` declarations that restate a default; what `npm run audit:css` reports and how to triage it |
+| `reference/css-audit.md` | Auditing CSS hygiene — orphan tokens, hardcoded colours, repeated shadows, `display` declarations that restate a default; what `scripts/audit-css.sh` reports and how to triage it |
 | `reference/important-reduction.md` | Removing, reducing or justifying an `!important`; the count and probe scripts; the render-neutral proof bar |
 
 ## ZK version coordinates
@@ -143,7 +146,7 @@ and so on). This path is machine-local; after migration, re-home or re-fetch the
 
 This skill's tooling lives in `scripts/`.
 
-- `.claude/skills/marble-theme/scripts/audit-css.sh` — mechanical hygiene pass; `npm run audit:css`.
+- `.claude/skills/marble-theme/scripts/audit-css.sh` — mechanical hygiene pass; run the script directly.
 - `.claude/skills/marble-theme/scripts/check-default-display.js` — check 5 of the audit; resolves root tags from ZK molds.
 - `.claude/skills/marble-theme/scripts/count-important.js` — comment-aware `!important` inventory.
 - `.claude/skills/marble-theme/scripts/probe.js` — computed-style A/B probe against the running preview app.

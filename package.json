@@ -17,7 +17,8 @@
     "build:doc": "typedoc",
     "prepublish:dts": "gulp build:dts",
     "publish:dts": "gulp publish:dts",
-    "postpublish:dts": "cp jsdoc/README.md build/dts && cd build/dts && npm publish"
+    "postpublish:dts": "cp jsdoc/README.md build/dts && cd build/dts && npm publish",
+    "lint:css": "stylelint \"zul/src/main/resources/web/**/*.css\""
   },
   "author": "Potix",
   "license": "LGPL-2.0-or-later",
@@ -58,6 +59,7 @@
     "merge-stream": "^2.0.0",
     "minimist": "^1.2.8",
     "resolve-options": "^2.0.0",
+    "stylelint": "^16.26.1",
     "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
     "tslib": "^2.6.2",
