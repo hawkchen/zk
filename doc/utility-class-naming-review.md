@@ -9,8 +9,12 @@ approved together with the verification method in §6.2, which is a condition of
 suggestion: the two-phase sweep and the three gates must run, because D3 is the one change the
 existing guards cannot see.
 
-**Commits 0–6 are landed and verified**, plus one follow-up fixing a file type the sweep missed
-(§6.4). Commits 7–9 — the D3 font-size renumber and the rules document — remain.
+**All commits are landed and verified**, plus one follow-up fixing a file type the sweep missed
+(§6.4). The rules this produced are now normative in `doc/spec/utility-naming.md`.
+
+The D3 renumber cleared all four gates in §6.2: zero surviving old names after phase 1, an
+identical computed font-size histogram on all 128 preview pages (128/128), every size class still
+mapped to its intended MD3 role, and full coverage with stylelint clean.
 
 The rename series was A/B'd against `15bc0c7eeb`, the commit before it, with the preview app
 rebuilt and restarted on each side: **28 Playwright failures before, 28 after, the same 28**.
