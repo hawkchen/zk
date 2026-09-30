@@ -6,7 +6,7 @@
     <label value="Layout Utilities" sclass="z-h2"/>
 
     <!-- Display -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Display  (.z-d-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-4 z-flex-wrap z-items-start">
             <div>
@@ -59,7 +59,7 @@
     </div>
 
     <!-- Grid: template columns -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Grid — Template Columns  (.z-grid-cols-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <vlayout sclass="z-gap-3">
             <div>
@@ -116,7 +116,7 @@
     </div>
 
     <!-- Grid: auto-fit fill -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Grid — Auto-fit Fill  (.z-grid-fill / .z-grid-fill-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <vlayout sclass="z-gap-3">
             <div>
@@ -153,7 +153,7 @@
     </div>
 
     <!-- Flex Direction -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Flex Direction  (.z-flex-row / .z-flex-col)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap">
             <div>
@@ -192,7 +192,7 @@
     </div>
 
     <!-- Justify Content -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Justify Content  (.z-justify-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <vlayout sclass="z-gap-3">
             <div>
@@ -235,7 +235,7 @@
     </div>
 
     <!-- Align Items -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Align Items  (.z-align-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-4 z-flex-wrap">
             <div>
@@ -272,7 +272,7 @@
     </div>
 
     <!-- Flex Grow / Shrink / Fill -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Flex Grow, Shrink &amp; Fill  (.z-flex-* / .z-flex-grow-* / .z-flex-shrink-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <vlayout sclass="z-gap-3">
             <div>
@@ -316,7 +316,7 @@
     </div>
 
     <!-- Gap -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Gap  (.z-gap-* / .z-col-gap-* / .z-row-gap-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap">
             <div>
@@ -403,7 +403,7 @@
     </div>
 
     <!-- Flex Wrap -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Flex Wrap  (.z-flex-wrap / .z-flex-nowrap)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-4">
             <div style="max-width:300px">
@@ -425,7 +425,7 @@
     </div>
 
     <!-- Width & Height -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Width &amp; Height  (.z-w-* / .z-h-* / .z-min-w-0 / .z-min-h-0)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap">
             <div>
@@ -468,7 +468,7 @@
     </div>
 
     <!-- Overflow -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Overflow  (.z-overflow-* / .z-overflow-x-* / .z-overflow-y-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap">
             <div>
@@ -511,7 +511,7 @@
     </div>
 
     <!-- Position -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Position  (.z-position-* / .z-top-0 / .z-bottom-0 / .z-start-0 / .z-end-0)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap">
             <div>
@@ -541,7 +541,7 @@
     </div>
 
     <!-- Truncation & Accessibility -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Truncation &amp; Accessibility  (.z-text-truncate / .z-visually-hidden)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start">
             <div style="max-width:320px">

@@ -14,7 +14,7 @@
     </div>
 
     <!-- Switcher -->
-    <div sclass="z-card z-d-flex z-flex-col z-gap-3">
+    <div sclass="z-paper z-d-flex z-flex-col z-gap-3">
         <label value="Choose a brand" sclass="z-text-base z-fw-medium z-text-on-surface"/>
         <div sclass="z-d-flex z-flex-row z-flex-wrap z-gap-4">
 
@@ -64,7 +64,7 @@
     </div>
 
     <!-- Custom brand color -->
-    <div sclass="z-card z-d-flex z-flex-col z-gap-3">
+    <div sclass="z-paper z-d-flex z-flex-col z-gap-3">
         <label value="…or define your own" sclass="z-text-base z-fw-medium z-text-on-surface"/>
         <label sclass="z-text-sm z-text-secondary"
                value="You are not limited to the presets. Pick ANY color — it becomes the primary seed and the whole palette (container tints, fills, focus ring, selected states) re-derives from it through the same single-seed cascade."/>
@@ -78,7 +78,7 @@
     </div>
 
     <!-- Live preview -->
-    <div sclass="z-card z-d-flex z-flex-col z-gap-4">
+    <div sclass="z-paper z-d-flex z-flex-col z-gap-4">
         <label value="Live preview" sclass="z-text-base z-fw-medium z-text-on-surface"/>
 
         <!-- Buttons + links -->
@@ -136,7 +136,7 @@
     </div>
 
     <!-- How to use -->
-    <div sclass="z-card z-d-flex z-flex-col z-gap-4">
+    <div sclass="z-paper z-d-flex z-flex-col z-gap-4">
         <label value="How to use it in your app" sclass="z-text-base z-fw-medium z-text-on-surface"/>
 
         <div sclass="z-d-flex z-flex-col z-gap-2">

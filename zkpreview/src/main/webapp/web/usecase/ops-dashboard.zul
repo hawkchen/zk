@@ -7,22 +7,22 @@
 
     <!-- KPI cards -->
     <div sclass="z-d-flex z-flex-row z-flex-wrap z-gap-4">
-        <div sclass="z-flex-1 z-min-w-0 z-card">
+        <div sclass="z-flex-1 z-min-w-0 z-paper">
             <label value="Orders Today" sclass="z-text-secondary z-mb-2 z-text-sm"/>
             <label value="312" sclass="z-h1"/>
             <label value="↑ 8.4% vs yesterday" sclass="z-text-xs z-text-success"/>
         </div>
-        <div sclass="z-flex-1 z-min-w-0 z-card">
+        <div sclass="z-flex-1 z-min-w-0 z-paper">
             <label value="Fulfilled" sclass="z-text-secondary z-mb-2 z-text-sm"/>
             <label value="287" sclass="z-h1"/>
             <label value="↑ 5.1%" sclass="z-text-xs z-text-success"/>
         </div>
-        <div sclass="z-flex-1 z-min-w-0 z-card">
+        <div sclass="z-flex-1 z-min-w-0 z-paper">
             <label value="Low Stock SKUs" sclass="z-text-secondary z-mb-2 z-text-sm"/>
             <label value="14" sclass="z-h1"/>
             <label value="↓ 2 since last week" sclass="z-text-xs z-text-success"/>
         </div>
-        <div sclass="z-flex-1 z-min-w-0 z-card">
+        <div sclass="z-flex-1 z-min-w-0 z-paper">
             <label value="Open Tickets" sclass="z-text-secondary z-mb-2 z-text-sm"/>
             <label value="9" sclass="z-h1"/>
             <label value="↑ 3 today" sclass="z-text-xs z-text-error"/>
@@ -30,7 +30,7 @@
     </div>
 
     <!-- Orders needing attention (real data table — no chart dependency) -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Orders Needing Attention" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <grid hflex="1" sclass="z-border-0">
             <columns>
@@ -82,7 +82,7 @@
     <div sclass="z-d-flex z-flex-row z-flex-wrap z-gap-4">
 
         <!-- Fulfillment by channel (progressmeters) -->
-        <div sclass="z-card z-flex-1 z-min-w-0">
+        <div sclass="z-paper z-flex-1 z-min-w-0">
             <label value="Fulfillment by Channel" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
             <div sclass="z-d-flex z-flex-col z-gap-3">
                 <div sclass="z-d-flex z-flex-row z-items-center z-gap-3">
@@ -104,7 +104,7 @@
         </div>
 
         <!-- Pending tasks (checklist) -->
-        <div sclass="z-card z-flex-1 z-min-w-0">
+        <div sclass="z-paper z-flex-1 z-min-w-0">
             <label value="Pending Tasks" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
             <div sclass="z-d-flex z-flex-col z-gap-3">
                 <checkbox label="Approve PO #221" checked="true"/>
@@ -115,7 +115,7 @@
         </div>
 
         <!-- Recent activity (feed) -->
-        <div sclass="z-card z-flex-1 z-min-w-0">
+        <div sclass="z-paper z-flex-1 z-min-w-0">
             <label value="Recent Activity" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
             <listbox sclass="z-border-0">
                 <listitem>

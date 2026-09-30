@@ -10,7 +10,7 @@
     <div sclass="z-d-flex z-flex-row z-gap-4 z-flex-1 z-min-h-0">
 
         <!-- Master list -->
-        <div sclass="z-card z-p-0 z-flex-none z-overflow-auto" width="340px">
+        <div sclass="z-paper z-p-0 z-flex-none z-overflow-auto" width="340px">
             <listbox vflex="1" sclass="z-border-0">
                 <listitem selected="true">
                     <listcell>
@@ -72,7 +72,7 @@
         </div>
 
         <!-- Detail pane: z-flex-1 now fills the remaining width -->
-        <div sclass="z-card z-flex-1 z-min-w-0 z-d-flex z-flex-col z-gap-3">
+        <div sclass="z-paper z-flex-1 z-min-w-0 z-d-flex z-flex-col z-gap-3">
             <div>
                 <label value="Login fails after password reset" sclass="z-h4 z-d-block"/>
                 <div sclass="z-text-xs z-text-secondary z-mt-1">

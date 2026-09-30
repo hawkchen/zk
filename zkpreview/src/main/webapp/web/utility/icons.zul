@@ -5,7 +5,7 @@
 
     <label value="Icons" sclass="z-h2"/>
 
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="All 1947 Lucide Icons"
                sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <label value="Usage: iconSclass=&quot;z-icon-{name}&quot; or sclass=&quot;z-icon-{name}&quot;"
@@ -1963,7 +1963,7 @@
 
     <!-- FA-compat alias demo: intentionally shows the FA-style z-icon-* names ZK
          widget JS emits at runtime (see doc/spec/icon-policy.md). -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="FontAwesome-compat aliases (51)"
                sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <label value="Compatibility shims ZK widget JS emits at runtime. Prefer the Lucide target name in new ZULs."

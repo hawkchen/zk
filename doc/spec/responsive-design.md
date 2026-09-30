@@ -50,10 +50,10 @@
 ```xml
 <!-- 基本：卡片牆，每張至少 180px，自動換行 -->
 <div sclass="z-d-grid z-grid-fill z-gap-4">
-    <div sclass="z-card">卡片 1</div>
-    <div sclass="z-card">卡片 2</div>
-    <div sclass="z-card">卡片 3</div>
-    <div sclass="z-card">卡片 4</div>
+    <div sclass="z-paper">卡片 1</div>
+    <div sclass="z-paper">卡片 2</div>
+    <div sclass="z-paper">卡片 3</div>
+    <div sclass="z-paper">卡片 4</div>
 </div>
 ```
 
@@ -62,17 +62,17 @@
 ```xml
 <!-- 自訂最小卡片寬：每張至少 240px（較寬的卡片） -->
 <div sclass="z-d-grid z-grid-fill z-gap-6" style="--zk-grid-min: 240px">
-    <div sclass="z-card">寬卡片 A</div>
-    <div sclass="z-card">寬卡片 B</div>
+    <div sclass="z-paper">寬卡片 A</div>
+    <div sclass="z-paper">寬卡片 B</div>
 </div>
 ```
 
 ```xml
 <!-- 儀表板磚：搭配既有 spacing / elevation utility -->
 <div sclass="z-d-grid z-grid-fill z-gap-4 z-p-4">
-    <div sclass="z-card z-elevation-1 z-p-4">營收</div>
-    <div sclass="z-card z-elevation-1 z-p-4">訂單</div>
-    <div sclass="z-card z-elevation-1 z-p-4">使用者</div>
+    <div sclass="z-paper z-elevation-1 z-p-4">營收</div>
+    <div sclass="z-paper z-elevation-1 z-p-4">訂單</div>
+    <div sclass="z-paper z-elevation-1 z-p-4">使用者</div>
 </div>
 ```
 

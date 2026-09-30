@@ -6,7 +6,7 @@
     <label value="Spacing Utilities" sclass="z-h2"/>
 
     <!-- Scale reference -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Spacing Scale" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-1"/>
         <label value="Every spacing utility — padding, margin, gap — draws from this one shared set of steps, built on a 4 dp baseline grid. You append a step number to a utility (z-p-4, z-m-2, z-gap-3 …); the same number always means the same size. Each bar below is exactly as wide as its step."
                sclass="z-d-block z-text-secondary z-text-sm z-mb-3"/>
@@ -53,7 +53,7 @@
     </div>
 
     <!-- Class naming legend -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Class Naming" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-1"/>
         <label value="A spacing class reads as property + side + step. The side letter chooses which edges the step applies to — the same letters work for both padding (z-p…) and margin (z-m…)."
                sclass="z-d-block z-text-secondary z-text-sm z-mb-3"/>
@@ -102,7 +102,7 @@
     </div>
 
     <!-- Padding -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Padding" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-4 z-flex-wrap">
             <div style="text-align:center">
@@ -127,7 +127,7 @@
     </div>
 
     <!-- Margin -->
-    <div sclass="z-card">
+    <div sclass="z-paper">
         <label value="Margin" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <label value="Each box has the utility class applied — the gap between boxes shows the margin." sclass="z-text-secondary z-text-sm z-mb-3"/>
         <div sclass="z-bg-surface-variant z-p-2 z-rounded-md" style="display:inline-block">

@@ -72,8 +72,8 @@
                 <div sclass="z-mb-1"><label sclass="z-fw-semibold" value="Elevated card"/></div>
                 On screen: drop shadow (elevation&#160;2). In print: hairline border, no shadow.
             </div>
-            <div sclass="z-card" style="width:220px">
-                <div sclass="z-mb-1"><label sclass="z-fw-semibold" value="z-card"/></div>
+            <div sclass="z-paper" style="width:220px">
+                <div sclass="z-mb-1"><label sclass="z-fw-semibold" value="z-paper"/></div>
                 Same treatment — the card's resting shadow flattens to a border on paper.
             </div>
         </div>
@@ -114,7 +114,7 @@
     }
 
     /* flatten elevation to a hairline border */
-    [class*="z-elevation-"], .z-window, .z-panel, .z-card, .z-groupbox {
+    [class*="z-elevation-"], .z-window, .z-panel, .z-paper, .z-groupbox {
         box-shadow: none;
         border: 1px solid var(--zk-color-outline-variant);
     }

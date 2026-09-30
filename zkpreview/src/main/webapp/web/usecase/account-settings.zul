@@ -16,7 +16,7 @@
     <div sclass="z-d-flex z-flex-row z-gap-4">
 
         <!-- Sub-nav -->
-        <navbar orient="vertical" sclass="z-card z-flex-none" width="220px">
+        <navbar orient="vertical" sclass="z-paper z-flex-none" width="220px">
             <navitem label="Profile"/>
             <navitem label="Notifications" selected="true"/>
             <navitem label="Security"/>
@@ -24,7 +24,7 @@
         </navbar>
 
         <!-- Preference panel -->
-        <div sclass="z-card z-flex-1 z-min-w-0">
+        <div sclass="z-paper z-flex-1 z-min-w-0">
             <label value="Notifications" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
 
             <div sclass="z-d-flex z-items-center z-gap-4 z-py-3 z-border-bottom">
