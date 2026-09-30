@@ -189,11 +189,11 @@
 
 ```xml
 <!-- 側欄：手機隱藏，≥md 顯示 -->
-<div sclass="z-d-none z-d-block-md">…sidebar…</div>
+<div sclass="z-d-none z-d-md-block">…sidebar…</div>
 <!-- 漢堡鈕：只在 <md 顯示 -->
-<button sclass="z-d-block z-d-none-md">☰</button>
+<button sclass="z-d-block z-d-md-none">☰</button>
 <!-- 版面切換：手機堆疊、≥md 並排（純 display 切換） -->
-<div sclass="z-d-block z-d-flex-md z-gap-3"> … </div>
+<div sclass="z-d-block z-d-md-flex z-gap-3"> … </div>
 ```
 
 > 注意：`@media` 條件**不能**用 `var()`，故 breakpoint 為字面 px（於 `_layout.css` 註解列出 MUI 尺度）。
@@ -206,9 +206,9 @@
 
 ```xml
 <div sclass="z-container">                        <!-- 查詢容器（必要前提） -->
-    <div sclass="z-d-block z-cq-flex-md z-gap-3">  <!-- 容器 ≥md 時並排，否則堆疊 -->
+    <div sclass="z-d-block z-cq-md-flex z-gap-3">  <!-- 容器 ≥md 時並排，否則堆疊 -->
         <div>Summary</div>
-        <div sclass="z-cq-none z-cq-block-sm">Details</div>  <!-- 容器 ≥sm 才顯示 -->
+        <div sclass="z-cq-none z-cq-sm-block">Details</div>  <!-- 容器 ≥sm 才顯示 -->
     </div>
 </div>
 ```

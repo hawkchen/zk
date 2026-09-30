@@ -3,14 +3,14 @@ import { test, expect, Page } from '@playwright/test';
 // Regression for the responsive display utilities added to
 // src/main/resources/web/zul/css/utility/_layout.css and demoed on
 // src/test/resources/web/utility/responsive.zul:
-//   (a) viewport visibility  .z-d-{value}-{bp}   (mobile-first / min-width @media)
-//   (b) container queries     .z-container + .z-cq-{value}-{bp}   (@container)
+//   (a) viewport visibility  .z-d-{bp}-{value}   (mobile-first / min-width @media)
+//   (b) container queries     .z-container + .z-cq-{bp}-{value}   (@container)
 // MUI breakpoints: sm 600, md 900, lg 1200, xl 1536.
 //
 // The breakpoint-reference chips (scenario 1.4) share their class combos with
 // the teaching scenarios above them (e.g. the 1.1 sidebar is also
-// .z-d-none.z-d-block-md), so those chips are located by their exact text —
-// unique on the page. The layout-switch container (.z-d-block.z-d-flex-md) and
+// .z-d-none.z-d-md-block), so those chips are located by their exact text —
+// unique on the page. The layout-switch container (.z-d-block.z-d-md-flex) and
 // the container-query demo selectors remain singular / fixed-count.
 
 const URL = '/utility/responsive.zul';
@@ -72,7 +72,7 @@ test.describe('viewport-visibility', () => {
 
   test('layout switch: block below md, flex from md up', async ({ page }) => {
     await open(page);
-    const sel = '.z-d-block.z-d-flex-md';
+    const sel = '.z-d-block.z-d-md-flex';
 
     await page.setViewportSize({ width: 700, height: 900 });   // < md
     expect(await display(page, sel)).toBe('block');
@@ -92,8 +92,8 @@ test.describe('container-queries', () => {
     // read each .z-container's own fixed inline width (300 / 700 / 950px).
     await page.setViewportSize({ width: 1400, height: 1000 });
 
-    const body = '.z-cq-flex-md';                 // body: z-d-block z-cq-flex-md
-    const details = '.z-cq-none.z-cq-block-sm';   // details chip
+    const body = '.z-cq-md-flex';                 // body: z-d-block z-cq-md-flex
+    const details = '.z-cq-none.z-cq-sm-block';   // details chip
 
     // 300px container (< sm, < md): stacked (block), details hidden.
     expect(await display(page, body, 0)).toBe('block');

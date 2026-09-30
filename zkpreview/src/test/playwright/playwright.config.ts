@@ -75,7 +75,7 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      // Responsive display utilities: viewport @media (.z-d-*-{bp}) + container
+      // Responsive display utilities: viewport @media (.z-d-{bp}-*) + container
       // queries (.z-container / .z-cq-*). See responsive-utilities.spec.ts.
       name: 'responsive',
       testMatch: /responsive-utilities\.spec\.ts/,
