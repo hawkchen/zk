@@ -40,17 +40,17 @@
                 <div><label sclass="z-text-xs z-text-secondary" value="effect=&quot;slide&quot; (default)"/></div>
                 <carousel id="pv-carousel-effect-slide" width="320px" height="200px" effect="slide">
                     <carouselitem>
-                        <div sclass="z-w-full z-h-full z-d-flex z-items-center z-justify-center z-bg-primary-container">
+                        <div sclass="z-w-100 z-h-100 z-d-flex z-items-center z-justify-center z-bg-primary-container">
                             <label value="Slide 1"/>
                         </div>
                     </carouselitem>
                     <carouselitem>
-                        <div sclass="z-w-full z-h-full z-d-flex z-items-center z-justify-center z-bg-secondary-container">
+                        <div sclass="z-w-100 z-h-100 z-d-flex z-items-center z-justify-center z-bg-secondary-container">
                             <label value="Slide 2"/>
                         </div>
                     </carouselitem>
                     <carouselitem>
-                        <div sclass="z-w-full z-h-full z-d-flex z-items-center z-justify-center z-bg-success-container">
+                        <div sclass="z-w-100 z-h-100 z-d-flex z-items-center z-justify-center z-bg-success-container">
                             <label value="Slide 3"/>
                         </div>
                     </carouselitem>
@@ -60,17 +60,17 @@
                 <div><label sclass="z-text-xs z-text-secondary" value="effect=&quot;fade&quot;"/></div>
                 <carousel id="pv-carousel-effect-fade" width="320px" height="200px" effect="fade">
                     <carouselitem>
-                        <div sclass="z-w-full z-h-full z-d-flex z-items-center z-justify-center z-bg-primary-container">
+                        <div sclass="z-w-100 z-h-100 z-d-flex z-items-center z-justify-center z-bg-primary-container">
                             <label value="Slide 1"/>
                         </div>
                     </carouselitem>
                     <carouselitem>
-                        <div sclass="z-w-full z-h-full z-d-flex z-items-center z-justify-center z-bg-secondary-container">
+                        <div sclass="z-w-100 z-h-100 z-d-flex z-items-center z-justify-center z-bg-secondary-container">
                             <label value="Slide 2"/>
                         </div>
                     </carouselitem>
                     <carouselitem>
-                        <div sclass="z-w-full z-h-full z-d-flex z-items-center z-justify-center z-bg-success-container">
+                        <div sclass="z-w-100 z-h-100 z-d-flex z-items-center z-justify-center z-bg-success-container">
                             <label value="Slide 3"/>
                         </div>
                     </carouselitem>
@@ -80,17 +80,17 @@
                 <div><label sclass="z-text-xs z-text-secondary" value="effect=&quot;none&quot;"/></div>
                 <carousel id="pv-carousel-effect-none" width="320px" height="200px" effect="none">
                     <carouselitem>
-                        <div sclass="z-w-full z-h-full z-d-flex z-items-center z-justify-center z-bg-primary-container">
+                        <div sclass="z-w-100 z-h-100 z-d-flex z-items-center z-justify-center z-bg-primary-container">
                             <label value="Slide 1"/>
                         </div>
                     </carouselitem>
                     <carouselitem>
-                        <div sclass="z-w-full z-h-full z-d-flex z-items-center z-justify-center z-bg-secondary-container">
+                        <div sclass="z-w-100 z-h-100 z-d-flex z-items-center z-justify-center z-bg-secondary-container">
                             <label value="Slide 2"/>
                         </div>
                     </carouselitem>
                     <carouselitem>
-                        <div sclass="z-w-full z-h-full z-d-flex z-items-center z-justify-center z-bg-success-container">
+                        <div sclass="z-w-100 z-h-100 z-d-flex z-items-center z-justify-center z-bg-success-container">
                             <label value="Slide 3"/>
                         </div>
                     </carouselitem>

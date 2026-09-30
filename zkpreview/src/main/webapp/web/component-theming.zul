@@ -1227,10 +1227,10 @@
     <div sclass="z-mb-6">
         <carousel width="240px" height="140px">
             <carouselitem label="Slide 1">
-                <div sclass="z-w-full z-h-full z-bg-primary-container"/>
+                <div sclass="z-w-100 z-h-100 z-bg-primary-container"/>
             </carouselitem>
             <carouselitem>
-                <div sclass="z-w-full z-h-full z-bg-secondary-container"/>
+                <div sclass="z-w-100 z-h-100 z-bg-secondary-container"/>
             </carouselitem>
         </carousel>
     </div>
@@ -1239,10 +1239,10 @@
          style="--zk-carousel-arrow-bg:#6750a4; --zk-carousel-indicator-active-bg:#6750a4">
         <carousel width="240px" height="140px">
             <carouselitem label="Slide 1">
-                <div sclass="z-w-full z-h-full z-bg-primary-container"/>
+                <div sclass="z-w-100 z-h-100 z-bg-primary-container"/>
             </carouselitem>
             <carouselitem>
-                <div sclass="z-w-full z-h-full z-bg-secondary-container"/>
+                <div sclass="z-w-100 z-h-100 z-bg-secondary-container"/>
             </carouselitem>
         </carousel>
     </div>

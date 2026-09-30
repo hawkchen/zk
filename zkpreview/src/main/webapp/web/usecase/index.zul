@@ -20,7 +20,7 @@
                           onCheck="@command('toggleCompactMode', on=self.checked)"/>
             </div>
             <button label="Report this page" iconSclass="z-icon-flag"
-                    sclass="z-button-outlined z-w-full z-mb-2"
+                    sclass="z-button-outlined z-w-100 z-mb-2"
                     xmlns:w="client" w:onClick="marbleReportIssue()"/>
             <navbar orient="vertical">
                 <nav label="Use Cases" open="@load(vm.openNavLabel eq 'Use Cases')">

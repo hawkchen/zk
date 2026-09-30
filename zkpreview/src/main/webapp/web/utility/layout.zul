@@ -433,7 +433,7 @@
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-w-25">z-w-25</div>
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-w-50">z-w-50</div>
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-w-75">z-w-75</div>
-                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-w-full">z-w-full</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-w-100">z-w-100</div>
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-w-auto">z-w-auto (content)</div>
                 </div>
                 <label value=".z-w-25 / 50 / 75 / full / auto — % of a 320px parent" sclass="z-text-muted z-text-xs"/>
@@ -443,7 +443,7 @@
                     <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-25 z-d-flex z-items-center">25</div>
                     <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-50 z-d-flex z-items-center">50</div>
                     <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-75 z-d-flex z-items-center">75</div>
-                    <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-full z-d-flex z-items-center">full</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-100 z-d-flex z-items-center">full</div>
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-auto z-d-flex z-items-center">auto</div>
                 </div>
                 <label value=".z-h-25 / 50 / 75 / full / auto — % of a 140px parent" sclass="z-text-muted z-text-xs"/>
