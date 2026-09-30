@@ -17,7 +17,7 @@
     <!-- ============================================================= -->
     <!-- PART 1 — viewport -->
     <!-- ============================================================= -->
-    <div sclass="z-mt-4 z-mb-4"><label sclass="z-text-lg z-fw-semibold z-text-primary" value="Part 1 · By viewport (window width)"/></div>
+    <div sclass="z-mt-4 z-mb-4"><label sclass="z-text-xl z-fw-semibold z-text-primary" value="Part 1 · By viewport (window width)"/></div>
 
     <div sclass="z-text-sm z-text-secondary z-mb-3">
         <h:code>z-d-{value}-{bp}</h:code> = "when viewport ≥ bp, set <h:code>display:{value}</h:code>". It is <h:b>mobile-first</h:b>:
@@ -119,7 +119,7 @@
     <!-- ============================================================= -->
     <!-- PART 2 — container queries -->
     <!-- ============================================================= -->
-    <div sclass="z-mt-4 z-mb-4"><label sclass="z-text-lg z-fw-semibold z-text-primary" value="Part 2 · By container (container width)"/></div>
+    <div sclass="z-mt-4 z-mb-4"><label sclass="z-text-xl z-fw-semibold z-text-primary" value="Part 2 · By container (container width)"/></div>
 
     <div sclass="z-text-sm z-text-secondary z-mb-3">
         Let a component adapt to <h:b>its own container's width</h:b> instead of the viewport — the same component adapts differently in a wide area versus a narrow sidebar, ideal for dashboard tiles and split panes.
@@ -186,7 +186,7 @@
     <!-- ============================================================= -->
     <!-- PART 3 — customization -->
     <!-- ============================================================= -->
-    <div sclass="z-mt-4 z-mb-4"><label sclass="z-text-lg z-fw-semibold z-text-primary" value="Part 3 · Customization"/></div>
+    <div sclass="z-mt-4 z-mb-4"><label sclass="z-text-xl z-fw-semibold z-text-primary" value="Part 3 · Customization"/></div>
 
     <div sclass="z-text-sm z-text-secondary z-mb-3">
         <h:b>Breakpoint values are not runtime CSS variables.</h:b> CSS requires that <h:code>@media</h:code> / <h:code>@container</h:code> conditions <h:b>cannot</h:b> read <h:code>var()</h:code>,

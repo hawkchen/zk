@@ -15,7 +15,7 @@
 
     <!-- Switcher -->
     <div sclass="z-paper z-d-flex z-flex-col z-gap-3">
-        <label value="Choose a brand" sclass="z-text-base z-fw-medium z-text-on-surface"/>
+        <label value="Choose a brand" sclass="z-text-lg z-fw-medium z-text-on-surface"/>
         <div sclass="z-d-flex z-flex-row z-flex-wrap z-gap-4">
 
             <div sclass="z-d-flex z-flex-col z-items-center z-gap-1" style="cursor:pointer"
@@ -65,7 +65,7 @@
 
     <!-- Custom brand color -->
     <div sclass="z-paper z-d-flex z-flex-col z-gap-3">
-        <label value="…or define your own" sclass="z-text-base z-fw-medium z-text-on-surface"/>
+        <label value="…or define your own" sclass="z-text-lg z-fw-medium z-text-on-surface"/>
         <label sclass="z-text-sm z-text-secondary"
                value="You are not limited to the presets. Pick ANY color — it becomes the primary seed and the whole palette (container tints, fills, focus ring, selected states) re-derives from it through the same single-seed cascade."/>
         <div sclass="z-d-flex z-flex-row z-items-center z-gap-3">
@@ -79,7 +79,7 @@
 
     <!-- Live preview -->
     <div sclass="z-paper z-d-flex z-flex-col z-gap-4">
-        <label value="Live preview" sclass="z-text-base z-fw-medium z-text-on-surface"/>
+        <label value="Live preview" sclass="z-text-lg z-fw-medium z-text-on-surface"/>
 
         <!-- Buttons + links -->
         <div sclass="z-d-flex z-flex-row z-flex-wrap z-gap-3 z-items-center">
@@ -137,7 +137,7 @@
 
     <!-- How to use -->
     <div sclass="z-paper z-d-flex z-flex-col z-gap-4">
-        <label value="How to use it in your app" sclass="z-text-base z-fw-medium z-text-on-surface"/>
+        <label value="How to use it in your app" sclass="z-text-lg z-fw-medium z-text-on-surface"/>
 
         <div sclass="z-d-flex z-flex-col z-gap-2">
             <label value="1. Your own brand color — one line of CSS" sclass="z-fw-medium"/>

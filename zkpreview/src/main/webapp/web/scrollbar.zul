@@ -4,7 +4,7 @@
     Object[] rows = new Object[50];
 ]]></zscript>
 <div sclass="z-p-8">
-    <div sclass="z-border-bottom z-mb-8 z-pb-3"><label sclass="z-text-xl z-fw-medium z-text-on-surface" value="Scrollbar"/></div>
+    <div sclass="z-border-bottom z-mb-8 z-pb-3"><label sclass="z-text-2xl z-fw-medium z-text-on-surface" value="Scrollbar"/></div>
 
     <div sclass="z-mb-8">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-3"><label sclass="z-text-md z-fw-bold z-text-secondary" value="Scrollbar — State Gallery"/></div>

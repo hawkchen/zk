@@ -7,12 +7,12 @@
 
     <!-- Concept -->
     <div sclass="z-paper">
-        <label value="Concept" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Concept" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <label sclass="z-d-block z-text-secondary z-text-md z-mb-2"
                value="Marble has two opt-in container utilities for grouping items with consistent spacing. Naming follows Bootstrap 5 / SwiftUI."/>
         <div sclass="z-d-grid z-grid-cols-2 z-gap-4">
             <div sclass="z-bg-surface z-p-4 z-rounded-md">
-                <label value=".z-vstack — vertical group" sclass="z-d-block z-text-base z-fw-semibold z-mb-2"/>
+                <label value=".z-vstack — vertical group" sclass="z-d-block z-text-lg z-fw-semibold z-mb-2"/>
                 <label sclass="z-d-block z-text-secondary z-text-sm z-mb-3"
                        value="Lobotomized Owl pattern. Every child except the first gets margin-top. Use for stacked items in a column."/>
                 <html><![CDATA[<pre style="margin:0;font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--zk-color-surface-variant);color:var(--zk-color-on-surface);padding:8px;border-radius:4px;white-space:pre;overflow:auto">&lt;div sclass="z-vstack"&gt;
@@ -22,7 +22,7 @@
 &lt;/div&gt;</pre>]]></html>
             </div>
             <div sclass="z-bg-surface z-p-4 z-rounded-md">
-                <label value=".z-hstack — horizontal group" sclass="z-d-block z-text-base z-fw-semibold z-mb-2"/>
+                <label value=".z-hstack — horizontal group" sclass="z-d-block z-text-lg z-fw-semibold z-mb-2"/>
                 <label sclass="z-d-block z-text-secondary z-text-sm z-mb-3"
                        value="display:flex + gap + wrap. Use for buttons / chips / atomic widgets in a row."/>
                 <html><![CDATA[<pre style="margin:0;font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--zk-color-surface-variant);color:var(--zk-color-on-surface);padding:8px;border-radius:4px;white-space:pre;overflow:auto">&lt;div sclass="z-hstack"&gt;
@@ -35,7 +35,7 @@
 
     <!-- z-vstack demo -->
     <div sclass="z-paper">
-        <label value=".z-vstack — vertical stack" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value=".z-vstack — vertical stack" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <label sclass="z-d-block z-text-secondary z-text-sm z-mb-3"
                value="Five size variants. Default = 12px (z-vstack), sm = 8px, md = 16px, lg = 24px, 0 = none."/>
         <div sclass="z-d-grid z-grid-cols-5 z-gap-4">
@@ -84,7 +84,7 @@
 
     <!-- z-hstack demo -->
     <div sclass="z-paper">
-        <label value=".z-hstack — horizontal stack" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value=".z-hstack — horizontal stack" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <label sclass="z-d-block z-text-secondary z-text-sm z-mb-3"
                value="Four size variants. Wraps automatically when the row overflows. Default = 12px, sm = 8px, md = 16px, lg = 24px."/>
 
@@ -119,7 +119,7 @@
 
     <!-- Mixed example -->
     <div sclass="z-paper">
-        <label value="Real-world Example — Form Actions" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Real-world Example — Form Actions" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <label sclass="z-d-block z-text-secondary z-text-sm z-mb-3"
                value="Stack form rows vertically with .z-vstack, then group the action buttons horizontally with .z-hstack."/>
         <div sclass="z-bg-surface z-p-4 z-rounded-md" style="max-width:480px">
@@ -146,7 +146,7 @@
 
     <!-- Opt-in spacing (no default widget margins) -->
     <div sclass="z-paper">
-        <label value="Opt-in Spacing — Widgets Have No Default Margins" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Opt-in Spacing — Widgets Have No Default Margins" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <label sclass="z-d-block z-text-secondary z-text-sm z-mb-3"
                value="No widget carries a theme-default margin (ZK's hflex/vflex sizing measures child margins — see doc/spec/spacing-policy.md). To space stacked widgets, put .z-vstack on the parent; it works for container widgets (panel, window, grid, …) and atomic widgets alike."/>
         <div sclass="z-d-grid z-grid-cols-2 z-gap-4">
@@ -181,7 +181,7 @@
 
     <!-- Class reference -->
     <div sclass="z-paper">
-        <label value="Class Reference" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Class Reference" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-grid z-grid-cols-2 z-gap-6">
             <div>
                 <label value="Vertical (margin-top on child #2+)" sclass="z-d-block z-text-sm z-fw-semibold z-mb-2"/>

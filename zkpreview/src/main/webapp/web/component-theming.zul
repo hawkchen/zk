@@ -1,7 +1,7 @@
 <?page title="Component Theme Variables" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:h="native">
 <div sclass="z-p-8">
-    <div sclass="z-border-bottom z-mb-8 z-pb-3"><label sclass="z-text-xl z-fw-medium z-text-on-surface" value="Component Theme Variables"/></div>
+    <div sclass="z-border-bottom z-mb-8 z-pb-3"><label sclass="z-text-2xl z-fw-medium z-text-on-surface" value="Component Theme Variables"/></div>
 
     <div sclass="z-mb-8" style="max-width:60ch"><label sclass="z-text-sm z-text-secondary" value="Adopters restyle one component by setting its --zk-&lt;comp&gt;-* custom properties, either at :root (whole app) or on any container element (one region — descendants inherit it). Each pair below shows a stock &quot;Default&quot; and a scoped override box; the defaults reproduce stock Marble exactly. Pilot components: button, input, window, grid. See doc/spec/component-theme-variables.md."/></div>
 

@@ -31,7 +31,7 @@
 
     <!-- Orders needing attention (real data table — no chart dependency) -->
     <div sclass="z-paper">
-        <label value="Orders Needing Attention" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Orders Needing Attention" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <grid hflex="1" sclass="z-border-0">
             <columns>
                 <column label="Order" width="110px"/>
@@ -83,7 +83,7 @@
 
         <!-- Fulfillment by channel (progressmeters) -->
         <div sclass="z-paper z-flex-1 z-min-w-0">
-            <label value="Fulfillment by Channel" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+            <label value="Fulfillment by Channel" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
             <div sclass="z-d-flex z-flex-col z-gap-3">
                 <div sclass="z-d-flex z-flex-row z-items-center z-gap-3">
                     <label value="Web" width="80px"/>
@@ -105,7 +105,7 @@
 
         <!-- Pending tasks (checklist) -->
         <div sclass="z-paper z-flex-1 z-min-w-0">
-            <label value="Pending Tasks" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+            <label value="Pending Tasks" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
             <div sclass="z-d-flex z-flex-col z-gap-3">
                 <checkbox label="Approve PO #221" checked="true"/>
                 <checkbox label="Restock SKU SAF-1190"/>
@@ -116,7 +116,7 @@
 
         <!-- Recent activity (feed) -->
         <div sclass="z-paper z-flex-1 z-min-w-0">
-            <label value="Recent Activity" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+            <label value="Recent Activity" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
             <listbox sclass="z-border-0">
                 <listitem>
                     <listcell>

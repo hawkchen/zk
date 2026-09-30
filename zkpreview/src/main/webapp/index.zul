@@ -9,7 +9,7 @@
 <div viewModel="@id('vm')@init('zk.example.PageIndexVM')" sclass="z-p-8">
 
 	<div sclass="z-border-bottom z-mb-3 z-pb-3">
-		<label sclass="z-text-xl z-fw-medium z-text-on-surface" value="Marble preview"/>
+		<label sclass="z-text-2xl z-fw-medium z-text-on-surface" value="Marble preview"/>
 	</div>
 
 	<div sclass="z-mb-8">

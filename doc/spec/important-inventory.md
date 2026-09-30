@@ -18,6 +18,13 @@ and `carousel.css` each grew one that was never added here (36), and the ZK 11 `
 component adds 9 (below). All three of the previously-undocumented ones have now been through the
 removal bar too — see "Backfill" below. Nothing was removable; the count stands at 45.
 
+**Recount 2026-09-30: 49 — 45 documented, 4 not yet tested.** The four are
+`zkex/wgt/css/skeleton.css`, restored as a Marble CSS source after the 2026-09-08 sweep
+(`ZK-6112: restore the skeleton stylesheet as a Marble CSS source in zkex`): `.z-skeleton-active *`
+and `.z-skeleton-masked` (`visibility: hidden`), and the `::after` / `::before` `content` pair that
+builds the overlay. They have **not** been through the removal bar, so they are listed here as
+outstanding rather than as survivors. Everything below still stands.
+
 ## Removed (5) — proven render-neutral, guarded by tests
 
 | file:line | declaration | why it was redundant | guard test |

@@ -25,7 +25,7 @@
 
         <!-- Preference panel -->
         <div sclass="z-paper z-flex-1 z-min-w-0">
-            <label value="Notifications" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+            <label value="Notifications" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
 
             <div sclass="z-d-flex z-items-center z-gap-4 z-py-3 z-border-bottom">
                 <div sclass="z-d-flex z-flex-col z-flex-1 z-min-w-0">

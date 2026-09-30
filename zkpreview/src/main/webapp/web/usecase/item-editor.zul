@@ -11,7 +11,7 @@
     <div sclass="z-paper">
 
         <!-- Basic Info -->
-        <label value="Basic Info" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Basic Info" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-flex-row z-flex-wrap z-gap-4">
             <div sclass="z-flex-1 z-min-w-0">
                 <label value="Product Name *" sclass="z-d-block z-mb-1 z-text-secondary z-text-xs"/>
@@ -39,7 +39,7 @@
         </div>
 
         <!-- Stock -->
-        <label value="Stock" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3 z-mt-4"/>
+        <label value="Stock" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3 z-mt-4"/>
         <div sclass="z-d-flex z-flex-row z-flex-wrap z-gap-4">
             <div sclass="z-flex-1 z-min-w-0">
                 <label value="Quantity" sclass="z-d-block z-mb-1 z-text-secondary z-text-xs"/>
@@ -60,7 +60,7 @@
         </div>
 
         <!-- Pricing -->
-        <label value="Pricing" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3 z-mt-4"/>
+        <label value="Pricing" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3 z-mt-4"/>
         <div sclass="z-d-flex z-flex-row z-flex-wrap z-gap-4">
             <div sclass="z-flex-1 z-min-w-0">
                 <label value="Cost" sclass="z-d-block z-mb-1 z-text-secondary z-text-xs"/>
@@ -73,7 +73,7 @@
         </div>
 
         <!-- Options -->
-        <label value="Options" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3 z-mt-4"/>
+        <label value="Options" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3 z-mt-4"/>
         <checkbox label="Active (available for ordering)" checked="true"/>
         <div sclass="z-mt-2">
             <label value="Storage Type" sclass="z-d-block z-mb-1 z-text-secondary z-text-xs"/>

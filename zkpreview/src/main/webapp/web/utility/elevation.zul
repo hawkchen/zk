@@ -7,7 +7,7 @@
 
     <!-- Elevation Scale -->
     <div sclass="z-paper">
-        <label value="Elevation Shadow Scale  (.z-elevation-0 — .z-elevation-3)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Elevation Shadow Scale  (.z-elevation-0 — .z-elevation-3)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <label value="Higher elevation values render deeper shadows, conveying layers closer to the user." sclass="z-text-secondary z-text-sm z-mb-4"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start">
 
@@ -17,7 +17,7 @@
                     <label value="No shadow" sclass="z-text-secondary z-text-sm z-mt-1"/>
                 </div>
                 <div sclass="z-mt-3">
-                    <label value=".z-elevation-0" sclass="z-fw-semibold z-text-base z-text-primary z-d-block"/>
+                    <label value=".z-elevation-0" sclass="z-fw-semibold z-text-lg z-text-primary z-d-block"/>
                     <label value="Resting surface" sclass="z-text-secondary z-text-xs"/>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                     <label value="Subtle shadow" sclass="z-text-secondary z-text-sm z-mt-1"/>
                 </div>
                 <div sclass="z-mt-3">
-                    <label value=".z-elevation-1" sclass="z-fw-semibold z-text-base z-text-primary z-d-block"/>
+                    <label value=".z-elevation-1" sclass="z-fw-semibold z-text-lg z-text-primary z-d-block"/>
                     <label value="Cards, menus" sclass="z-text-secondary z-text-xs"/>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <label value="Medium shadow" sclass="z-text-secondary z-text-sm z-mt-1"/>
                 </div>
                 <div sclass="z-mt-3">
-                    <label value=".z-elevation-2" sclass="z-fw-semibold z-text-base z-text-primary z-d-block"/>
+                    <label value=".z-elevation-2" sclass="z-fw-semibold z-text-lg z-text-primary z-d-block"/>
                     <label value="Floating FAB, tooltips" sclass="z-text-secondary z-text-xs"/>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                     <label value="Deep shadow" sclass="z-text-secondary z-text-sm z-mt-1"/>
                 </div>
                 <div sclass="z-mt-3">
-                    <label value=".z-elevation-3" sclass="z-fw-semibold z-text-base z-text-primary z-d-block"/>
+                    <label value=".z-elevation-3" sclass="z-fw-semibold z-text-lg z-text-primary z-d-block"/>
                     <label value="Dialogs, modals" sclass="z-text-secondary z-text-xs"/>
                 </div>
             </div>
@@ -60,7 +60,7 @@
 
     <!-- Elevation on dark background -->
     <div sclass="z-paper">
-        <label value="Elevation on Tinted Background" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Elevation on Tinted Background" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-bg-primary z-p-6 z-rounded-md z-d-flex z-gap-6 z-flex-wrap">
             <div sclass="z-elevation-1 z-bg-surface z-rounded-md z-p-4" style="width:120px;text-align:center">
                 <label value="Level 1" sclass="z-h6 z-d-block z-text-on-surface"/>
@@ -76,7 +76,7 @@
 
     <!-- Practical use -->
     <div sclass="z-paper">
-        <label value="Practical Usage" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Practical Usage" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-4 z-flex-wrap z-items-start">
 
             <div sclass="z-elevation-1 z-bg-surface z-rounded-md z-p-4" style="width:220px">

@@ -7,7 +7,7 @@
 
     <!-- Display -->
     <div sclass="z-paper">
-        <label value="Display  (.z-d-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Display  (.z-d-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-4 z-flex-wrap z-items-start">
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border">
@@ -60,7 +60,7 @@
 
     <!-- Grid: template columns -->
     <div sclass="z-paper">
-        <label value="Grid — Template Columns  (.z-grid-cols-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Grid — Template Columns  (.z-grid-cols-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <vlayout sclass="z-gap-3">
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-grid z-grid-cols-1 z-gap-2">
@@ -117,7 +117,7 @@
 
     <!-- Grid: auto-fit fill -->
     <div sclass="z-paper">
-        <label value="Grid — Auto-fit Fill  (.z-grid-fill / .z-grid-fill-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Grid — Auto-fit Fill  (.z-grid-fill / .z-grid-fill-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <vlayout sclass="z-gap-3">
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-grid z-grid-fill z-grid-fill-sm z-gap-3">
@@ -154,7 +154,7 @@
 
     <!-- Flex Direction -->
     <div sclass="z-paper">
-        <label value="Flex Direction  (.z-flex-row / .z-flex-col)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Flex Direction  (.z-flex-row / .z-flex-col)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap">
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-flex-row z-gap-2">
@@ -193,7 +193,7 @@
 
     <!-- Justify Content -->
     <div sclass="z-paper">
-        <label value="Justify Content  (.z-justify-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Justify Content  (.z-justify-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <vlayout sclass="z-gap-3">
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-justify-start z-gap-2">
@@ -236,7 +236,7 @@
 
     <!-- Align Items -->
     <div sclass="z-paper">
-        <label value="Align Items  (.z-align-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Align Items  (.z-align-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-4 z-flex-wrap">
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-items-start z-gap-2" style="height:80px">
@@ -264,7 +264,7 @@
             </div>
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-items-baseline z-gap-2" style="height:80px">
-                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">small</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-2xl z-fw-medium z-text-nowrap">Big</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-base z-fw-medium z-text-nowrap">mid</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">small</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-3xl z-fw-medium z-text-nowrap">Big</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-lg z-fw-medium z-text-nowrap">mid</div>
                 </div>
                 <label value=".z-items-baseline — text baselines align across sizes" sclass="z-text-secondary z-text-xs"/>
             </div>
@@ -273,7 +273,7 @@
 
     <!-- Flex Grow / Shrink / Fill -->
     <div sclass="z-paper">
-        <label value="Flex Grow, Shrink &amp; Fill  (.z-flex-* / .z-flex-grow-* / .z-flex-shrink-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Flex Grow, Shrink &amp; Fill  (.z-flex-* / .z-flex-grow-* / .z-flex-shrink-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <vlayout sclass="z-gap-3">
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-gap-2">
@@ -317,7 +317,7 @@
 
     <!-- Gap -->
     <div sclass="z-paper">
-        <label value="Gap  (.z-gap-* / .z-col-gap-* / .z-row-gap-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Gap  (.z-gap-* / .z-col-gap-* / .z-row-gap-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap">
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-gap-0">
@@ -404,7 +404,7 @@
 
     <!-- Flex Wrap -->
     <div sclass="z-paper">
-        <label value="Flex Wrap  (.z-flex-wrap / .z-flex-nowrap)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Flex Wrap  (.z-flex-wrap / .z-flex-nowrap)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-4">
             <div style="max-width:300px">
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-gap-2">
@@ -426,7 +426,7 @@
 
     <!-- Width & Height -->
     <div sclass="z-paper">
-        <label value="Width &amp; Height  (.z-w-* / .z-h-* / .z-min-w-0 / .z-min-h-0)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Width &amp; Height  (.z-w-* / .z-h-* / .z-min-w-0 / .z-min-h-0)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap">
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-flex-col z-gap-2" style="width:320px">
@@ -469,7 +469,7 @@
 
     <!-- Overflow -->
     <div sclass="z-paper">
-        <label value="Overflow  (.z-overflow-* / .z-overflow-x-* / .z-overflow-y-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Overflow  (.z-overflow-* / .z-overflow-x-* / .z-overflow-y-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap">
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-border z-overflow-auto z-p-2" style="width:140px;height:90px">
@@ -512,7 +512,7 @@
 
     <!-- Position -->
     <div sclass="z-paper">
-        <label value="Position  (.z-position-* / .z-top-0 / .z-bottom-0 / .z-start-0 / .z-end-0)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Position  (.z-position-* / .z-top-0 / .z-bottom-0 / .z-start-0 / .z-end-0)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap">
             <div>
                 <div class="z-bg-surface-container-low z-rounded z-border z-position-relative" style="width:240px;height:140px">
@@ -531,7 +531,7 @@
                 </div>
             </div>
         </div>
-        <label value="Float  (.z-float-start / .z-float-end / .z-float-none / .z-clearfix)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mt-4 z-mb-3"/>
+        <label value="Float  (.z-float-start / .z-float-end / .z-float-none / .z-clearfix)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mt-4 z-mb-3"/>
         <div class="z-bg-surface-container-low z-rounded z-p-3 z-border z-clearfix" style="max-width:420px">
             <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-float-start" style="margin-right:8px">z-float-start</div>
             <div class="z-bg-secondary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-float-end" style="margin-left:8px">z-float-end</div>
@@ -542,7 +542,7 @@
 
     <!-- Truncation & Accessibility -->
     <div sclass="z-paper">
-        <label value="Truncation &amp; Accessibility  (.z-text-truncate / .z-visually-hidden)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
+        <label value="Truncation &amp; Accessibility  (.z-text-truncate / .z-visually-hidden)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start">
             <div style="max-width:320px">
                 <div class="z-bg-surface-container-low z-rounded z-p-3 z-border">
