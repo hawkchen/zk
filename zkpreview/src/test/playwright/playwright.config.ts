@@ -82,6 +82,15 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
+      // Font-size equivalence: the computed font-size distribution of every preview page must
+      // not move. The oracle for the z-text-* renumber, which is a shift within a closed set
+      // and so invisible to the orphan-based guards. See font-size-equivalence.spec.ts and
+      // doc/utility-class-naming-review.md section 6.2.
+      name: 'font-size',
+      testMatch: /font-size-equivalence\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
       // Print stylesheet: opt-in .z-d-print-* visibility + standard reset
       // (elevation→border). page.emulateMedia({ media:'print' }) is applied in
       // the spec. See print-utilities.spec.ts and doc/spec/print-styles.md.
