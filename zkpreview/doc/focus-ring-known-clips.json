@@ -3,13 +3,13 @@
   "generated": "2026-09-06",
   "clips": {
     "a": [
-      ".z-a ⊂ DIV.z-mb-6.z-d-grid.z-grid-cols-auto.z-overflow-x-auto.z-col-gap-6.z-row-gap-2.z-align-start.z-div"
+      ".z-a ⊂ DIV.z-mb-6.z-d-grid.z-grid-cols-auto.z-overflow-x-auto.z-gap-x-6.z-gap-y-2.z-items-start.z-div"
     ],
     "biglistbox": [
       ".z-button ⊂ DIV.z-hlayout.z-valign-bottom"
     ],
     "button": [
-      ".z-button ⊂ DIV.z-mb-6.z-d-grid.z-grid-cols-auto.z-overflow-x-auto.z-col-gap-6.z-row-gap-2.z-align-start.z-div"
+      ".z-button ⊂ DIV.z-mb-6.z-d-grid.z-grid-cols-auto.z-overflow-x-auto.z-gap-x-6.z-gap-y-2.z-items-start.z-div"
     ],
     "caption": [
       ".z-button ⊂ DIV.z-caption-content"
