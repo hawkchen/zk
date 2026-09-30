@@ -140,7 +140,7 @@
             <div>
                 <div sclass="z-mb-1"><label sclass="z-text-xs z-text-secondary" value="Container 300px (&lt; sm) → stacked, no Details"/></div>
                 <div sclass="z-overflow-x-auto">
-                    <div sclass="z-container z-bg-surface-low z-border z-rounded z-p-3" style="width:300px">
+                    <div sclass="z-container z-bg-surface-container-low z-border z-rounded z-p-3" style="width:300px">
                         <div sclass="z-d-block z-cq-flex-md z-gap-3 z-items-center">
                             <div sclass="z-bg-primary-container z-rounded z-p-3 z-flex-1 z-mb-2"><label sclass="z-text-sm" value="Summary"/></div>
                             <div sclass="z-bg-secondary-container z-rounded z-p-3 z-flex-1 z-mb-2 z-cq-none z-cq-block-sm"><label sclass="z-text-sm" value="Details · ≥sm container"/></div>
@@ -151,7 +151,7 @@
             <div>
                 <div sclass="z-mb-1"><label sclass="z-text-xs z-text-secondary" value="Container 700px (≥ sm, &lt; md) → stacked, with Details"/></div>
                 <div sclass="z-overflow-x-auto">
-                    <div sclass="z-container z-bg-surface-low z-border z-rounded z-p-3" style="width:700px">
+                    <div sclass="z-container z-bg-surface-container-low z-border z-rounded z-p-3" style="width:700px">
                         <div sclass="z-d-block z-cq-flex-md z-gap-3 z-items-center">
                             <div sclass="z-bg-primary-container z-rounded z-p-3 z-flex-1 z-mb-2"><label sclass="z-text-sm" value="Summary"/></div>
                             <div sclass="z-bg-secondary-container z-rounded z-p-3 z-flex-1 z-mb-2 z-cq-none z-cq-block-sm"><label sclass="z-text-sm" value="Details · ≥sm container"/></div>
@@ -162,7 +162,7 @@
             <div>
                 <div sclass="z-mb-1"><label sclass="z-text-xs z-text-secondary" value="Container 950px (≥ md) → row, with Details"/></div>
                 <div sclass="z-overflow-x-auto">
-                    <div sclass="z-container z-bg-surface-low z-border z-rounded z-p-3" style="width:950px">
+                    <div sclass="z-container z-bg-surface-container-low z-border z-rounded z-p-3" style="width:950px">
                         <div sclass="z-d-block z-cq-flex-md z-gap-3 z-items-center">
                             <div sclass="z-bg-primary-container z-rounded z-p-3 z-flex-1 z-mb-2"><label sclass="z-text-sm" value="Summary"/></div>
                             <div sclass="z-bg-secondary-container z-rounded z-p-3 z-flex-1 z-mb-2 z-cq-none z-cq-block-sm"><label sclass="z-text-sm" value="Details · ≥sm container"/></div>

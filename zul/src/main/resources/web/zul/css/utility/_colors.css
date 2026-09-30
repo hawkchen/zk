@@ -33,7 +33,7 @@
 .z-bg-info               { background-color: var(--zk-color-status-info-fill);    color: var(--zk-color-on-status); }
 .z-bg-surface            { background-color: var(--zk-color-surface); }
 .z-bg-surface-variant    { background-color: var(--zk-color-surface-variant); }
-.z-bg-surface-low        { background-color: var(--zk-color-surface-container-low); }
+.z-bg-surface-container-low        { background-color: var(--zk-color-surface-container-low); }
 .z-bg-surface-container  { background-color: var(--zk-color-surface-container); }
 .z-bg-transparent        { background-color: transparent; }
 

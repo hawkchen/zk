@@ -1,7 +1,7 @@
 <?page title="Sign In"?>
 <zk>
 <style src="~./usecase/usecase.css"/>
-<div hflex="1" vflex="1" sclass="z-d-flex z-flex-col z-gap-4 z-p-4 z-bg-surface-low">
+<div hflex="1" vflex="1" sclass="z-d-flex z-flex-col z-gap-4 z-p-4 z-bg-surface-container-low">
 
     <!-- Plain <div> root (not <vlayout>): vlayout wraps each child in
          .z-vlayout-inner, which breaks the z-flex-1 height chain so the card

@@ -6,7 +6,7 @@
    Font Weight
    ============================================ */
 .z-fw-light   { font-weight: 300; }
-.z-fw-regular { font-weight: 400; }
+.z-fw-normal { font-weight: 400; }
 .z-fw-medium  { font-weight: 500; }
 .z-fw-semibold{ font-weight: 600; }
 .z-fw-bold    { font-weight: 700; }
