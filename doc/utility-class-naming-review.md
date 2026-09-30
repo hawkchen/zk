@@ -9,7 +9,13 @@ approved together with the verification method in §6.2, which is a condition of
 suggestion: the two-phase sweep and the three gates must run, because D3 is the one change the
 existing guards cannot see.
 
-Implementation proceeds as the nine commits in §6.3.
+**Commits 0–6 are landed and verified**, plus one follow-up fixing a file type the sweep missed
+(§6.4). Commits 7–9 — the D3 font-size renumber and the rules document — remain.
+
+The rename series was A/B'd against `15bc0c7eeb`, the commit before it, with the preview app
+rebuilt and restarted on each side: **28 Playwright failures before, 28 after, the same 28**.
+They pre-date this work — the screenshot baselines were last regenerated 2026-09-12, before the
+LESS-to-Marble pipeline replacement landed.
 
 **Why now:** Marble is `11.0.0-SNAPSHOT` and unreleased. Every consumer of these class names
 today is inside this repo (159 `.zul` files, all under `zkpreview/`). After 11.0 ships, every
@@ -512,12 +518,36 @@ commit that changes the ordering.
 
 ### 6.4 Sweep mechanics that apply to every commit
 
-- Anchor on `sclass` word boundaries: `(^|[\s"'])z-old-name([\s"']|$)`. `sclass` is
-  space-separated, so an unanchored match will corrupt `z-text-xl` inside `z-text-2xl`.
+Written against what commits 1–6 actually hit. Each bullet after the first three cost a defect.
+
+- Anchor on word boundaries with `-` excluded on both sides:
+  `(?<![\w-])z-old-name(?![\w-])`. `sclass` is space-separated, and an unanchored match
+  corrupts `z-text-xl` inside `z-text-2xl` — and, worse, rewrites `z-cardlayout` (zkmax) when
+  renaming `z-card`.
 - Longest name first within a single pass, or route through temporaries as in §6.2.
-- Sweep `**/*.zul`, `**/*.ts`, `**/*.java`, `doc/**/*.md` and `.claude/skills/marble-theme/**`.
-  The skill docs and `doc/slides/` reference class names in prose and will otherwise go stale.
-- Exclude `zkpreview/build/` — it is build output and regenerates.
+- Exclude `../zkcml` entirely, and `zkpreview/build/` — build output regenerates.
+- **Sweep every file type, not just the obvious ones.** Commits 1–6 swept
+  `.zul .ts .js .java .md .css .dsp` and missed `zkpreview/doc/focus-ring-known-clips.json`,
+  whose entries key on a string embedding the clipping ancestor's whole class list
+  (`".z-a ⊂ DIV.z-mb-6…z-col-gap-6.z-row-gap-2.z-align-start.z-div"`). Renaming those classes
+  silently invalidated two long-known baseline entries, which the scan then reported as new
+  focus-ring regressions on the `a` and `button` pages. **Verify with a repo-wide grep over
+  every file type, with no extension filter at all**, not over the list you chose to sweep.
+- **Exclude this document from the sweep.** It records old → new pairs; a sweep rewrites the
+  "before" column and destroys the mapping. It is the one file that must keep the old names.
+- **A removal is not a rename.** Rewriting the call sites of a deleted class to its survivor is
+  correct in component markup but wrong in a gallery page, where it produces two identical demo
+  rows (`.z-text-muted` became a second `.z-text-secondary` swatch) or a caption naming the same
+  class twice. After any removal, grep the gallery pages for duplicated demo labels.
+- Generated files need their **generator** changed too, or the next run reinstates the old name.
+  `scripts/build-css.js` emits `icons-lucide.zul`; its template held `z-align-center`.
+- Some files in the tree belong to other in-flight work (`scripts/build-css.js`,
+  `scripts/utility-manifest.js`, `doc/slides/`). Sweep them for correctness, but stage only your
+  own hunks — `git show HEAD:<file>` piped through the same rename, then `git hash-object -w` +
+  `git update-index --cacheinfo`, stages one line without touching a neighbour's work.
+- Screenshot specs of the "visual review" kind (`forced-colors-gallery.spec.ts`) **rewrite** their
+  baseline PNGs on every run. Running the full suite dirties ~100 tracked images; revert them
+  before staging.
 
 ---
 
