@@ -192,3 +192,63 @@ assume 8085 is free — other sessions use it, and zkpreview serves the live wor
 - `.claude/skills/marble-theme/SKILL.md` rule 5: "When a theme-global invention collides
   with a ZK JS assumption, the first option to evaluate is *deleting the invention*." That
   is the principle this item applies.
+
+## 7. Generate the utility class index page
+
+Goal: publish the human-readable catalogue of the `z-*` utility classes, generated from the
+same manifest the IDE plugin reads, so prose documentation can never drift from the CSS.
+
+This is Phase 3 of `doc/utility-class-discovery.md`. It was deliberately held until the naming
+review landed — generating it earlier would have published names that were about to change.
+That blocker is now gone: the names are final and `doc/spec/utility-naming.md` is normative.
+
+- [ ] Generate `doc/spec/utility-index.md` from
+      `zul/codegen/resources/web/zul/css/utility-classes.json`, the way
+      `scripts/build-css.js --emit-docs` already generates `doc/spec/icon-index.md`.
+      Group by the manifest's `category` field; show each class's `css` string.
+- [ ] Carry the breakpoint note: a trailing `-sm/-md/-lg/-xl` is always a SIZE; breakpoints
+      are infixes (`z-d-md-none`). Readers coming from the old suffix form will look for
+      `z-d-none-md` and must be told where it went.
+- [ ] Point `.claude/skills/marble-theme/reference/zul-authoring.md` at the generated index
+      instead of at the raw `utility/` CSS directory.
+- [ ] Add the CI guard the discovery doc describes: assert every class in the manifest
+      resolves in the built `norm.css.dsp`. Note the drift risk it worried about does not
+      exist — the manifest regenerates into the gitignored `codegen/` tree on every build,
+      so it cannot fall behind. The *coverage* guard is the one still worth having.
+
+### Cross-references
+
+- `doc/utility-class-discovery.md` § Phase 3 — the original plan; D3 there settled that there
+  is no `description` field, so the `css` string is the hover text.
+- `doc/spec/utility-naming.md` — the naming rules the index documents.
+- `b1a4a0e31c` — the commit that made those rules normative.
+
+## 8. Regenerate the stale screenshot baselines
+
+Goal: get `screenshot.spec.ts` and `focus-ring-scan.spec.ts` back to green, so a real
+regression is visible instead of being buried under 28 known failures.
+
+**This is not caused by the utility renames.** It was proven by A/B: the same 28 failures occur
+on `15bc0c7eeb`, the commit before that series, with the preview app rebuilt and restarted on
+each side. The baselines under `zkpreview/doc/screenshots/` were last regenerated 2026-09-12,
+before the LESS-to-Marble CSS pipeline replacement (`2100200284`) and everything after it.
+
+- [ ] Confirm the 28 are all stale-baseline, not real defects — inspect the diff images in
+      `test-results/` before accepting any of them. A genuinely broken component would hide
+      in this set perfectly.
+- [ ] Regenerate with bare `--update-snapshots` (preset `changed`), never `=all`.
+- [ ] 26 are `[chromium] screenshot.spec.ts` gallery + hover/focus shots; 2 are
+      `[focus-scan]` forced-colors assertions (`tree: tree row`, `organigram: organigram
+      node`) which are **assertion** failures, not image diffs — those two need a real fix
+      or an explicit waiver, not a regenerated image.
+- [ ] Beware: `forced-colors-gallery.spec.ts` is a visual-review spec that **rewrites** ~100
+      tracked PNGs on every run. Revert those before staging unless they are the point of
+      the commit.
+
+### Cross-references
+
+- `aafbbaf60a` — the A/B result is recorded in its commit message.
+- `doc/utility-class-naming-review.md` § 6.4 — the sweep-mechanics lessons, including the
+  visual-review-spec trap.
+- `doc/screenshot-tolerance-policy.md` — the existing tolerance ruling; the `padShot` floor
+  (20px) is why a one-step font change is invisible to these shots.
