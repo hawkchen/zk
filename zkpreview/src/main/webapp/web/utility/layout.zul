@@ -8,7 +8,7 @@
     <!-- Display -->
     <div sclass="z-card">
         <label value="Display  (.z-d-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
-        <div sclass="z-d-flex z-gap-4 z-flex-wrap z-align-start">
+        <div sclass="z-d-flex z-gap-4 z-flex-wrap z-items-start">
             <div>
                 <div class="z-bg-surface-low z-rounded z-p-3 z-border">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-d-block" style="margin-bottom:4px">z-d-block (fills row)</div>
@@ -49,7 +49,7 @@
                 <label value=".z-d-grid" sclass="z-text-muted z-text-xs z-mt-1"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-gap-2 z-align-center">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-gap-2 z-items-center">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-d-none">B (hidden)</div>
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">visible sibling</div>
                 </div>
@@ -99,14 +99,14 @@
                 <label value=".z-grid-cols-6 — repeat(N, minmax(0,1fr))" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-grid z-grid-cols-auto-1fr z-gap-2 z-align-center">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-grid z-grid-cols-auto-1fr z-gap-2 z-items-center">
                     <div class="z-bg-secondary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">Label</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">value fills remaining width</div>
                     <div class="z-bg-secondary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">Longer label</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">value</div>
                 </div>
                 <label value=".z-grid-cols-auto-1fr — auto label column + 1fr value column" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-grid z-grid-cols-auto z-gap-2 z-align-center" style="--zk-cols: 4">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-grid z-grid-cols-auto z-gap-2 z-items-center" style="--zk-cols: 4">
                     <div class="z-bg-secondary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">Row A</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-text-center">1</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-text-center">2</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-text-center">3</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-text-center">4</div>
                     <div class="z-bg-secondary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">Row B</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-text-center">5</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-text-center">6</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-text-center">7</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-text-center">8</div>
                 </div>
@@ -239,34 +239,34 @@
         <label value="Align Items  (.z-align-*)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-4 z-flex-wrap">
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-align-start z-gap-2" style="height:80px">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-items-start z-gap-2" style="height:80px">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">A</div><div class="z-bg-primary-container z-rounded-xs z-py-5 z-px-4 z-text-sm z-fw-medium z-text-nowrap">B</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">C</div>
                 </div>
-                <label value=".z-align-start" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-items-start" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-align-center z-gap-2" style="height:80px">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-items-center z-gap-2" style="height:80px">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">A</div><div class="z-bg-primary-container z-rounded-xs z-py-5 z-px-4 z-text-sm z-fw-medium z-text-nowrap">B</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">C</div>
                 </div>
-                <label value=".z-align-center" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-items-center" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-align-end z-gap-2" style="height:80px">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-items-end z-gap-2" style="height:80px">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">A</div><div class="z-bg-primary-container z-rounded-xs z-py-5 z-px-4 z-text-sm z-fw-medium z-text-nowrap">B</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">C</div>
                 </div>
-                <label value=".z-align-end" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-items-end" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-align-stretch z-gap-2" style="height:80px">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-items-stretch z-gap-2" style="height:80px">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap" style="height:auto">A</div><div class="z-bg-primary-container z-rounded-xs z-py-5 z-px-4 z-text-sm z-fw-medium z-text-nowrap" style="height:auto">B</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap" style="height:auto">C</div>
                 </div>
-                <label value=".z-align-stretch" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-items-stretch" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-align-baseline z-gap-2" style="height:80px">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-items-baseline z-gap-2" style="height:80px">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">small</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-2xl z-fw-medium z-text-nowrap">Big</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-base z-fw-medium z-text-nowrap">mid</div>
                 </div>
-                <label value=".z-align-baseline — text baselines align across sizes" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-items-baseline — text baselines align across sizes" sclass="z-text-muted z-text-xs"/>
             </div>
         </div>
     </div>
@@ -300,17 +300,17 @@
             </div>
             <div>
                 <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-gap-2">
-                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-flex-grow-1">z-flex-grow-1 (grows)</div>
-                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-flex-grow-0">z-flex-grow-0</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-grow-1">z-grow-1 (grows)</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-grow-0">z-grow-0</div>
                 </div>
-                <label value=".z-flex-grow-1 / .z-flex-grow-0 — control growth only" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-grow-1 / .z-grow-0 — control growth only" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
                 <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-gap-2" style="max-width:360px">
-                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-flex-shrink-0">z-flex-shrink-0 (keeps width)</div>
-                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-flex-shrink-1">z-flex-shrink-1 — this one shrinks to fit the narrow row</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-shrink-0">z-shrink-0 (keeps width)</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-shrink-1">z-shrink-1 — this one shrinks to fit the narrow row</div>
                 </div>
-                <label value=".z-flex-shrink-0 / .z-flex-shrink-1 — control shrink when space is tight" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-shrink-0 / .z-shrink-1 — control shrink when space is tight" sclass="z-text-muted z-text-xs"/>
             </div>
         </vlayout>
     </div>
@@ -370,34 +370,34 @@
         </div>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap z-mt-3">
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-col-gap-4 z-row-gap-1" style="max-width:220px">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-gap-x-4 z-gap-y-1" style="max-width:220px">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">A</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">B</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">C</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">D</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">E</div>
                 </div>
-                <label value=".z-col-gap-4 + .z-row-gap-1 — wide columns, tight rows" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-gap-x-4 + .z-gap-y-1 — wide columns, tight rows" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-col-gap-1 z-row-gap-4" style="max-width:220px">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-gap-x-1 z-gap-y-4" style="max-width:220px">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">A</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">B</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">C</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">D</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">E</div>
                 </div>
-                <label value=".z-col-gap-1 + .z-row-gap-4 — tight columns, wide rows" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-gap-x-1 + .z-gap-y-4 — tight columns, wide rows" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-col-gap-0 z-row-gap-2" style="max-width:220px">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-gap-x-0 z-gap-y-2" style="max-width:220px">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">A</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">B</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">C</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">D</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">E</div>
                 </div>
-                <label value=".z-col-gap-0 + .z-row-gap-2" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-gap-x-0 + .z-gap-y-2" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-col-gap-2 z-row-gap-0" style="max-width:220px">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-gap-x-2 z-gap-y-0" style="max-width:220px">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">A</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">B</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">C</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">D</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">E</div>
                 </div>
-                <label value=".z-col-gap-2 + .z-row-gap-0" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-gap-x-2 + .z-gap-y-0" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-col-gap-3 z-row-gap-3" style="max-width:220px">
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-gap-x-3 z-gap-y-3" style="max-width:220px">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">A</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">B</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">C</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">D</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap">E</div>
                 </div>
-                <label value=".z-col-gap-3 + .z-row-gap-3" sclass="z-text-muted z-text-xs"/>
+                <label value=".z-gap-x-3 + .z-gap-y-3" sclass="z-text-muted z-text-xs"/>
             </div>
         </div>
     </div>
@@ -416,8 +416,8 @@
             </div>
             <div style="max-width:300px;overflow:hidden">
                 <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-flex-nowrap z-gap-2" style="overflow:hidden">
-                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-flex-shrink-0">Item One</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-flex-shrink-0">Item Two</div>
-                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-flex-shrink-0">Item Three</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-flex-shrink-0">Item Four</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-shrink-0">Item One</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-shrink-0">Item Two</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-shrink-0">Item Three</div><div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-shrink-0">Item Four</div>
                 </div>
                 <label value=".z-flex-nowrap — stays on one row, overflows" sclass="z-text-muted z-text-xs"/>
             </div>
@@ -439,18 +439,18 @@
                 <label value=".z-w-25 / 50 / 75 / full / auto — % of a 320px parent" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-align-end z-gap-2" style="height:140px">
-                    <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-25 z-d-flex z-align-center">25</div>
-                    <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-50 z-d-flex z-align-center">50</div>
-                    <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-75 z-d-flex z-align-center">75</div>
-                    <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-full z-d-flex z-align-center">full</div>
-                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-auto z-d-flex z-align-center">auto</div>
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-items-end z-gap-2" style="height:140px">
+                    <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-25 z-d-flex z-items-center">25</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-50 z-d-flex z-items-center">50</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-75 z-d-flex z-items-center">75</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-full z-d-flex z-items-center">full</div>
+                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-h-auto z-d-flex z-items-center">auto</div>
                 </div>
                 <label value=".z-h-25 / 50 / 75 / full / auto — % of a 140px parent" sclass="z-text-muted z-text-xs"/>
             </div>
             <div>
-                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-gap-2 z-align-center" style="width:260px">
-                    <div class="z-bg-secondary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-flex-shrink-0">icon</div>
+                <div class="z-bg-surface-low z-rounded z-p-3 z-border z-d-flex z-gap-2 z-items-center" style="width:260px">
+                    <div class="z-bg-secondary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-shrink-0">icon</div>
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-truncate z-flex-1 z-min-w-0">z-min-w-0 lets this long label truncate instead of overflowing</div>
                 </div>
                 <label value=".z-min-w-0 — allows a flex child to shrink below content width (enables truncation)" sclass="z-text-muted z-text-xs"/>
@@ -543,7 +543,7 @@
     <!-- Truncation & Accessibility -->
     <div sclass="z-card">
         <label value="Truncation &amp; Accessibility  (.z-text-truncate / .z-sr-only)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
-        <div sclass="z-d-flex z-gap-6 z-flex-wrap z-align-start">
+        <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start">
             <div style="max-width:320px">
                 <div class="z-bg-surface-low z-rounded z-p-3 z-border">
                     <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-truncate">This is a very long single line of text that will be cut off with an ellipsis when it overflows the box</div>
@@ -552,7 +552,7 @@
             </div>
             <div style="max-width:320px">
                 <div class="z-bg-surface-low z-rounded z-p-3 z-border">
-                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-d-inline-flex z-align-center z-gap-1">
+                    <div class="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-text-sm z-fw-medium z-text-nowrap z-d-inline-flex z-items-center z-gap-1">
                         <span class="z-sr-only">Download report (</span>
                         <span>3 MB</span>
                         <span class="z-sr-only">)</span>

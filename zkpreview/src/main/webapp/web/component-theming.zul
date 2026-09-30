@@ -200,14 +200,14 @@
     <!-- Datebox / Timebox / Spinner / Bandbox: dropdown-input family (wrapper-border model).
          Border sits on the root wrapper; focus is an inset ring. Same field knobs as combobox. -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Datebox / Timebox / Spinner / Bandbox (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <datebox/>
         <timebox/>
         <spinner value="5"/>
         <bandbox/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Dropdown-input family (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-datebox-radius:0px; --zk-datebox-border-color:#6750a4;
                 --zk-timebox-radius:0px; --zk-timebox-border-color:#6750a4;
                 --zk-spinner-radius:0px; --zk-spinner-border-color:#6750a4;
@@ -228,11 +228,11 @@
         java.util.Date daterangeThemingEnd   = new java.util.Date(125, 0, 15);  // 2025-01-15
     </zscript>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Daterangebox (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <daterangebox beginValue="${daterangeThemingBegin}" endValue="${daterangeThemingEnd}"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Daterangebox (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-daterangebox-radius:0px; --zk-daterangebox-border-color:#6750a4">
         <daterangebox beginValue="${daterangeThemingBegin}" endValue="${daterangeThemingEnd}"/>
     </div>
@@ -275,12 +275,12 @@
          class (z-chip-info) that sets the fill on the element, so chip is themed
          per-severity / inline — see doc/spec/component-theme-variables.md. -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Avatar + Chip (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <avatar label="AB"/>
         <chip label="Tag"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Avatar (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-avatar-bg:#6750a4; --zk-avatar-fg:#ffffff">
         <avatar label="AB"/>
     </div>
@@ -289,12 +289,12 @@
          knob at :root, so a region override DOES reach a default badge; explicit
          non-default severities pin their own fill. See component-theme-variables spec. -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Badge (default + success)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <badge count="4"/>
         <badge count="4" severity="success"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Badge (regional override — default fill only)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-badge-bg:#6750a4">
         <badge count="4"/>
         <badge count="4" severity="success"/>
@@ -304,11 +304,11 @@
          container box). Resting stars read the fg knob; selected/hover swap to
          the accent knob (the defining state). -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Rating (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <rating rating="3"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Rating (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-rating-accent:#6750a4">
         <rating rating="3"/>
     </div>
@@ -318,11 +318,11 @@
          their own semantic colors via higher-specificity rules, same treatment as
          button's color variants — not knob-driven. -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Progressmeter (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <progressmeter value="60" width="200px"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Progressmeter (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-progressmeter-bg:#efe6ff; --zk-progressmeter-fill:#6750a4">
         <progressmeter value="60" width="200px"/>
     </div>
@@ -335,11 +335,11 @@
          Disabled buttons are intentionally not knob-driven (same convention
          as button/input). -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Paging (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <paging mold="os" totalSize="200" pageSize="10" activePage="4"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Paging (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-paging-radius:4px; --zk-paging-selected-bg:#6750a4; --zk-paging-selected-fg:#ffffff">
         <paging mold="os" totalSize="200" pageSize="10" activePage="4"/>
     </div>
@@ -469,11 +469,11 @@
          same accent. Disabled stays on opacity only, not knob-driven (same
          convention as button/input/rating). -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Slider (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <slider curpos="60" width="200px"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Slider (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-slider-track-bg:#efe6ff; --zk-slider-accent:#6750a4; --zk-slider-radius:0px">
         <slider curpos="60" width="200px"/>
     </div>
@@ -488,11 +488,11 @@
          opacity only, not knob-driven (same convention as button/input/rating/
          slider). -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Rangeslider (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <rangeslider startValue="20" endValue="80" width="200px"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Rangeslider (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-rangeslider-track-bg:#efe6ff; --zk-rangeslider-accent:#6750a4; --zk-rangeslider-radius:0px">
         <rangeslider startValue="20" endValue="80" width="200px"/>
     </div>
@@ -508,13 +508,13 @@
          stays on opacity only, not knob-driven (same convention as
          button/input/rating/slider/rangeslider). -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Multislider (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <multislider width="200px">
             <sliderbuttons startValue="20" endValue="80"/>
         </multislider>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Multislider (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-multislider-track-bg:#efe6ff; --zk-multislider-accent:#6750a4; --zk-multislider-radius:0px">
         <multislider width="200px">
             <sliderbuttons startValue="20" endValue="80"/>
@@ -526,12 +526,12 @@
          and radio/radiogroup are out of scope for this pass — see
          doc/spec/component-theme-variables.md. -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Checkbox (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <checkbox label="Unchecked"/>
         <checkbox label="Checked" checked="true"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Checkbox (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-checkbox-border-color:#6750a4; --zk-checkbox-accent:#6750a4">
         <checkbox label="Unchecked"/>
         <checkbox label="Checked" checked="true"/>
@@ -543,14 +543,14 @@
          defining state (same "one knob, several roles" pattern as checkbox's
          accent). The circular shape stays hardcoded, not a knob. -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Radio (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <radiogroup>
             <radio label="Option A"/>
             <radio label="Option B" checked="true"/>
         </radiogroup>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Radio (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-radio-border-color:#6750a4; --zk-radio-accent:#6750a4">
         <radiogroup>
             <radio label="Option A"/>
@@ -604,13 +604,13 @@
          (h:div), mirroring notification.zul's own demo, since Notification is a
          transient JS popup, not an embeddable ZUL component. -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Notification (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <h:div class="z-notification" style="position:relative">
             <h:div class="z-notification-content">Default notification message</h:div>
         </h:div>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Notification (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-notification-bg:#eef2ff; --zk-notification-fg:#1a1a2e; --zk-notification-radius:0px">
         <h:div class="z-notification" style="position:relative">
             <h:div class="z-notification-content">Scoped notification message</h:div>
@@ -626,7 +626,7 @@
          own demo, since Toast is a transient JS popup, not an embeddable ZUL
          component. -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Toast (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <h:div class="z-toast z-toast-info">
             <h:i class="z-toast-icon z-icon-info"></h:i>
             <h:div class="z-toast-content">Default toast message</h:div>
@@ -634,7 +634,7 @@
         </h:div>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Toast (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-toast-bg:#eef2ff; --zk-toast-fg:#1a1a2e; --zk-toast-radius:0px; --zk-toast-accent:#6750a4">
         <h:div class="z-toast z-toast-info">
             <h:i class="z-toast-icon z-icon-info"></h:i>
@@ -650,11 +650,11 @@
          token, not a knob; disabled stays on its own literal, not knob-driven
          (same convention as button/input/rating). -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="A / Link (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <a href="https://www.zkoss.org" label="Default Link"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="A / Link (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-a-fg:#6750a4">
         <a href="https://www.zkoss.org" label="Scoped Link"/>
     </div>
@@ -667,11 +667,11 @@
          convention as datebox/timebox). readonly="false" works around
          ZK-6122 (a bare <timepicker/> renders readonly=true on the client). -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Timepicker (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <timepicker format="HH:mm" readonly="false"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Timepicker (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-timepicker-radius:0px; --zk-timepicker-border-color:#6750a4">
         <timepicker format="HH:mm" readonly="false"/>
     </div>
@@ -694,11 +694,11 @@
         chosenboxThemingModel.addToSelection(chosenboxThemingModel.get(1));
     </zscript>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Chosenbox (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <chosenbox model="${chosenboxThemingModel}" width="220px"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Chosenbox (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-chosenbox-radius:0px; --zk-chosenbox-border-color:#6750a4;
                 --zk-chosenbox-item-bg:#efe6ff; --zk-chosenbox-item-focus-bg:#6750a4">
         <chosenbox model="${chosenboxThemingModel}" width="220px"/>
@@ -722,11 +722,11 @@
         cascaderThemingModel.addToSelection(cascaderThemingLeaf);
     </zscript>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Cascader (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <cascader model="${cascaderThemingModel}" width="200px"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Cascader (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-cascader-radius:0px; --zk-cascader-border-color:#6750a4; --zk-cascader-fg:#6750a4">
         <cascader model="${cascaderThemingModel}" width="200px"/>
     </div>
@@ -747,11 +747,11 @@
         searchboxThemingModel.addToSelection(searchboxThemingModel.get(0));
     </zscript>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Searchbox (default)"/></div>
-    <div sclass="z-hstack z-mb-6 z-align-center">
+    <div sclass="z-hstack z-mb-6 z-items-center">
         <searchbox model="${searchboxThemingModel}" width="200px"/>
     </div>
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Searchbox (regional override)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center z-p-4 z-bg-surface-variant z-rounded"
+    <div sclass="z-hstack z-mb-8 z-items-center z-p-4 z-bg-surface-variant z-rounded"
          style="--zk-searchbox-radius:0px; --zk-searchbox-border-color:#6750a4; --zk-searchbox-fg:#6750a4">
         <searchbox model="${searchboxThemingModel}" width="200px"/>
     </div>
@@ -880,7 +880,7 @@
          button's icon color and hover overlay stay on base tokens, not
          knob-driven. -->
     <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Coachmark (default)"/></div>
-    <div sclass="z-hstack z-mb-8 z-align-center">
+    <div sclass="z-hstack z-mb-8 z-items-center">
         <button id="coachmarkTarget" label="Target Button"/>
         <button label="Show Coachmark" onClick="coachmarkTheming.open()"/>
         <coachmark id="coachmarkTheming" visible="false" target="coachmarkTarget" position="after_center">

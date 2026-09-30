@@ -135,7 +135,7 @@
 容器直接掛通用 utility，用 `display:contents` 攤平列 wrapper，只注入欄數：
 
 ```xml
-<div sclass="z-d-grid z-grid-cols-auto z-overflow-x-auto z-col-gap-6 z-row-gap-2 z-align-start"
+<div sclass="z-d-grid z-grid-cols-auto z-overflow-x-auto z-gap-x-6 z-gap-y-2 z-items-start"
      style="--zk-cols:${arg.cols.size()}; --zk-col-min:min-content">
     <div sclass="z-grid-col-full ...">${arg.title}</div>   <!-- 區塊標題橫跨整寬 -->
     <div sclass="z-d-contents">                             <!-- 表頭列：wrapper 透明化 -->

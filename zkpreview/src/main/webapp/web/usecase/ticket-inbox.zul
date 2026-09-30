@@ -15,7 +15,7 @@
                 <listitem selected="true">
                     <listcell>
                         <div sclass="z-d-flex z-flex-col z-gap-1 z-py-1">
-                            <div sclass="z-d-flex z-flex-row z-align-center z-gap-2">
+                            <div sclass="z-d-flex z-flex-row z-items-center z-gap-2">
                                 <chip label="High" severity="danger"/>
                                 <label value="Login fails after password reset" sclass="z-fw-medium"/>
                             </div>
@@ -29,7 +29,7 @@
                 <listitem>
                     <listcell>
                         <div sclass="z-d-flex z-flex-col z-gap-1 z-py-1">
-                            <div sclass="z-d-flex z-flex-row z-align-center z-gap-2">
+                            <div sclass="z-d-flex z-flex-row z-items-center z-gap-2">
                                 <chip label="Med" severity="warning"/>
                                 <label value="Invoice PDF not downloading"/>
                             </div>
@@ -43,7 +43,7 @@
                 <listitem>
                     <listcell>
                         <div sclass="z-d-flex z-flex-col z-gap-1 z-py-1">
-                            <div sclass="z-d-flex z-flex-row z-align-center z-gap-2">
+                            <div sclass="z-d-flex z-flex-row z-items-center z-gap-2">
                                 <chip label="Low" severity="secondary"/>
                                 <label value="Feature request: dark mode"/>
                             </div>
@@ -57,7 +57,7 @@
                 <listitem>
                     <listcell>
                         <div sclass="z-d-flex z-flex-col z-gap-1 z-py-1">
-                            <div sclass="z-d-flex z-flex-row z-align-center z-gap-2">
+                            <div sclass="z-d-flex z-flex-row z-items-center z-gap-2">
                                 <chip label="Low" severity="secondary"/>
                                 <label value="Thanks for the quick fix!"/>
                             </div>
@@ -92,7 +92,7 @@
                 </div>
             </div>
 
-            <div sclass="z-d-flex z-flex-row z-flex-wrap z-gap-4 z-align-center">
+            <div sclass="z-d-flex z-flex-row z-flex-wrap z-gap-4 z-items-center">
                 <textbox placeholder="Type a reply…" hflex="1" sclass="z-flex-1 z-min-w-0"/>
                 <button label="Send" sclass="z-button-primary"/>
             </div>

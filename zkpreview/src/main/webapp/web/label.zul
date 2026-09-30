@@ -39,16 +39,16 @@
         </div>
     </div>
 
-    <div sclass="z-mb-3"><label sclass="z-text-sm z-fw-medium z-text-on-surface" value="Fix — only the selection controls need it: z-d-flex z-align-center z-gap-3 centres the radio / checkbox label"/></div>
+    <div sclass="z-mb-3"><label sclass="z-text-sm z-fw-medium z-text-on-surface" value="Fix — only the selection controls need it: z-d-flex z-items-center z-gap-3 centres the radio / checkbox label"/></div>
     <div sclass="z-vstack">
-        <div sclass="z-d-flex z-align-center z-gap-3">
+        <div sclass="z-d-flex z-items-center z-gap-3">
             <label value="Subscribe"/>
             <radiogroup>
                 <radio label="Yes"/>
                 <radio label="No"/>
             </radiogroup>
         </div>
-        <div sclass="z-d-flex z-align-center z-gap-3">
+        <div sclass="z-d-flex z-items-center z-gap-3">
             <label value="Notify"/>
             <checkbox label="By email"/>
         </div>

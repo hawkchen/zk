@@ -9,31 +9,31 @@
     <div sclass="z-card">
         <label value="Heading Utilities  (.z-h1 — .z-h7)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <vlayout>
-            <div sclass="z-d-flex z-align-baseline z-gap-3">
+            <div sclass="z-d-flex z-items-baseline z-gap-3">
                 <label value="Heading 1 — Display Large" sclass="z-h1"/>
                 <label value=".z-h1  2rem / 700" sclass="z-text-muted z-text-sm"/>
             </div>
-            <div sclass="z-d-flex z-align-baseline z-gap-3">
+            <div sclass="z-d-flex z-items-baseline z-gap-3">
                 <label value="Heading 2 — Display Medium" sclass="z-h2"/>
                 <label value=".z-h2  1.75rem / 700" sclass="z-text-muted z-text-sm"/>
             </div>
-            <div sclass="z-d-flex z-align-baseline z-gap-3">
+            <div sclass="z-d-flex z-items-baseline z-gap-3">
                 <label value="Heading 3 — Headline Large" sclass="z-h3"/>
                 <label value=".z-h3  1.5rem / 600" sclass="z-text-muted z-text-sm"/>
             </div>
-            <div sclass="z-d-flex z-align-baseline z-gap-3">
+            <div sclass="z-d-flex z-items-baseline z-gap-3">
                 <label value="Heading 4 — Headline Small" sclass="z-h4"/>
                 <label value=".z-h4  1.25rem / 600" sclass="z-text-muted z-text-sm"/>
             </div>
-            <div sclass="z-d-flex z-align-baseline z-gap-3">
+            <div sclass="z-d-flex z-items-baseline z-gap-3">
                 <label value="Heading 5 — Title Large" sclass="z-h5"/>
                 <label value=".z-h5  1.125rem / 600" sclass="z-text-muted z-text-sm"/>
             </div>
-            <div sclass="z-d-flex z-align-baseline z-gap-3">
+            <div sclass="z-d-flex z-items-baseline z-gap-3">
                 <label value="Heading 6 — Title Small" sclass="z-h6"/>
                 <label value=".z-h6  0.875rem / 600" sclass="z-text-muted z-text-sm"/>
             </div>
-            <div sclass="z-d-flex z-align-baseline z-gap-3">
+            <div sclass="z-d-flex z-items-baseline z-gap-3">
                 <label value="Heading 7 — Label Large" sclass="z-h7"/>
                 <label value=".z-h7  0.75rem / 500" sclass="z-text-muted z-text-sm"/>
             </div>
@@ -44,18 +44,18 @@
     <div sclass="z-card">
         <label value="Font Size Scale  (.z-text-xs … .z-text-7xl)" sclass="z-d-block z-text-base z-fw-medium z-text-on-surface z-mb-3"/>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px 24px">
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-xs"/><label value=".z-text-xs   11px" sclass="z-text-muted z-text-xs"/></div>
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-sm"/><label value=".z-text-sm   12px" sclass="z-text-muted z-text-xs"/></div>
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-md"/><label value=".z-text-md   13px" sclass="z-text-muted z-text-xs"/></div>
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-base"/><label value=".z-text-base 14px" sclass="z-text-muted z-text-xs"/></div>
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-lg"/><label value=".z-text-lg   16px" sclass="z-text-muted z-text-xs"/></div>
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-xl"/><label value=".z-text-xl   22px" sclass="z-text-muted z-text-xs"/></div>
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-2xl"/><label value=".z-text-2xl  24px" sclass="z-text-muted z-text-xs"/></div>
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-3xl"/><label value=".z-text-3xl  28px" sclass="z-text-muted z-text-xs"/></div>
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-4xl"/><label value=".z-text-4xl  32px" sclass="z-text-muted z-text-xs"/></div>
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-5xl"/><label value=".z-text-5xl  36px" sclass="z-text-muted z-text-xs"/></div>
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-6xl"/><label value=".z-text-6xl  45px" sclass="z-text-muted z-text-xs"/></div>
-            <div sclass="z-d-flex z-align-baseline z-gap-2"><label value="Aa" sclass="z-text-7xl"/><label value=".z-text-7xl  57px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-xs"/><label value=".z-text-xs   11px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-sm"/><label value=".z-text-sm   12px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-md"/><label value=".z-text-md   13px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-base"/><label value=".z-text-base 14px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-lg"/><label value=".z-text-lg   16px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-xl"/><label value=".z-text-xl   22px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-2xl"/><label value=".z-text-2xl  24px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-3xl"/><label value=".z-text-3xl  28px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-4xl"/><label value=".z-text-4xl  32px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-5xl"/><label value=".z-text-5xl  36px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-6xl"/><label value=".z-text-6xl  45px" sclass="z-text-muted z-text-xs"/></div>
+            <div sclass="z-d-flex z-items-baseline z-gap-2"><label value="Aa" sclass="z-text-7xl"/><label value=".z-text-7xl  57px" sclass="z-text-muted z-text-xs"/></div>
         </div>
     </div>
 

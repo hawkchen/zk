@@ -5,8 +5,8 @@
 
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Basic Stepbar"/></div>
-        <div sclass="z-d-flex z-align-start z-flex-wrap z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+        <div sclass="z-d-flex z-items-start z-flex-wrap z-gap-6 z-py-3">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Active: first step"/></div>
                 <stepbar activeIndex="0" width="600px">
                     <step title="First Step" />
@@ -20,7 +20,7 @@
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Active Index Variants"/></div>
         <div sclass="z-d-flex z-flex-col z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Active: second step"/></div>
                 <stepbar activeIndex="1" width="600px">
                     <step title="First Step" />
@@ -28,7 +28,7 @@
                     <step title="Third Step"/>
                 </stepbar>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Active: third step (complete)"/></div>
                 <stepbar activeIndex="2" width="600px">
                     <step title="First Step" />
@@ -42,7 +42,7 @@
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Error Step"/></div>
         <div sclass="z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Middle step in error state (step.error=&quot;true&quot;)"/></div>
                 <stepbar activeIndex="2" width="600px">
                     <step title="First Step" />
@@ -56,7 +56,7 @@
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Vertical Orientation"/></div>
         <div sclass="z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="orient=&quot;vertical&quot; — connector becomes a vertical stripe"/></div>
                 <stepbar activeIndex="1" orient="vertical">
                     <step title="First Step" />
@@ -70,7 +70,7 @@
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Non-Linear (Clickable) Mode"/></div>
         <div sclass="z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="linear=&quot;false&quot; — steps are clickable, cursor: pointer"/></div>
                 <stepbar activeIndex="1" linear="false" width="600px">
                     <step title="First Step" />
@@ -84,7 +84,7 @@
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Wrapped Label"/></div>
         <div sclass="z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="wrappedLabels=&quot;true&quot; — title stacks below icon; long labels wrap"/></div>
                 <stepbar activeIndex="1" wrappedLabels="true" width="600px">
                     <step title="Submit Order Details" />
@@ -99,7 +99,7 @@
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Single-Child Generation"/></div>
         <div sclass="z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Single step — no connectors rendered"/></div>
                 <stepbar activeIndex="0" width="600px">
                     <step title="Only Step" />

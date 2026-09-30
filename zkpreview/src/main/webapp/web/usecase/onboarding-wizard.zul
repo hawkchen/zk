@@ -56,7 +56,7 @@
     </div>
 
     <!-- Wizard nav -->
-    <div sclass="z-card z-d-flex z-flex-row z-flex-wrap z-gap-4 z-align-center">
+    <div sclass="z-card z-d-flex z-flex-row z-flex-wrap z-gap-4 z-items-center">
         <button label="Back" sclass="z-button-outlined"/>
         <button label="Next" sclass="z-button-primary z-ms-auto"/>
     </div>

@@ -6,8 +6,8 @@
     <div sclass="z-mb-8">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-3"><label sclass="z-text-md z-fw-bold z-text-secondary" value="Listbox — State Gallery"/></div>
 
-        <div sclass="z-d-flex z-flex-wrap z-gap-6 z-align-start z-py-4 z-mb-2">
-            <div sclass="z-d-flex z-flex-col z-align-center z-gap-2">
+        <div sclass="z-d-flex z-flex-wrap z-gap-6 z-items-start z-py-4 z-mb-2">
+            <div sclass="z-d-flex z-flex-col z-items-center z-gap-2">
                 <div sclass="z-text-uppercase z-text-center"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Row States"/></div>
                 <listbox width="280px">
                     <listhead><listheader label="Name"/><listheader label="Role"/></listhead>
@@ -27,8 +27,8 @@
             </div>
         </div>
 
-        <div sclass="z-d-flex z-flex-wrap z-gap-6 z-align-start z-py-4 z-mb-2">
-            <div sclass="z-d-flex z-flex-col z-align-center z-gap-2">
+        <div sclass="z-d-flex z-flex-wrap z-gap-6 z-items-start z-py-4 z-mb-2">
+            <div sclass="z-d-flex z-flex-col z-items-center z-gap-2">
                 <div sclass="z-text-uppercase z-text-center"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Checkmark (multiple — checkbox)"/></div>
                 <listbox width="280px" multiple="true" checkmark="true">
                     <listhead><listheader label="Name"/><listheader label="Role"/></listhead>
@@ -46,7 +46,7 @@
                     </listitem>
                 </listbox>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-center z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-center z-gap-2">
                 <div sclass="z-text-uppercase z-text-center"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Checkmark (single — radio)"/></div>
                 <listbox width="280px" checkmark="true">
                     <listhead><listheader label="Name"/><listheader label="Role"/></listhead>

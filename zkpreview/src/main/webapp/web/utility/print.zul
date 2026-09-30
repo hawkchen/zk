@@ -26,7 +26,7 @@
     </div>
 
     <!-- live demo -->
-    <div sclass="z-d-flex z-gap-2 z-flex-wrap z-align-center z-mb-3">
+    <div sclass="z-d-flex z-gap-2 z-flex-wrap z-items-center z-mb-3">
         <div sclass="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-d-print-none"><label sclass="z-text-sm z-fw-medium" value="Screen only · hidden when printed"/></div>
         <div sclass="z-bg-success-container z-rounded-xs z-py-2 z-px-3 z-d-none z-d-print-block"><label sclass="z-text-sm z-fw-medium" value="Print only · appears in Print Preview"/></div>
     </div>
@@ -37,7 +37,7 @@
 <div class="z-d-none z-d-print-block">Confidential — printed copy</div>]]></label></div>
 
     <!-- value reference -->
-    <div sclass="z-d-grid z-grid-cols-auto z-col-gap-4 z-row-gap-2 z-mb-8 z-align-center" style="--zk-cols: 2; --zk-col-min: 160px">
+    <div sclass="z-d-grid z-grid-cols-auto z-gap-x-4 z-gap-y-2 z-mb-8 z-items-center" style="--zk-cols: 2; --zk-col-min: 160px">
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Class"/></div>
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Effect in @media print"/></div>
         <div sclass="z-text-sm"><h:code>z-d-print-none</h:code></div><div sclass="z-text-sm z-text-secondary"><h:code>display: none</h:code> — drop from the printout</div>
@@ -55,7 +55,7 @@
     <div sclass="z-text-sm z-text-secondary z-mb-3">
         No opt-in needed — these fire for every Marble page under <h:code>@media print</h:code>. Brand colors and backgrounds are <h:b>kept</h:b> (no ink-saving).
     </div>
-    <div sclass="z-d-grid z-grid-cols-auto z-col-gap-4 z-row-gap-2 z-mb-8 z-align-center" style="--zk-cols: 2; --zk-col-min: 200px">
+    <div sclass="z-d-grid z-grid-cols-auto z-gap-x-4 z-gap-y-2 z-mb-8 z-items-center" style="--zk-cols: 2; --zk-col-min: 200px">
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="What"/></div>
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Why"/></div>
         <div><label sclass="z-text-sm z-fw-medium" value="Hide fixed chrome"/></div><div><label sclass="z-text-sm z-text-secondary" value="Modal scrims, drag/resize fakers, toasts, the loading bar, drawers and the floating error panel never belong on paper."/></div>

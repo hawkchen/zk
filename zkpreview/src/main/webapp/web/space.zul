@@ -5,8 +5,8 @@
 
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Space (bar=false, default)"/></div>
-        <div sclass="z-d-flex z-align-start z-flex-wrap z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+        <div sclass="z-d-flex z-items-start z-flex-wrap z-gap-6 z-py-3">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Default (no bar)"/></div>
                 <hlayout>
                     <button label="Left"/>
@@ -19,8 +19,8 @@
 
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Space (bar=true — renders separator bar)"/></div>
-        <div sclass="z-d-flex z-align-start z-flex-wrap z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+        <div sclass="z-d-flex z-items-start z-flex-wrap z-gap-6 z-py-3">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="bar=&quot;true&quot;"/></div>
                 <hlayout>
                     <button label="Left"/>
@@ -33,8 +33,8 @@
 
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Space with Spacing"/></div>
-        <div sclass="z-d-flex z-align-start z-flex-wrap z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+        <div sclass="z-d-flex z-items-start z-flex-wrap z-gap-6 z-py-3">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="spacing=&quot;20px&quot; / bar + spacing=&quot;40px&quot;"/></div>
                 <hlayout>
                     <button label="A"/>

@@ -185,7 +185,7 @@
         <div sclass="z-d-grid z-grid-cols-2 z-gap-6">
             <div>
                 <label value="Vertical (margin-top on child #2+)" sclass="z-d-block z-text-sm z-fw-semibold z-mb-2"/>
-                <div sclass="z-d-grid z-grid-cols-auto-1fr z-col-gap-4 z-row-gap-2">
+                <div sclass="z-d-grid z-grid-cols-auto-1fr z-gap-x-4 z-gap-y-2">
                     <label value=".z-vstack-sm" sclass="z-text-sm z-text-secondary"/><label value="8px"  sclass="z-text-sm"/>
                     <label value=".z-vstack"    sclass="z-text-sm z-text-secondary"/><label value="12px (default)" sclass="z-text-sm"/>
                     <label value=".z-vstack-md" sclass="z-text-sm z-text-secondary"/><label value="16px" sclass="z-text-sm"/>
@@ -195,7 +195,7 @@
             </div>
             <div>
                 <label value="Horizontal (flex + gap, wraps)" sclass="z-d-block z-text-sm z-fw-semibold z-mb-2"/>
-                <div sclass="z-d-grid z-grid-cols-auto-1fr z-col-gap-4 z-row-gap-2">
+                <div sclass="z-d-grid z-grid-cols-auto-1fr z-gap-x-4 z-gap-y-2">
                     <label value=".z-hstack-sm" sclass="z-text-sm z-text-secondary"/><label value="8px"  sclass="z-text-sm"/>
                     <label value=".z-hstack"    sclass="z-text-sm z-text-secondary"/><label value="12px (default)" sclass="z-text-sm"/>
                     <label value=".z-hstack-md" sclass="z-text-sm z-text-secondary"/><label value="16px" sclass="z-text-sm"/>

@@ -69,7 +69,7 @@ beside a `textbox`/`combobox` already centres in a plain block `<div>` — leave
 For a radio/checkbox row, wrap it in a container that **declares centre
 cross-alignment** (verified 0px):
 
-- a flex row — `<div sclass="z-d-flex z-align-center z-gap-3">` (add `z-gap-*`: flex
+- a flex row — `<div sclass="z-d-flex z-items-center z-gap-3">` (add `z-gap-*`: flex
   collapses inter-element whitespace, so without it the label and field touch), or
 - `<hlayout valign="middle">` / `<hbox valign="middle">` (equivalent ZK-attribute form).
 

@@ -7,7 +7,7 @@
         <div sclass="z-py-3 z-d-flex z-flex-col z-gap-4">
             <barcodescanner type="QR" width="400px" height="400px" continuous="false"
                             onDetect="result.value = event.result"/>
-            <div sclass="z-d-flex z-align-center z-gap-3">
+            <div sclass="z-d-flex z-items-center z-gap-3">
                 <div><label sclass="z-text-sm z-text-secondary" value="Scan result:"/></div>
                 <label id="result"/>
             </div>

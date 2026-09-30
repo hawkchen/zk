@@ -563,7 +563,7 @@ ${lucideList}
 function generateIconsZul(iconNames) {
     const destPath = path.join(ZK_ROOT, 'zkpreview/src/main/webapp/icons-lucide.zul');
     const entries = iconNames.map(name =>
-        `            <div sclass="z-d-flex z-flex-col z-align-center z-gap-1 z-text-center"><span sclass="z-icon-${name}" style="font-size:24px; color:var(--zk-color-primary)"/><label sclass="z-text-xs z-text-secondary" style="word-break:break-all" value="${name}"/></div>`
+        `            <div sclass="z-d-flex z-flex-col z-items-center z-gap-1 z-text-center"><span sclass="z-icon-${name}" style="font-size:24px; color:var(--zk-color-primary)"/><label sclass="z-text-xs z-text-secondary" style="word-break:break-all" value="${name}"/></div>`
     ).join('\n');
 
     const zul = `<?page title="Lucide Icons" contentType="text/html;charset=UTF-8"?>

@@ -19,15 +19,15 @@
         <window id="demoWin" title="Demo Window" border="normal" width="400px">
             <div sclass="z-p-4 z-d-flex z-flex-col z-gap-3">
                 <div><label sclass="z-text-sm z-text-secondary" value="This window demonstrates a component-level busy indicator."/></div>
-                <div sclass="z-d-flex z-align-center z-gap-2">
+                <div sclass="z-d-flex z-items-center z-gap-2">
                     <label value="Name:" sclass="z-fw-medium" width="60px"/>
                     <textbox value="John Doe" readonly="true" hflex="1"/>
                 </div>
-                <div sclass="z-d-flex z-align-center z-gap-2">
+                <div sclass="z-d-flex z-items-center z-gap-2">
                     <label value="Email:" sclass="z-fw-medium" width="60px"/>
                     <textbox value="john@example.com" readonly="true" hflex="1"/>
                 </div>
-                <div sclass="z-d-flex z-align-center z-gap-2">
+                <div sclass="z-d-flex z-items-center z-gap-2">
                     <label value="Role:" sclass="z-fw-medium" width="60px"/>
                     <textbox value="Administrator" readonly="true" hflex="1"/>
                 </div>
@@ -38,7 +38,7 @@
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Render Defer"/></div>
         <div sclass="z-py-3 z-d-flex z-flex-col z-gap-4">
             <div><label sclass="z-text-sm z-text-secondary" value="Content with renderdefer=&quot;2000&quot; — renders after a 2-second delay:"/></div>
-            <div sclass="z-d-flex z-align-center z-gap-2">
+            <div sclass="z-d-flex z-items-center z-gap-2">
                 <span renderdefer="2000">Deferred content loaded</span>
             </div>
         </div>

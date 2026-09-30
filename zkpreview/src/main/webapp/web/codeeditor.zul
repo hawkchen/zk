@@ -148,7 +148,7 @@ function boot(cfg) {
     <div sclass="z-mb-8">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Focus order"/></div>
         <div sclass="z-mb-4"><label sclass="z-text-sm z-text-secondary" value="Tab moves through the editor rather than being trapped by it."/></div>
-        <div sclass="z-hstack z-gap-3 z-align-center">
+        <div sclass="z-hstack z-gap-3 z-items-center">
             <textbox placeholder="Tab from here"/>
             <codeeditor language="sql" width="300px" height="80px" value="SELECT * FROM orders"/>
             <button label="the next stop"/>

@@ -6,8 +6,8 @@
     <div sclass="z-mb-8">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-3"><label sclass="z-text-md z-fw-bold z-text-secondary" value="Panel — State Gallery"/></div>
 
-        <div sclass="z-d-flex z-flex-wrap z-gap-6 z-align-start z-py-4 z-mb-2">
-            <div sclass="z-d-flex z-flex-col z-align-center z-gap-2">
+        <div sclass="z-d-flex z-flex-wrap z-gap-6 z-items-start z-py-4 z-mb-2">
+            <div sclass="z-d-flex z-flex-col z-items-center z-gap-2">
                 <div sclass="z-text-uppercase z-text-center"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Default"/></div>
                 <panel title="Panel" border="rounded" width="220px">
                     <panelchildren>Content</panelchildren>
@@ -18,8 +18,8 @@
 
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Rounded Border — Full Controls"/></div>
-        <div sclass="z-d-flex z-align-start z-flex-wrap z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+        <div sclass="z-d-flex z-items-start z-flex-wrap z-gap-6 z-py-3">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="border=&quot;rounded&quot;"/></div>
                 <panel border="rounded" height="250px" width="280px"
                     maximizable="true" minimizable="true" collapsible="true" closable="true"
@@ -29,7 +29,7 @@
                     <toolbar mold="panel">Footer Toolbar</toolbar>
                 </panel>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="border=&quot;normal&quot;"/></div>
                 <panel border="normal" height="250px" width="280px"
                     maximizable="true" minimizable="true" collapsible="true" closable="true"
@@ -44,8 +44,8 @@
 
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="No Border — Full Controls"/></div>
-        <div sclass="z-d-flex z-align-start z-flex-wrap z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+        <div sclass="z-d-flex z-items-start z-flex-wrap z-gap-6 z-py-3">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="No border, with title"/></div>
                 <panel height="250px" width="280px"
                     maximizable="true" minimizable="true" collapsible="true" closable="true"
@@ -60,8 +60,8 @@
 
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Without Toolbar"/></div>
-        <div sclass="z-d-flex z-align-start z-flex-wrap z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+        <div sclass="z-d-flex z-items-start z-flex-wrap z-gap-6 z-py-3">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="border=&quot;rounded&quot;"/></div>
                 <panel border="rounded" height="200px" width="280px"
                     maximizable="true" minimizable="true" collapsible="true" closable="true"
@@ -69,7 +69,7 @@
                     <panelchildren>Panel Content</panelchildren>
                 </panel>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="border=&quot;normal&quot;"/></div>
                 <panel border="normal" height="200px" width="280px"
                     maximizable="true" minimizable="true" collapsible="true" closable="true"
@@ -77,7 +77,7 @@
                     <panelchildren>Panel Content</panelchildren>
                 </panel>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="No border, with title"/></div>
                 <panel height="200px" width="280px"
                     maximizable="true" minimizable="true" collapsible="true" closable="true"
@@ -85,19 +85,19 @@
                     <panelchildren>Panel Content</panelchildren>
                 </panel>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="No title, rounded"/></div>
                 <panel border="rounded" height="200px" width="280px">
                     <panelchildren>Panel Content (no title)</panelchildren>
                 </panel>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="No title, normal"/></div>
                 <panel border="normal" height="200px" width="280px">
                     <panelchildren>Panel Content (no title)</panelchildren>
                 </panel>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="No title, no border"/></div>
                 <panel height="200px" width="280px">
                     <panelchildren>Panel Content (no title)</panelchildren>
@@ -119,15 +119,15 @@
 
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Collapsed State"/></div>
-        <div sclass="z-d-flex z-align-start z-flex-wrap z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+        <div sclass="z-d-flex z-items-start z-flex-wrap z-gap-6 z-py-3">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="collapsed (open=&quot;false&quot;)"/></div>
                 <panel title="Collapsed Panel" border="rounded" width="280px"
                     collapsible="true" open="false">
                     <panelchildren>Panel Content</panelchildren>
                 </panel>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="expanded (open=&quot;true&quot;)"/></div>
                 <panel title="Expanded Panel" border="rounded" width="280px"
                     collapsible="true" open="true">

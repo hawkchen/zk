@@ -115,7 +115,7 @@
     <div sclass="z-mb-10">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-1"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="2.1 · SaaS pricing plan comparison"/></div>
         <div sclass="z-text-sm z-text-secondary z-mb-4">Tool: <h:code>z-grid-cols-auto</h:code> + <h:code>--zk-cols: 3</h:code>. Each feature row keeps the plan columns aligned; the last row holds the CTA buttons.</div>
-        <div sclass="z-d-grid z-grid-cols-auto z-gap-3 z-align-center" style="--zk-cols: 3">
+        <div sclass="z-d-grid z-grid-cols-auto z-gap-3 z-items-center" style="--zk-cols: 3">
             <div/>
             <div sclass="z-card z-text-center"><div><label sclass="z-fw-semibold z-text-on-surface" value="Free"/></div><div><label sclass="z-text-2xl z-fw-bold z-text-primary" value="$0"/></div><div><label sclass="z-text-xs z-text-secondary" value="/ mo"/></div></div>
             <div sclass="z-card z-text-center z-bg-primary-container"><div><label sclass="z-fw-semibold z-text-on-surface" value="Pro"/></div><div><label sclass="z-text-2xl z-fw-bold z-text-primary" value="$29"/></div><div><label sclass="z-text-xs z-text-secondary" value="/ mo"/></div></div>
@@ -201,7 +201,7 @@
     <div sclass="z-mb-10">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-1"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="2.5 · System settings form"/></div>
         <div sclass="z-text-sm z-text-secondary z-mb-4">Tool: <h:code>z-grid-cols-auto-1fr</h:code> (the N=1 special case of <h:code>z-grid-cols-auto</h:code>). The label column is auto-width and the field fills the rest, keeping labels and inputs neatly aligned.</div>
-        <div sclass="z-d-grid z-grid-cols-auto-1fr z-gap-3 z-align-center" style="max-width:560px">
+        <div sclass="z-d-grid z-grid-cols-auto-1fr z-gap-3 z-items-center" style="max-width:560px">
             <div><label sclass="z-text-sm z-text-secondary" value="Display name"/></div>
             <textbox value="Acme Corp" hflex="1"/>
             <div><label sclass="z-text-sm z-text-secondary" value="Contact email"/></div>

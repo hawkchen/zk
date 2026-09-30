@@ -22,7 +22,7 @@
     <div sclass="z-text-sm z-text-secondary z-mb-3">
         Defined in <h:code>tokens/_zindex.css</h:code> (values equal the pre-existing hard-coded numbers — naming them is zero visual change). <h:b>Load-bearing</h:b> = CSS is the real stacking authority (the element is not a ZK float).
     </div>
-    <div sclass="z-d-grid z-grid-cols-auto z-col-gap-4 z-row-gap-2 z-mb-8 z-align-center" style="--zk-cols: 3; --zk-col-min: 130px">
+    <div sclass="z-d-grid z-grid-cols-auto z-gap-x-4 z-gap-y-2 z-mb-8 z-items-center" style="--zk-cols: 3; --zk-col-min: 130px">
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Token"/></div>
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Value"/></div>
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Role"/></div>
@@ -67,7 +67,7 @@ setVisible(true) {                 // showing a _floating widget:
     <div sclass="z-text-sm z-text-secondary z-mb-3">
         For <h:b>app-authored</h:b> positioned elements (sticky headers, custom overlays) — <h:b>not</h:b> ZK widgets. Compose with a <h:code>.z-position-*</h:code> class (z-index needs a positioned element). The chips below each carry one utility:
     </div>
-    <div sclass="z-d-flex z-gap-2 z-flex-wrap z-align-center z-mb-3">
+    <div sclass="z-d-flex z-gap-2 z-flex-wrap z-items-center z-mb-3">
         <div sclass="z-position-relative z-index-nav z-bg-primary-container z-rounded-xs z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="z-index-nav (1000)"/></div>
         <div sclass="z-position-relative z-index-float-fallback z-bg-primary-container z-rounded-xs z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="z-index-float-fallback (1800)"/></div>
         <div sclass="z-position-relative z-index-loading z-bg-primary-container z-rounded-xs z-py-2 z-px-3"><label sclass="z-text-sm z-fw-medium" value="z-index-loading (1450)"/></div>

@@ -5,7 +5,7 @@
 
     <div>
         <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Sizes (initials)"/></div>
-        <div sclass="z-d-flex z-gap-6 z-align-end">
+        <div sclass="z-d-flex z-gap-6 z-items-end">
             <avatar label="AB" size="small"/>
             <avatar label="AB" size="medium"/>
             <avatar label="AB" size="large"/>
@@ -14,7 +14,7 @@
 
     <div>
         <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Shapes"/></div>
-        <div sclass="z-d-flex z-gap-6 z-align-center">
+        <div sclass="z-d-flex z-gap-6 z-items-center">
             <avatar label="CD" size="medium" shape="circle"/>
             <avatar label="CD" size="medium" shape="square"/>
         </div>
@@ -22,7 +22,7 @@
 
     <div>
         <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Colored initials"/></div>
-        <div sclass="z-d-flex z-gap-3 z-align-center">
+        <div sclass="z-d-flex z-gap-3 z-items-center">
             <avatar label="HW" size="medium" style="background:var(--zk-color-primary);color:var(--zk-color-on-primary)"/>
             <avatar label="JL" size="medium" style="background:var(--zk-color-secondary);color:var(--zk-color-on-secondary)"/>
             <avatar label="SA" size="medium" style="background:var(--zk-color-status-success);color:var(--zk-color-on-status)"/>
@@ -31,7 +31,7 @@
 
     <div>
         <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Image (with initials fallback on load error)"/></div>
-        <div sclass="z-d-flex z-gap-6 z-align-center">
+        <div sclass="z-d-flex z-gap-6 z-items-center">
             <avatar image="~./img/item1.jpg" size="large"/>
             <avatar image="~./img/does-not-exist.jpg" label="FB" size="large"/>
         </div>

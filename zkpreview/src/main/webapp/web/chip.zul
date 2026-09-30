@@ -5,7 +5,7 @@
 
     <div>
         <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Severities"/></div>
-        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-align-center">
+        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-items-center">
             <chip label="Info"      severity="info"/>
             <chip label="Success"   severity="success"/>
             <chip label="Warning"   severity="warning"/>
@@ -16,7 +16,7 @@
 
     <div>
         <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Sizes"/></div>
-        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-align-center">
+        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-items-center">
             <chip label="Small"  severity="info" size="small"/>
             <chip label="Medium" severity="info" size="medium"/>
         </div>
@@ -24,7 +24,7 @@
 
     <div>
         <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Rounded"/></div>
-        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-align-center">
+        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-items-center">
             <chip label="Rounded Info"    severity="info" rounded="true"/>
             <chip label="Rounded Success" severity="success" rounded="true"/>
         </div>
@@ -32,7 +32,7 @@
 
     <div>
         <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Closable"/></div>
-        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-align-center">
+        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-items-center">
             <chip label="Closable"          severity="info" closable="true"/>
             <chip label="Closable Rounded"  severity="success" closable="true" rounded="true"/>
         </div>
@@ -40,7 +40,7 @@
 
     <div>
         <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Disabled"/></div>
-        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-align-center">
+        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-items-center">
             <chip label="Disabled"          severity="info" disabled="true"/>
             <chip label="Disabled Closable" severity="info" disabled="true" closable="true"/>
         </div>
@@ -48,7 +48,7 @@
 
     <div>
         <div sclass="z-text-uppercase z-mb-3"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Custom color (style hook)"/></div>
-        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-align-center">
+        <div sclass="z-d-flex z-gap-3 z-flex-wrap z-items-center">
             <chip label="Custom" style="--zk-chip-bg:#ede7f6;--zk-chip-border:#d1c4e9;--zk-chip-color:#5e35b1"/>
         </div>
     </div>

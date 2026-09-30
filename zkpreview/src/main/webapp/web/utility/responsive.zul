@@ -29,7 +29,7 @@
 <div class="z-d-block z-d-flex-md">...</div>    <!-- block  < md, flex  >= md -->]]></label></div>
 
     <!-- breakpoint scale table -->
-    <div sclass="z-d-grid z-grid-cols-auto z-col-gap-4 z-row-gap-2 z-mb-8 z-align-center" style="--zk-cols: 2; --zk-col-min: 120px">
+    <div sclass="z-d-grid z-grid-cols-auto z-gap-x-4 z-gap-y-2 z-mb-8 z-items-center" style="--zk-cols: 2; --zk-col-min: 120px">
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Abbrev."/></div>
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Min width"/></div>
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Example class"/></div>
@@ -64,14 +64,14 @@
             A mutually-exclusive pair: the hamburger button <h:code>z-d-block z-d-none-md</h:code> (shown only &lt;md) and the nav bar <h:code>z-d-none z-d-flex-md</h:code> (shown only ≥md).
             <h:b>↔ Narrow the window and the nav bar becomes a hamburger button.</h:b>
         </div>
-        <div sclass="z-d-flex z-align-center z-justify-between z-bg-surface-variant z-rounded z-p-3 z-mb-3">
+        <div sclass="z-d-flex z-items-center z-justify-between z-bg-surface-variant z-rounded z-p-3 z-mb-3">
             <div><label sclass="z-fw-semibold z-text-sm" value="Logo"/></div>
             <div sclass="z-d-block z-d-none-md z-bg-primary-container z-rounded z-py-1 z-px-3"><label sclass="z-text-sm z-fw-medium" value="☰ Menu"/></div>
             <div sclass="z-d-none z-d-flex-md z-gap-4 z-text-sm">
                 <div>Home</div><div>Products</div><div>Pricing</div><div>About</div>
             </div>
         </div>
-        <div sclass="z-bg-surface-variant z-rounded z-p-3 z-text-sm z-overflow-x-auto"><label multiline="true" pre="true"><![CDATA[<nav class="z-d-flex z-align-center z-justify-between">
+        <div sclass="z-bg-surface-variant z-rounded z-p-3 z-text-sm z-overflow-x-auto"><label multiline="true" pre="true"><![CDATA[<nav class="z-d-flex z-items-center z-justify-between">
     <span>Logo</span>
     <button class="z-d-block z-d-none-md">☰ Menu</button>   <!-- shown only < md -->
     <div class="z-d-none z-d-flex-md z-gap-4">              <!-- shown only >= md -->
@@ -105,7 +105,7 @@
         <div sclass="z-text-sm z-text-secondary z-mb-3">
             Each chip is visible only in its matching range. <h:b>↔ Drag the window width and watch them appear / disappear one by one</h:b> — the fastest way to confirm the breakpoints.
         </div>
-        <div sclass="z-d-flex z-gap-2 z-flex-wrap z-align-center z-mb-3">
+        <div sclass="z-d-flex z-gap-2 z-flex-wrap z-items-center z-mb-3">
             <div sclass="z-bg-secondary-container z-rounded-xs z-py-2 z-px-3 z-d-block z-d-none-sm"><label sclass="z-text-sm z-fw-medium" value="Visible &lt; sm (&lt;600)"/></div>
             <div sclass="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-d-none z-d-block-sm"><label sclass="z-text-sm z-fw-medium" value="Visible ≥ sm (600)"/></div>
             <div sclass="z-bg-primary-container z-rounded-xs z-py-2 z-px-3 z-d-none z-d-block-md"><label sclass="z-text-sm z-fw-medium" value="Visible ≥ md (900)"/></div>
@@ -141,7 +141,7 @@
                 <div sclass="z-mb-1"><label sclass="z-text-xs z-text-muted" value="Container 300px (&lt; sm) → stacked, no Details"/></div>
                 <div sclass="z-overflow-x-auto">
                     <div sclass="z-container z-bg-surface-low z-border z-rounded z-p-3" style="width:300px">
-                        <div sclass="z-d-block z-cq-flex-md z-gap-3 z-align-center">
+                        <div sclass="z-d-block z-cq-flex-md z-gap-3 z-items-center">
                             <div sclass="z-bg-primary-container z-rounded z-p-3 z-flex-1 z-mb-2"><label sclass="z-text-sm" value="Summary"/></div>
                             <div sclass="z-bg-secondary-container z-rounded z-p-3 z-flex-1 z-mb-2 z-cq-none z-cq-block-sm"><label sclass="z-text-sm" value="Details · ≥sm container"/></div>
                         </div>
@@ -152,7 +152,7 @@
                 <div sclass="z-mb-1"><label sclass="z-text-xs z-text-muted" value="Container 700px (≥ sm, &lt; md) → stacked, with Details"/></div>
                 <div sclass="z-overflow-x-auto">
                     <div sclass="z-container z-bg-surface-low z-border z-rounded z-p-3" style="width:700px">
-                        <div sclass="z-d-block z-cq-flex-md z-gap-3 z-align-center">
+                        <div sclass="z-d-block z-cq-flex-md z-gap-3 z-items-center">
                             <div sclass="z-bg-primary-container z-rounded z-p-3 z-flex-1 z-mb-2"><label sclass="z-text-sm" value="Summary"/></div>
                             <div sclass="z-bg-secondary-container z-rounded z-p-3 z-flex-1 z-mb-2 z-cq-none z-cq-block-sm"><label sclass="z-text-sm" value="Details · ≥sm container"/></div>
                         </div>
@@ -163,7 +163,7 @@
                 <div sclass="z-mb-1"><label sclass="z-text-xs z-text-muted" value="Container 950px (≥ md) → row, with Details"/></div>
                 <div sclass="z-overflow-x-auto">
                     <div sclass="z-container z-bg-surface-low z-border z-rounded z-p-3" style="width:950px">
-                        <div sclass="z-d-block z-cq-flex-md z-gap-3 z-align-center">
+                        <div sclass="z-d-block z-cq-flex-md z-gap-3 z-items-center">
                             <div sclass="z-bg-primary-container z-rounded z-p-3 z-flex-1 z-mb-2"><label sclass="z-text-sm" value="Summary"/></div>
                             <div sclass="z-bg-secondary-container z-rounded z-p-3 z-flex-1 z-mb-2 z-cq-none z-cq-block-sm"><label sclass="z-text-sm" value="Details · ≥sm container"/></div>
                         </div>
@@ -207,7 +207,7 @@
     <div sclass="z-text-sm z-text-secondary z-mt-4 z-mb-3">
         The variables you <h:b>can override at runtime</h:b> are the intrinsic-grid knobs (not the breakpoints) — override them globally at <h:code>:root</h:code>, or inline on the spot:
     </div>
-    <div sclass="z-d-grid z-grid-cols-auto z-col-gap-4 z-row-gap-2 z-mb-3 z-align-center" style="--zk-cols: 1; --zk-col-min: 200px">
+    <div sclass="z-d-grid z-grid-cols-auto z-gap-x-4 z-gap-y-2 z-mb-3 z-items-center" style="--zk-cols: 1; --zk-col-min: 200px">
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Variable"/></div>
         <div sclass="z-text-uppercase"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Purpose"/></div>
         <div sclass="z-text-sm"><h:code>--zk-grid-min</h:code></div><div sclass="z-text-sm z-text-secondary">Min column width for <h:code>z-grid-fill</h:code> (default 180px)</div>

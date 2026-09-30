@@ -104,7 +104,7 @@ the policy is `doc/spec/spacing-policy.md`.
 `pv.css` and every `pv-*` class were deleted. Do not look for them or recreate them. The
 label-column + N-value-column matrix used by the `pv/*-content.zul` templates is:
 
-- container: `z-d-grid z-grid-cols-auto z-overflow-x-auto z-col-gap-6 z-row-gap-2 z-align-start`
+- container: `z-d-grid z-grid-cols-auto z-overflow-x-auto z-gap-x-6 z-gap-y-2 z-items-start`
   with inline `style="--zk-cols: N; --zk-col-min: min-content"`;
 - section title: `z-grid-col-full` (`grid-column: 1 / -1`);
 - each row and the header row: `z-d-contents` (`display: contents`), which flattens the wrapper

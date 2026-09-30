@@ -5,8 +5,8 @@
 
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Caption in Window and Panel"/></div>
-        <div sclass="z-d-flex z-align-start z-flex-wrap z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+        <div sclass="z-d-flex z-items-start z-flex-wrap z-gap-6 z-py-3">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Window with caption"/></div>
                 <window width="380px" height="200px" border="normal">
                     <caption label="Title" image="~./img/volumn.gif">
@@ -16,7 +16,7 @@
                     Window Content
                 </window>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Panel with caption"/></div>
                 <panel width="380px" height="200px" border="normal">
                     <caption label="Title" image="~./img/volumn.gif">
@@ -33,22 +33,22 @@
 
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Caption Variants"/></div>
-        <div sclass="z-d-flex z-align-start z-flex-wrap z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+        <div sclass="z-d-flex z-items-start z-flex-wrap z-gap-6 z-py-3">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Label only"/></div>
                 <window width="260px" height="120px" border="normal">
                     <caption label="Label Only"/>
                     Window Content
                 </window>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Image only"/></div>
                 <window width="260px" height="120px" border="normal">
                     <caption image="~./img/volumn.gif"/>
                     Window Content
                 </window>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Label + image (existing)"/></div>
                 <window width="260px" height="120px" border="normal">
                     <caption label="Title" image="~./img/volumn.gif"/>
@@ -60,8 +60,8 @@
 
     <div sclass="z-mb-6">
         <div sclass="z-text-uppercase z-border-bottom z-pb-2 z-mb-4"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Caption in Groupbox"/></div>
-        <div sclass="z-d-flex z-align-start z-flex-wrap z-gap-6 z-py-3">
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+        <div sclass="z-d-flex z-items-start z-flex-wrap z-gap-6 z-py-3">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Groupbox (default mold)"/></div>
                 <groupbox width="380px" height="200px">
                     <caption label="Title" image="~./img/volumn.gif">
@@ -71,7 +71,7 @@
                     Groupbox Content
                 </groupbox>
             </div>
-            <div sclass="z-d-flex z-flex-col z-align-start z-gap-2">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
                 <div><label sclass="z-text-xs z-text-secondary" value="Groupbox (3d mold)"/></div>
                 <groupbox width="380px" height="200px" mold="3d">
                     <caption label="Title" image="~./img/volumn.gif">
