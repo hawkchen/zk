@@ -19,7 +19,7 @@
                                 <chip label="High" severity="danger"/>
                                 <label value="Login fails after password reset" sclass="z-fw-medium"/>
                             </div>
-                            <div sclass="z-text-xs z-text-muted">
+                            <div sclass="z-text-xs z-text-secondary">
                                 <label value="Dana Lee · 10:24"/>
                                 <chip label="Open" severity="info" sclass="z-ms-2"/>
                             </div>
@@ -33,7 +33,7 @@
                                 <chip label="Med" severity="warning"/>
                                 <label value="Invoice PDF not downloading"/>
                             </div>
-                            <div sclass="z-text-xs z-text-muted">
+                            <div sclass="z-text-xs z-text-secondary">
                                 <label value="Marco P. · 09:51"/>
                                 <chip label="Pending" severity="warning" sclass="z-ms-2"/>
                             </div>
@@ -47,7 +47,7 @@
                                 <chip label="Low" severity="secondary"/>
                                 <label value="Feature request: dark mode"/>
                             </div>
-                            <div sclass="z-text-xs z-text-muted">
+                            <div sclass="z-text-xs z-text-secondary">
                                 <label value="Sara K. · Yesterday"/>
                                 <chip label="Open" severity="info" sclass="z-ms-2"/>
                             </div>
@@ -61,7 +61,7 @@
                                 <chip label="Low" severity="secondary"/>
                                 <label value="Thanks for the quick fix!"/>
                             </div>
-                            <div sclass="z-text-xs z-text-muted">
+                            <div sclass="z-text-xs z-text-secondary">
                                 <label value="Owen T. · Mon"/>
                                 <chip label="Closed" severity="secondary" sclass="z-ms-2"/>
                             </div>
@@ -75,7 +75,7 @@
         <div sclass="z-card z-flex-1 z-min-w-0 z-d-flex z-flex-col z-gap-3">
             <div>
                 <label value="Login fails after password reset" sclass="z-h4 z-d-block"/>
-                <div sclass="z-text-xs z-text-muted z-mt-1">
+                <div sclass="z-text-xs z-text-secondary z-mt-1">
                     <label value="Dana Lee · dana@example.com"/>
                     <chip label="Open" severity="info" sclass="z-ms-2"/>
                 </div>
@@ -84,7 +84,7 @@
             <div sclass="z-d-flex z-flex-col z-gap-3 z-flex-1 z-min-h-0 z-overflow-auto">
                 <div sclass="z-bg-surface-low z-rounded-md z-p-3">
                     <label value="After resetting my password I get 'invalid credentials' even with the new one." sclass="z-d-block"/>
-                    <label value="Dana · 10:24" sclass="z-text-xs z-text-muted"/>
+                    <label value="Dana · 10:24" sclass="z-text-xs z-text-secondary"/>
                 </div>
                 <div sclass="z-bg-primary-container z-rounded-md z-p-3 z-ms-auto z-w-75">
                     <label value="Thanks Dana — can you confirm whether you used the link from the latest email?" sclass="z-d-block"/>

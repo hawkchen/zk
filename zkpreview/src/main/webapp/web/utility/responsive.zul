@@ -138,7 +138,7 @@
         </div>
         <div sclass="z-vstack z-gap-4 z-mb-3">
             <div>
-                <div sclass="z-mb-1"><label sclass="z-text-xs z-text-muted" value="Container 300px (&lt; sm) → stacked, no Details"/></div>
+                <div sclass="z-mb-1"><label sclass="z-text-xs z-text-secondary" value="Container 300px (&lt; sm) → stacked, no Details"/></div>
                 <div sclass="z-overflow-x-auto">
                     <div sclass="z-container z-bg-surface-low z-border z-rounded z-p-3" style="width:300px">
                         <div sclass="z-d-block z-cq-flex-md z-gap-3 z-items-center">
@@ -149,7 +149,7 @@
                 </div>
             </div>
             <div>
-                <div sclass="z-mb-1"><label sclass="z-text-xs z-text-muted" value="Container 700px (≥ sm, &lt; md) → stacked, with Details"/></div>
+                <div sclass="z-mb-1"><label sclass="z-text-xs z-text-secondary" value="Container 700px (≥ sm, &lt; md) → stacked, with Details"/></div>
                 <div sclass="z-overflow-x-auto">
                     <div sclass="z-container z-bg-surface-low z-border z-rounded z-p-3" style="width:700px">
                         <div sclass="z-d-block z-cq-flex-md z-gap-3 z-items-center">
@@ -160,7 +160,7 @@
                 </div>
             </div>
             <div>
-                <div sclass="z-mb-1"><label sclass="z-text-xs z-text-muted" value="Container 950px (≥ md) → row, with Details"/></div>
+                <div sclass="z-mb-1"><label sclass="z-text-xs z-text-secondary" value="Container 950px (≥ md) → row, with Details"/></div>
                 <div sclass="z-overflow-x-auto">
                     <div sclass="z-container z-bg-surface-low z-border z-rounded z-p-3" style="width:950px">
                         <div sclass="z-d-block z-cq-flex-md z-gap-3 z-items-center">

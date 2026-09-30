@@ -337,8 +337,7 @@
     white-space: nowrap;
 }
 
-.z-visually-hidden,
-.z-sr-only {
+.z-visually-hidden {
     position: absolute;
     width: 1px;
     height: 1px;

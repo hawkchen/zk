@@ -54,7 +54,7 @@
             <div><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Default"/></div>
             <div><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Disabled"/></div>
         </div>
-        <div style="grid-column:1/-1" sclass="z-mt-1 z-mb-1"><label sclass="z-text-xs z-text-muted" value="Contained"/></div>
+        <div style="grid-column:1/-1" sclass="z-mt-1 z-mb-1"><label sclass="z-text-xs z-text-secondary" value="Contained"/></div>
         <div sclass="z-d-contents">
             <div><label sclass="z-text-sm z-text-secondary" value="Secondary"/></div>
             <div><button label="Button" sclass="z-button-secondary"/></div>
@@ -80,7 +80,7 @@
             <div><button label="Button" sclass="z-button-info"/></div>
             <div><button label="Button" sclass="z-button-info" disabled="true"/></div>
         </div>
-        <div style="grid-column:1/-1" sclass="z-mt-3 z-mb-1"><label sclass="z-text-xs z-text-muted" value="Outlined"/></div>
+        <div style="grid-column:1/-1" sclass="z-mt-3 z-mb-1"><label sclass="z-text-xs z-text-secondary" value="Outlined"/></div>
         <div sclass="z-d-contents">
             <div><label sclass="z-text-sm z-text-secondary" value="Secondary"/></div>
             <div><button label="Button" sclass="z-button-outlined-secondary"/></div>
@@ -106,7 +106,7 @@
             <div><button label="Button" sclass="z-button-outlined-info"/></div>
             <div><button label="Button" sclass="z-button-outlined-info" disabled="true"/></div>
         </div>
-        <div style="grid-column:1/-1" sclass="z-mt-3 z-mb-1"><label sclass="z-text-xs z-text-muted" value="Text"/></div>
+        <div style="grid-column:1/-1" sclass="z-mt-3 z-mb-1"><label sclass="z-text-xs z-text-secondary" value="Text"/></div>
         <div sclass="z-d-contents">
             <div><label sclass="z-text-sm z-text-secondary" value="Secondary"/></div>
             <div><button label="Button" sclass="z-button-text-secondary"/></div>

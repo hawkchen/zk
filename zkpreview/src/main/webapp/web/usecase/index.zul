@@ -12,7 +12,7 @@
                 <label value="Marble"/>
                 <!-- HEAD commit date + short hash, stamped in at build time so a design
                      reviewer can pin a screenshot to a commit. See UseCaseVM.getCommitStamp(). -->
-                <label value="@load(vm.commitStamp)" sclass="z-text-xs z-fw-regular z-text-muted"/>
+                <label value="@load(vm.commitStamp)" sclass="z-text-xs z-fw-regular z-text-secondary"/>
             </div>
             <div sclass="z-d-flex z-items-center z-gap-2 z-px-2 z-py-2 z-mb-2 z-border-bottom">
                 <label value="Compact density" sclass="z-text-sm z-flex-1"/>
