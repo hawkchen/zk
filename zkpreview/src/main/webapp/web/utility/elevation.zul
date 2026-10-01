@@ -58,6 +58,19 @@
         </div>
     </div>
 
+    <!-- Levels 4 and 5 -->
+    <div sclass="z-paper">
+        <label value="Levels 4 and 5  (.z-elevation-4 / .z-elevation-5)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
+        <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start z-p-2">
+            <div sclass="z-elevation-4 z-bg-surface z-rounded-md z-p-5 pv-elevation-4" style="width:140px"><label value="Level 4" sclass="z-h5 z-d-block"/></div>
+            <div sclass="z-elevation-5 z-bg-surface z-rounded-md z-p-5 pv-elevation-5" style="width:140px"><label value="Level 5" sclass="z-h5 z-d-block"/></div>
+            <window title="Window .z-elevation-5" border="normal" width="220px" sclass="z-elevation-5 pv-elevation-window">
+                <label value="Overrides the window's own shadow"/>
+            </window>
+            <button label="Button .z-elevation-4" sclass="z-elevation-4 pv-elevation-button"/>
+        </div>
+    </div>
+
     <!-- Elevation on dark background -->
     <div sclass="z-paper">
         <label value="Elevation on Tinted Background" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>

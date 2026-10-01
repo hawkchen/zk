@@ -97,6 +97,35 @@
         </div>
     </div>
 
+    <!-- Surface container steps -->
+    <div sclass="z-paper">
+        <label value="Surface Container Steps  (.z-bg-surface-container-lowest → -highest)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
+        <div sclass="z-d-flex z-gap-3 z-flex-wrap">
+            <div sclass="z-bg-surface-container-lowest z-border z-p-3 z-rounded-md pv-bg-lowest"><label value="-lowest"/></div>
+            <div sclass="z-bg-surface-container-low z-border z-p-3 z-rounded-md"><label value="-low"/></div>
+            <div sclass="z-bg-surface-container z-border z-p-3 z-rounded-md"><label value="(base)"/></div>
+            <div sclass="z-bg-surface-container-high z-border z-p-3 z-rounded-md pv-bg-high"><label value="-high"/></div>
+            <div sclass="z-bg-surface-container-highest z-border z-p-3 z-rounded-md pv-bg-highest"><label value="-highest"/></div>
+            <vlayout sclass="z-bg-surface-container-high z-p-3 z-rounded-md pv-bg-vlayout"><label value="Vlayout -high"/></vlayout>
+        </div>
+    </div>
+
+    <!-- Text on containers -->
+    <div sclass="z-paper">
+        <label value="Text on Containers  (.z-text-on-{role}-container)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
+        <div sclass="z-d-flex z-gap-3 z-flex-wrap">
+            <div sclass="z-bg-primary-container z-p-3 z-rounded-md">
+                <label value="Plain label" sclass="z-d-block pv-container-plain"/>
+                <label value="On primary container" sclass="z-text-on-primary-container z-fw-medium pv-on-primary-container"/>
+            </div>
+            <div sclass="z-bg-secondary-container z-p-3 z-rounded-md"><label value="On secondary container" sclass="z-text-on-secondary-container z-fw-medium pv-on-secondary-container"/></div>
+            <div sclass="z-bg-error-container z-p-3 z-rounded-md"><label value="On error container" sclass="z-text-on-error-container z-fw-medium pv-on-error-container"/></div>
+            <div sclass="z-bg-success-container z-p-3 z-rounded-md"><label value="On success container" sclass="z-text-on-success-container z-fw-medium pv-on-success-container"/></div>
+            <div sclass="z-bg-warning-container z-p-3 z-rounded-md"><label value="On warning container" sclass="z-text-on-warning-container z-fw-medium pv-on-warning-container"/></div>
+        </div>
+        <label value="A Label sets its own colour, so the container's text colour never reaches it. Put .z-text-on-*-container on the Label." sclass="z-text-secondary z-text-xs z-mt-3"/>
+    </div>
+
     <!-- Inverse text on dark background -->
     <div sclass="z-paper">
         <label value="Inverse Text" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>

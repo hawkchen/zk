@@ -1,6 +1,6 @@
 # Authoring ZUL pages for the preview app
 
-The preview corpus — `zkpreview/src/main/webapp/web/*.zul`, 159 pages — is the theme's completion
+The preview corpus — `zkpreview/src/main/webapp/web/*.zul`, 162 pages — is the theme's completion
 criterion, not the component list. Two reasons: some components never get a page of their own
 because they are sub-components (listitem), and some styled features map to no single component
 (notification). **The theme is done only when every preview page is verified.** These are the

@@ -203,6 +203,7 @@ const normFiles = [
     'zul/css/utility/_layout.css',
     'zul/css/utility/_typography.css',
     'zul/css/utility/_borders.css',
+    'zul/css/utility/_interactions.css',
     'zul/css/utility/_stack.css',
     'zul/css/utility/_print.css',
     'zul/css/base/_icons.css',

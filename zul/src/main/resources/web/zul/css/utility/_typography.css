@@ -71,8 +71,21 @@
 .z-lh-base { line-height: 1.5; }
 .z-lh-lg   { line-height: 1.75; }
 
-/* White-space */
+/* Text Decoration */
+.z-text-decoration-underline    { text-decoration: underline; }
+.z-text-decoration-line-through { text-decoration: line-through; }
+.z-text-decoration-none         { text-decoration: none; }
+
+/* Font Family */
+.z-font-monospace { font-family: var(--zk-typescale-mono-family); }
+
+/* White-space & word breaking */
+.z-text-wrap   { white-space: normal; }
 .z-text-nowrap { white-space: nowrap; }
+.z-text-break  { word-wrap: break-word; word-break: break-word; }
+.z-whitespace-pre      { white-space: pre; }
+.z-whitespace-pre-line { white-space: pre-line; }
+.z-whitespace-pre-wrap { white-space: pre-wrap; }
 
 /* ── Heading utility classes: z-h1 → z-h7 ──────────────────────
    Apply as sclass on any ZK component (label, div, span, etc.)

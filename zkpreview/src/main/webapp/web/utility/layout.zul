@@ -271,6 +271,37 @@
         </div>
     </div>
 
+    <!-- Align Self, Align Content, Order -->
+    <div sclass="z-paper">
+        <label value="Align Self, Align Content, Order  (.z-self-* / .z-align-content-* / .z-order-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
+        <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start">
+            <div>
+                <div sclass="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-items-start z-gap-2 pv-self-row" style="height:96px">
+                    <button label="start"/>
+                    <button label="center" sclass="z-self-center pv-self-center"/>
+                    <button label="end" sclass="z-self-end pv-self-end"/>
+                    <textbox value="stretch" sclass="z-self-stretch pv-self-stretch" width="80px"/>
+                </div>
+                <label value=".z-self-center / end / stretch on Button and Textbox in a .z-items-start row" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div>
+                <div sclass="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-flex-wrap z-align-content-between z-gap-x-2 pv-align-content" style="width:220px;height:140px">
+                    <button label="One"/><button label="Two"/><button label="Three"/>
+                    <button label="Four"/><button label="Five"/><button label="Six"/>
+                </div>
+                <label value=".z-align-content-between — wrapped rows pushed to top and bottom" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div>
+                <div sclass="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-gap-2 pv-order-row">
+                    <button label="A" sclass="z-order-last pv-order-a"/>
+                    <button label="B" sclass="pv-order-b"/>
+                    <button label="C" sclass="z-order-first pv-order-c"/>
+                </div>
+                <label value="A .z-order-last, C .z-order-first — renders C B A; tab order stays A B C" sclass="z-text-secondary z-text-xs"/>
+            </div>
+        </div>
+    </div>
+
     <!-- Flex Grow / Shrink / Fill -->
     <div sclass="z-paper">
         <label value="Flex Grow, Shrink &amp; Fill  (.z-flex-* / .z-flex-grow-* / .z-flex-shrink-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
@@ -467,6 +498,36 @@
         </div>
     </div>
 
+    <!-- Max & Viewport Sizing -->
+    <div sclass="z-paper">
+        <label value="Max &amp; Viewport Sizing  (.z-max-w-100 / .z-max-h-100 / .z-vw-100 / .z-vh-100 / .z-min-vw-100 / .z-min-vh-100)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
+        <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start">
+            <div>
+                <div sclass="z-bg-surface-container-low z-rounded z-p-3 z-border pv-maxw-box" style="width:160px">
+                    <image src="~./img/sun.jpg" width="400px" sclass="z-max-w-100 z-d-block pv-maxw-image"/>
+                </div>
+                <label value="Image width=400px .z-max-w-100 — shrinks to a 160px box" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div>
+                <div sclass="z-bg-surface-container-low z-rounded z-p-3 z-border pv-maxh-box" style="height:100px">
+                    <image src="~./img/sun.jpg" height="300px" sclass="z-max-h-100 z-d-block pv-maxh-image"/>
+                </div>
+                <label value="Image height=300px .z-max-h-100 — capped at the 100px box" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div>
+                <div sclass="z-bg-surface-container-low z-rounded z-border z-overflow-hidden z-position-relative" style="width:200px;height:100px">
+                    <div sclass="z-vh-100 z-vw-100 z-bg-primary-container z-p-2 pv-viewport">
+                        <label value="100vw x 100vh, clipped by this box" sclass="z-text-on-primary-container z-text-sm"/>
+                    </div>
+                </div>
+                <div sclass="z-overflow-hidden" style="width:200px;height:4px">
+                    <div sclass="z-min-vh-100 z-min-vw-100 pv-min-viewport" style="height:1px;width:1px"/>
+                </div>
+                <label value=".z-vw-100 .z-vh-100 sized to the window; .z-min-vw-100 .z-min-vh-100 grow a 1px div to it" sclass="z-text-secondary z-text-xs"/>
+            </div>
+        </div>
+    </div>
+
     <!-- Overflow -->
     <div sclass="z-paper">
         <label value="Overflow  (.z-overflow-* / .z-overflow-x-* / .z-overflow-y-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
@@ -559,6 +620,14 @@
                     </div>
                 </div>
                 <label value=".z-visually-hidden — extra context for screen readers, visually removed (here: 'Download report (3 MB)')" sclass="z-text-secondary z-text-xs z-mt-1"/>
+            </div>
+            <div style="max-width:320px">
+                <div sclass="z-bg-surface-container-low z-rounded z-p-3 z-border z-d-flex z-flex-col z-gap-2">
+                    <a href="#main-content" label="Skip to main content" sclass="z-visually-hidden-focusable pv-skip-link"/>
+                    <button label="Skip to results" sclass="z-visually-hidden-focusable pv-skip-button"/>
+                    <label value="Press Tab into this box to reveal the links above" sclass="z-text-sm"/>
+                </div>
+                <label value=".z-visually-hidden-focusable on A and Button — hidden until focused" sclass="z-text-secondary z-text-xs z-mt-1"/>
             </div>
         </div>
     </div>

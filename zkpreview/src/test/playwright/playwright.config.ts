@@ -99,6 +99,13 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
+      // Utilities added from doc/utility-class-gap-analysis.md, each checked on a ZK widget:
+      // computed value plus the intended effect. See utility-additions.spec.ts.
+      name: 'utility-additions',
+      testMatch: /utility-additions\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
       // Stacking scale: --zk-index-* tokens + .z-index-* utilities resolve to
       // their values, and the token ladder's three hard constraints hold. See
       // zindex-scale.spec.ts and doc/spec/zindex-scale.md.

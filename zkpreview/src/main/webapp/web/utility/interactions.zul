@@ -1,0 +1,58 @@
+<?page title="Interaction Utilities" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:h="native" xmlns:w="client">
+<style src="~./usecase/usecase.css"/>
+<div sclass="z-p-8 z-d-flex z-flex-col z-gap-4">
+
+    <label value="Interaction Utilities" sclass="z-h2"/>
+    <label value="Pointer events and text selection. Pointer events use .z-pointer-*, because .z-pe-* is already padding-end." sclass="z-text-secondary z-text-sm"/>
+
+    <!-- Pointer events -->
+    <div sclass="z-paper">
+        <label value="Pointer events  (.z-pointer-none / .z-pointer-auto)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
+        <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-1">
+                <button label="Click me" sclass="pv-click-normal" w:onClick="document.body.dataset.pvNormal = 'clicked'"/>
+                <label value="no class — click fires" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-1">
+                <button label="Click me" sclass="z-pointer-none pv-click-none" w:onClick="document.body.dataset.pvNone = 'clicked'"/>
+                <label value=".z-pointer-none — mouse clicks pass through" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-1">
+                <div sclass="z-pointer-none z-d-flex z-gap-2 z-p-2 z-border z-rounded">
+                    <checkbox label="Locked" sclass="pv-check-none"/>
+                    <button label="Opt back in" sclass="z-pointer-auto pv-click-auto" w:onClick="document.body.dataset.pvAuto = 'clicked'"/>
+                </div>
+                <label value=".z-pointer-auto re-enables one child of a .z-pointer-none parent" sclass="z-text-secondary z-text-xs"/>
+            </div>
+        </div>
+        <label value="Mouse only: keyboard focus and Enter still reach the widget. Use disabled to block every input." sclass="z-text-secondary z-text-xs z-mt-3"/>
+    </div>
+
+    <!-- User select -->
+    <div sclass="z-paper">
+        <label value="User select  (.z-user-select-all / auto / none)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
+        <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start">
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-1">
+                <label value="ORD-2026-000417" sclass="z-user-select-all z-font-monospace z-bg-surface-variant z-px-2 z-py-1 z-rounded pv-select-all"/>
+                <label value=".z-user-select-all — one click selects the whole id" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-1 pv-select-none-host">
+                <div>
+                    <label value="Step 3:" sclass="z-user-select-none z-fw-medium pv-select-none"/>
+                    <label value=" copy only this part" sclass="pv-select-rest"/>
+                </div>
+                <label value=".z-user-select-none — the prefix is left out of a copy" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div sclass="z-d-flex z-flex-col z-items-start z-gap-1">
+                <div sclass="z-d-flex z-gap-2">
+                    <button label="Default button"/>
+                    <button label="Copyable button" sclass="z-user-select-auto pv-select-auto"/>
+                </div>
+                <label value="A Button's text is not selectable by default; .z-user-select-auto makes it selectable" sclass="z-text-secondary z-text-xs"/>
+            </div>
+        </div>
+    </div>
+
+</div>
+</zk>

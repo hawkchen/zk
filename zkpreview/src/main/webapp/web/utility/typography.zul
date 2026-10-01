@@ -138,6 +138,63 @@
         </div>
     </div>
 
+    <!-- Text Decoration & Monospace -->
+    <div sclass="z-paper">
+        <label value="Text Decoration &amp; Monospace  (.z-text-decoration-* / .z-font-monospace)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
+        <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start">
+            <div>
+                <label value="Underlined label" sclass="z-text-decoration-underline z-d-block pv-underline"/>
+                <label value=".z-text-decoration-underline" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div>
+                <label value="$49.00" sclass="z-text-decoration-line-through z-text-secondary z-d-block pv-line-through"/>
+                <label value=".z-text-decoration-line-through" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div>
+                <a href="#" label="Hover me: no underline" sclass="z-text-decoration-none z-d-block pv-decoration-none"/>
+                <label value="A .z-text-decoration-none — drops the hover underline" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div>
+                <label value="const id = 417;" sclass="z-font-monospace z-d-block pv-mono-label"/>
+                <label value="Label .z-font-monospace" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div>
+                <textbox value="SELECT * FROM t" sclass="z-font-monospace pv-mono-textbox"/>
+                <label value="Textbox .z-font-monospace" sclass="z-text-secondary z-text-xs z-d-block"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrapping, Breaking & White-space -->
+    <div sclass="z-paper">
+        <label value="Wrapping, Breaking &amp; White-space  (.z-text-wrap / .z-text-break / .z-whitespace-*)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
+        <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start">
+            <div>
+                <button label="Approve and send to finance" sclass="z-d-block pv-button-nowrap" width="140px"/>
+                <button label="Approve and send to finance" sclass="z-text-wrap z-mt-2 pv-button-wrap" width="140px"/>
+                <label value="Both 140px wide: default clips, .z-text-wrap wraps" sclass="z-text-secondary z-text-xs z-d-block"/>
+            </div>
+            <div style="width:160px">
+                <div sclass="z-border z-rounded z-p-2 pv-break-box">
+                    <label value="https://example.com/a/very/long/path/without/any/spaces" sclass="z-text-break pv-break"/>
+                </div>
+                <label value="Label .z-text-break — long URL wraps inside its box" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div style="width:200px">
+                <label value="Line one&#10;Line two&#10;Line three" sclass="z-whitespace-pre-line z-d-block z-border z-rounded z-p-2 pv-pre-line"/>
+                <label value=".z-whitespace-pre-line — newlines in the value are kept" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div style="width:200px">
+                <label value="Qty    Item&#10;2      Widget" sclass="z-whitespace-pre-wrap z-font-monospace z-d-block z-border z-rounded z-p-2 pv-pre-wrap"/>
+                <label value=".z-whitespace-pre-wrap — spaces and newlines kept, still wraps" sclass="z-text-secondary z-text-xs"/>
+            </div>
+            <div style="width:200px">
+                <label value="Name:   Ada&#10;Role:   Engineer" sclass="z-whitespace-pre z-font-monospace z-d-block z-border z-rounded z-p-2 pv-pre"/>
+                <label value=".z-whitespace-pre — kept exactly, never wraps" sclass="z-text-secondary z-text-xs"/>
+            </div>
+        </div>
+    </div>
+
     <!-- Truncation -->
     <div sclass="z-paper">
         <label value="Text Truncation  (.z-text-truncate)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>

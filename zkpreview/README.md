@@ -1,6 +1,6 @@
 # zkpreview — the Marble preview host
 
-A WAR that serves 159 ZUL pages against the **live `zk` / `zkcml` sources**, so you can see what
+A WAR that serves 162 ZUL pages against the **live `zk` / `zkcml` sources**, so you can see what
 Marble actually renders. `settings.gradle` is a composite build that substitutes
 `org.zkoss.zk:zul` (and its siblings) with the `:zul` project in `../../zk`, so the pages show your
 working tree, not a published jar.
@@ -27,7 +27,7 @@ server that seems not to come up.
 
 | Form | URL | Use it for |
 |---|---|---|
-| **Index** | `http://127.0.0.1:8085/` (or `/index.zul`) | The home page: a flat link list of all 159 pages, grouped by directory. Built by `PageIndexVM`, which scans `/web` per request, so a new page shows up without editing anything. |
+| **Index** | `http://127.0.0.1:8085/` (or `/index.zul`) | The home page: a flat link list of all 162 pages, grouped by directory. Built by `PageIndexVM`, which scans `/web` per request, so a new page shows up without editing anything. |
 | **Direct** | `http://127.0.0.1:8085/<page>.zul` | One component in isolation. The stable address — every Playwright spec uses this form. A filter forwards `/<page>.zul` to `/web/<page>.zul`. |
 | **Use-case SPA** | `http://127.0.0.1:8085/usecase/index.zul#<bookmark>` | Browsing with the nav tree; deep-linking a screen. The bookmark is the target's path under the web root minus `.zul` — `#button`, `#usecase/ops-dashboard`, `#utility/colors`. Hash-based, so it survives redirects. |
 | **All-on-one-page** | `http://127.0.0.1:8085/preview.zul` | Scanning every root-level page in one scroll. `ZulListVM` inlines all of them except `coachmark.zul`, which links out because it distorts the host page. |
@@ -71,13 +71,13 @@ specs can target them.
 Nav labels mostly match the filename; the ones that do not: Link → `a.zul`,
 Drag & Drop → `dnd.zul`, Error → `runtime-error.zul`, Grid (Responsive) → `responsive-grid.zul`.
 
-### Utility CSS — the token and utility-class catalogues (13)
+### Utility CSS — the token and utility-class catalogues (16)
 
 Not components. These render the design system itself, and are what you check after touching a
 token. Under `web/utility/`.
 
 `colors` `typography` `icons` `spacing` `stack` `layout` `grid-layout` `responsive` `print`
-`zindex` `borders` `elevation` `components`
+`zindex` `borders` `elevation` `components` `opacity` `visibility` `interactions`
 
 ### Reachable only by direct URL — not in the SPA nav (4)
 
@@ -99,7 +99,7 @@ token. Under `web/utility/`.
 - `src/main/java/org/zkoss/zkpreview/http/` — `PreviewPathFilter` (the `/web` forward) and
   `ZKPreviewServlet`.
 - `src/main/webapp/index.zul` + `PageIndexVM` — the home page link index. It lives at the webapp
-  root next to `smoke.zul`, **not** under `/web`, so it is not itself one of the 159 pages.
+  root next to `smoke.zul`, **not** under `/web`, so it is not itself one of the 162 pages.
   `PageIndexVM` scans the filesystem rather than carrying a curated list, so it cannot drift.
 
 ## Source of truth, and keeping this list honest
