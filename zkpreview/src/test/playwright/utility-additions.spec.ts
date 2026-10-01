@@ -71,24 +71,41 @@ test.describe('interactions', () => {
     const b = await box(loc);
     await page.mouse.click(b.x + b.width / 2, b.y + b.height / 2);
   }
-  const flag = (page: Page, k: string) => page.evaluate(key => document.body.dataset[key] ?? '', k);
+  // Each widget's server-side listener shows a notification naming it, so "the click had an
+  // effect" means the round trip to the server happened, not just a DOM event. A new ZK
+  // notification closes the previous one, so the DOM at the end cannot prove a notification
+  // never appeared; record every one that is ever added instead.
+  async function recordNotifications(page: Page) {
+    await page.evaluate(() => {
+      const seen: string[] = (window as any).pvNotifications = [];
+      new MutationObserver(records => records.forEach(r => r.addedNodes.forEach(n => {
+        if (n instanceof HTMLElement && n.classList.contains('z-notification')) seen.push(n.textContent ?? '');
+      }))).observe(document.body, { childList: true, subtree: true });
+    });
+  }
+  const seenNotifications = (page: Page): Promise<string[]> => page.evaluate(() => (window as any).pvNotifications);
+  const notification = (page: Page, text: string) =>
+    page.locator('.z-notification', { hasText: text });
 
   test('.z-pointer-none lets the click through; .z-pointer-auto opts back in', async ({ page }) => {
     await open(page, '/utility/interactions.zul');
+    await recordNotifications(page);
     await clickCentre(page, page.locator('.pv-click-normal'));
-    expect(await flag(page, 'pvNormal')).toBe('clicked');
+    await expect(notification(page, 'Clicked: no class')).toBeVisible();
 
     const none = page.locator('.z-button.pv-click-none');
     expect(await css(none, 'pointer-events')).toBe('none');
     await clickCentre(page, none);
-    expect(await flag(page, 'pvNone')).toBe('');
-
-    const check = page.locator('.pv-check-none input');
     await clickCentre(page, page.locator('.pv-check-none'));
-    expect(await check.isChecked()).toBe(false);
+    expect(await page.locator('.pv-check-none input').isChecked()).toBe(false);
 
+    // The positive case below is sent after the two blocked clicks; once its notification is
+    // back, any notification the blocked clicks had triggered would have arrived too.
     await clickCentre(page, page.locator('.z-button.pv-click-auto'));
-    expect(await flag(page, 'pvAuto')).toBe('clicked');
+    await expect(notification(page, 'Clicked: z-pointer-auto')).toBeVisible();
+    const seen = await seenNotifications(page);
+    expect(seen.some(s => s.includes('Clicked: no class'))).toBe(true);
+    expect(seen.filter(s => s.includes('z-pointer-none'))).toEqual([]);
   });
 
   test('.z-user-select-all / none', async ({ page }) => {
