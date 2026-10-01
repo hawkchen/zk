@@ -183,6 +183,9 @@ focus, one click selects the whole id, and so on.
 - Proved the tests can fail: with every new rule removed from the served `zk.wcs`, all 17 fail.
   The first `z-user-select-auto` case still passed with the rules removed, so it was a no-op; it
   was moved from a Label (already `auto`) to a Button (`none` by default).
+- Correction: the Button case was wrong too. It passed because the spec selected the text with a
+  programmatic Range, which no user can do; with the mouse, a Button's text cannot be selected
+  even with the class. Selection tests now drag the real mouse, and the case is a Grid header.
 - Regression: `smoke`, `responsive`, `print` and `zindex` pass. `font-size` changed only on the 9
   pages edited here (8 utility pages + the SPA nav); its baseline was recaptured and re-run green.
   `focus-scan` fails 2 forced-colors cases (tree row, organigram node); they fail the same way with
@@ -200,7 +203,7 @@ says so next to its example:
 | `z-border-error` on Textbox | Overrides the focus colour as well: on focus the border goes to 2px but stays red instead of turning primary. |
 | `z-text-wrap` on Button | A Button is `white-space: nowrap` and clips overflowing text; the class makes it wrap. |
 | `z-text-decoration-none` on A | A Marble link has no underline at rest, only on hover; the class removes the hover underline. |
-| `z-user-select-auto` | Useful on a Button (`user-select: none` by default); no effect on a Label. |
+| `z-user-select-auto` | **Does not work on Button**: the class applies (`user-select: auto`), but browsers never let the mouse select text inside a native `<button>`. Works on the other widgets that turn selection off — Grid/Listbox headers, Tab, Checkbox (measured by dragging the mouse). On a Checkbox it also changes what a drag across the label does: without it the drag checks the box, with it the drag selects the text. No effect on a Label, which is selectable already. |
 | `z-pointer-none` | Blocks the mouse only; keyboard focus and Enter still reach the widget. Use `disabled` to block every input. |
 | `z-order-*` | Changes the order you see, not the Tab order. |
 | `z-invisible` | Not the same as ZK's `visible="false"`, which removes the widget (`display: none`). `z-invisible` keeps its space. |

@@ -108,6 +108,24 @@ test.describe('interactions', () => {
     expect(seen.filter(s => s.includes('z-pointer-none'))).toEqual([]);
   });
 
+  // Select by dragging the real mouse across `loc`'s text: a programmatic Range ignores the limits
+  // a user hits (text inside a native <button> cannot be drag-selected even with user-select: auto).
+  async function dragSelect(page: Page, loc: Locator, rightToLeft = false): Promise<string> {
+    await page.evaluate(() => getSelection()!.removeAllRanges());
+    const r = await loc.first().evaluate(n => {
+      const range = document.createRange();
+      range.selectNodeContents(n);
+      const b = range.getBoundingClientRect();
+      return { x1: b.left + 1, x2: b.right - 1, y: b.top + b.height / 2 };
+    });
+    const [from, to] = rightToLeft ? [r.x2, r.x1] : [r.x1, r.x2];
+    await page.mouse.move(from, r.y);
+    await page.mouse.down();
+    await page.mouse.move(to, r.y, { steps: 10 });
+    await page.mouse.up();
+    return page.evaluate(() => getSelection()!.toString());
+  }
+
   test('.z-user-select-all / none', async ({ page }) => {
     await open(page, '/utility/interactions.zul');
     const all = page.locator('.z-label.pv-select-all');
@@ -117,23 +135,19 @@ test.describe('interactions', () => {
 
     const none = page.locator('.z-label.pv-select-none');
     expect(await css(none, 'user-select')).toBe('none');
-    const copied = await none.evaluate(n => {
-      getSelection()!.selectAllChildren(n.parentElement!);
-      return getSelection()!.toString();
-    });
+    // Start on the selectable part: a drag that starts on user-select: none text selects nothing.
+    const copied = await dragSelect(page, page.locator('.pv-select-none-host > div').first(), true);
     expect(copied).toContain('copy only this part');
     expect(copied).not.toContain('Step 3:');
   });
 
   test('.z-user-select-auto', async ({ page }) => {
     await open(page, '/utility/interactions.zul');
-    // A ZK Button is user-select: none by default.
-    const auto = page.locator('.z-button.pv-select-auto');
+    // A Grid column header is user-select: none by default.
+    expect(await dragSelect(page, page.locator('.z-column.pv-select-default .z-column-content'))).toBe('');
+    const auto = page.locator('.z-column.pv-select-auto');
     expect(await css(auto, 'user-select')).toBe('auto');
-    expect(await auto.evaluate(n => {
-      getSelection()!.selectAllChildren(n);
-      return getSelection()!.toString();
-    })).toBe('Copyable button');
+    expect(await dragSelect(page, auto.locator('.z-column-content'))).toBe('Copyable header');
   });
 });
 

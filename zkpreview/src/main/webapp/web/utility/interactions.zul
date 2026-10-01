@@ -48,11 +48,16 @@
                 <label value=".z-user-select-none — the prefix is left out of a copy" sclass="z-text-secondary z-text-xs"/>
             </div>
             <div sclass="z-d-flex z-flex-col z-items-start z-gap-1">
-                <div sclass="z-d-flex z-gap-2">
-                    <button label="Default button"/>
-                    <button label="Copyable button" sclass="z-user-select-auto pv-select-auto"/>
-                </div>
-                <label value="A Button's text is not selectable by default; .z-user-select-auto makes it selectable" sclass="z-text-secondary z-text-xs"/>
+                <grid width="320px">
+                    <columns>
+                        <column label="Default header" sclass="pv-select-default"/>
+                        <column label="Copyable header" sclass="z-user-select-auto pv-select-auto"/>
+                    </columns>
+                    <rows>
+                        <row><label value="A-100"/><label value="Widget"/></row>
+                    </rows>
+                </grid>
+                <label value="Grid headers are not selectable by default; drag across the second one to copy it" sclass="z-text-secondary z-text-xs"/>
             </div>
         </div>
     </div>
