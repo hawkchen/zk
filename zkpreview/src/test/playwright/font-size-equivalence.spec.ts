@@ -32,6 +32,10 @@ const UPDATING = process.env.UPDATE_FONT_BASELINE === '1';
 const SKIP = new Set([
   'camera', 'barcodescanner', 'captcha', 'video', 'audio', 'fileupload',
   'loading', 'loadingbar', 'runtime-error',
+  // Not non-deterministic, but too slow: it applies every other page (~39,000 elements) and takes
+  // ~14 s to settle alone, so under parallel workers it overruns the 15 s settle wait. Every page
+  // it aggregates is measured on its own here, so nothing goes uncovered.
+  'preview',
 ]);
 
 // web/pv/* are content fragments, not pages — they are <include>d by their host page and some
