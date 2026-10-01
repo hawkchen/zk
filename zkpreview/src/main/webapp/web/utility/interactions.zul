@@ -1,6 +1,9 @@
 <?page title="Interaction Utilities" contentType="text/html;charset=UTF-8"?>
 <zk xmlns:h="native">
 <style src="~./usecase/usecase.css"/>
+<zscript><![CDATA[
+    import org.zkoss.zk.ui.util.Notification;
+]]></zscript>
 <div sclass="z-p-8 z-d-flex z-flex-col z-gap-4">
 
     <label value="Interaction Utilities" sclass="z-h2"/>
@@ -11,17 +14,17 @@
         <label value="Pointer events  (.z-pointer-none / .z-pointer-auto)" sclass="z-d-block z-text-lg z-fw-medium z-text-on-surface z-mb-3"/>
         <div sclass="z-d-flex z-gap-6 z-flex-wrap z-items-start">
             <div sclass="z-d-flex z-flex-col z-items-start z-gap-1">
-                <button label="Click me" sclass="pv-click-normal" onClick='Clients.showNotification("Clicked: no class", "info", null, "top_right", 2000, true)'/>
+                <button label="Click me" sclass="pv-click-normal" onClick='Notification.show("Clicked: no class", "info", null, "middle_center", 2000, true)'/>
                 <label value="no class — click shows a notification" sclass="z-text-secondary z-text-xs"/>
             </div>
             <div sclass="z-d-flex z-flex-col z-items-start z-gap-1">
-                <button label="Click me" sclass="z-pointer-none pv-click-none" onClick='Clients.showNotification("Clicked: z-pointer-none", "error", null, "top_right", 2000, true)'/>
+                <button label="Click me" sclass="z-pointer-none pv-click-none" onClick='Notification.show("Clicked: z-pointer-none", "error", null, "middle_center", 2000, true)'/>
                 <label value=".z-pointer-none — click passes through, no notification" sclass="z-text-secondary z-text-xs"/>
             </div>
             <div sclass="z-d-flex z-flex-col z-items-start z-gap-1">
                 <div sclass="z-pointer-none z-d-flex z-gap-2 z-p-2 z-border z-rounded">
-                    <checkbox label="Locked" sclass="pv-check-none" onCheck='Clients.showNotification("Checked: inside z-pointer-none", "error", null, "top_right", 2000, true)'/>
-                    <button label="Opt back in" sclass="z-pointer-auto pv-click-auto" onClick='Clients.showNotification("Clicked: z-pointer-auto", "info", null, "top_right", 2000, true)'/>
+                    <checkbox label="Locked" sclass="pv-check-none" onCheck='Notification.show("Checked: inside z-pointer-none", "error", null, "middle_center", 2000, true)'/>
+                    <button label="Opt back in" sclass="z-pointer-auto pv-click-auto" onClick='Notification.show("Clicked: z-pointer-auto", "info", null, "middle_center", 2000, true)'/>
                 </div>
                 <label value=".z-pointer-auto re-enables one child of a .z-pointer-none parent" sclass="z-text-secondary z-text-xs"/>
             </div>
