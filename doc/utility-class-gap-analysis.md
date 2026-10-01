@@ -143,7 +143,7 @@ link-colour utilities, stretched link, `table*` display values, focus-ring utili
   - **C: none.** Point users at container queries and `z-cq-*`. Zero cost, but a Bootstrap
     developer will look for `z-flex-md-row` and not find it.
 
-### D2 — Naming for pointer-events — **IMPLEMENTED: Option A (recommended; awaiting confirmation)**
+### D2 — Naming for pointer-events — **DECIDED: Option A (implemented)**
 
 - **Background:** Bootstrap's `pe-none` means `pointer-events: none`, but Marble's `z-pe-*` is
   already padding-end (Bootstrap uses `pe-*` for both, distinguished only by value).
@@ -156,7 +156,7 @@ link-colour utilities, stretched link, `table*` display values, focus-ring utili
 ## 6. Implemented — P1, the Bootstrap / Lumo subset (2026-10-01)
 
 Scope: the P1 items that Bootstrap or Lumo ships. Left out because only Vuetify has them: cursor
-(#2) and the MD3 type-role classes (part of #10). D2 is implemented as Option A (`z-pointer-*`).
+(#2) and the MD3 type-role classes (part of #10). D2 is decided and implemented as Option A (`z-pointer-*`).
 
 | Category | Classes | CSS | Preview page |
 |---|---|---|---|
