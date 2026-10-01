@@ -47,7 +47,7 @@ had extra names; migration mapping (applied to all ZUL usages):
 
 ## Preview
 Dedicated pages: `badge.zul`, `chip.zul`, `avatar.zul` (component browser → **Data Display**).
-Showcase: `utility/components.zul`. Migrated real usages: `usecase/ticket-inbox`,
+Showcase: `utility/surface.zul`. Migrated real usages: `usecase/ticket-inbox`,
 `inventory-table`, `ops-dashboard`, `item-editor`.
 
 ## Naming: `severity` (`danger`/`secondary`) — proposed ZK API change

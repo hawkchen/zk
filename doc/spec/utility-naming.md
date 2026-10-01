@@ -140,7 +140,7 @@ carries the full method; the parts that matter every time:
 | `…/_borders.css` | border and corner radius |
 | `…/_elevation.css` | elevation levels |
 | `…/_stack.css` | `z-hstack` / `z-vstack` |
-| `…/_components.css` | `z-paper` |
+| `…/_surface.css` | `z-paper` |
 | `…/_print.css` | `z-d-print-*` and the print reset |
 
 The catalogue is generated at build time to

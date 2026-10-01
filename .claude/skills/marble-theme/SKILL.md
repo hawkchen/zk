@@ -50,7 +50,7 @@ zul/src/main/resources/web/zul/css/
 │            _motion _zindex _fonts _splitter _component-theme _forced-colors
 ├── base/    _reset _icons _cssflex _dnd
 └── utility/ _colors _spacing _layout _typography _borders _elevation
-             _components _stack _print
+             _surface _stack _print
 
 zul/src/main/resources/web/js/zul/<pkg>/css/   → per-component CSS, 1:1 with a .css.dsp output
 ```

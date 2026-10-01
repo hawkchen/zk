@@ -198,7 +198,7 @@ const normFiles = [
     // _spacing.css — see doc/spec/spacing-policy.md, gap log 2026-06-05).
     'zul/css/utility/_colors.css',
     'zul/css/utility/_elevation.css',
-    'zul/css/utility/_components.css',
+    'zul/css/utility/_surface.css',
     'zul/css/utility/_spacing.css',
     'zul/css/utility/_layout.css',
     'zul/css/utility/_typography.css',

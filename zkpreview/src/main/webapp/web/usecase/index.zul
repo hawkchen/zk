@@ -174,7 +174,7 @@
                     <navitem label="Opacity"            selected="@load(vm.currentPage eq '~./utility/opacity.zul')" onClick="@command('navigate', page='~./utility/opacity.zul')" />
                     <navitem label="Visibility"         selected="@load(vm.currentPage eq '~./utility/visibility.zul')" onClick="@command('navigate', page='~./utility/visibility.zul')" />
                     <navitem label="Interactions"       selected="@load(vm.currentPage eq '~./utility/interactions.zul')" onClick="@command('navigate', page='~./utility/interactions.zul')" />
-                    <navitem label="Components"         selected="@load(vm.currentPage eq '~./utility/components.zul')" onClick="@command('navigate', page='~./utility/components.zul')" />
+                    <navitem label="Surface"            selected="@load(vm.currentPage eq '~./utility/surface.zul')" onClick="@command('navigate', page='~./utility/surface.zul')" />
                 </nav>                
             </navbar>
         </div>

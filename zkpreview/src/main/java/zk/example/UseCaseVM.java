@@ -66,7 +66,7 @@ public class UseCaseVM {
                 "utility/colors", "utility/typography",
                 "utility/spacing", "utility/stack",
                 "utility/layout", "utility/borders",
-                "utility/elevation", "utility/components",
+                "utility/elevation", "utility/surface",
                 "utility/opacity", "utility/visibility", "utility/interactions"}) {
             PAGE_TO_NAV.put(p, "Utility CSS");
         }
