@@ -153,10 +153,36 @@ link-colour utilities, stretched link, `table*` display values, focus-ring utili
     (`pointer-events-none`) shortened.
   - **B: `z-pe-none`.** Bootstrap-identical, but repeats the ambiguity.
 
+### D3 — A background for `.z-text-inverse` — **DECIDED: Option A (implemented)**
+
+- **Background:** `.z-text-inverse` sets `--zk-color-inverse-on-surface` (`#f0f4fa`), text meant
+  for the dark inverse surface (`--zk-color-inverse-surface`, `#2d3748`). No `z-bg-*` class paints
+  that surface, so the colors.zul demo puts it on `.z-bg-primary`, where it is indistinguishable
+  from `.z-text-on-primary` (`#ffffff`). It is the only `z-text-*` colour with no matching
+  background, and nothing outside that demo uses it.
+- **Marble `z-bg-*` against its tokens:** every role with a fill token has a class (primary,
+  secondary, error, success, warning, info, their containers, five surface steps, surface-variant,
+  transparent). Tokens with no `z-bg-*` class: `inverse-surface`, `dark`, `light`, `background`
+  (same value as `surface`) and `scrim`. `dark`/`light` serve only `.z-button-dark/-light`.
+- **Bootstrap 5.3:** `bg-dark` / `bg-light` are ordinary theme colours, next to `bg-body`,
+  `bg-body-secondary`, `bg-body-tertiary`, `bg-black`, `bg-white`, `bg-transparent` and each
+  colour's `-subtle`. `.bg-*` sets the background only; the pairing helper `text-bg-{colour}`
+  sets the background plus a contrasting text colour (`text-bg-dark` = dark + white). Bootstrap
+  has no "inverse" text class: on a dark box you write `bg-dark text-white` or `text-bg-dark`.
+- **Options:**
+  - **A (recommended): add `.z-bg-inverse-surface`** — background `inverse-surface`, text
+    `inverse-on-surface`, the same pairing every Marble role `z-bg-*` already does (Bootstrap's
+    `text-bg-dark`). Name follows the MD3 role, as every other `z-bg-*` does. One class.
+  - **B: add `.z-bg-dark` / `.z-bg-light`** — Bootstrap's names, but those tokens are button
+    fills; using them for surfaces couples two unrelated things.
+  - **C: no class; remove `.z-text-inverse`** — its only use is the broken demo; a dark panel is
+    then built with a component. Smallest surface, but drops a working colour role.
+
 ## 6. Implemented — P1, the Bootstrap / Lumo subset (2026-10-01)
 
 Scope: the P1 items that Bootstrap or Lumo ships. Left out because only Vuetify has them: cursor
 (#2) and the MD3 type-role classes (part of #10). D2 is decided and implemented as Option A (`z-pointer-*`).
+D3 is decided and implemented as Option A (`z-bg-inverse-surface`).
 
 | Category | Classes | CSS | Preview page |
 |---|---|---|---|
@@ -169,14 +195,14 @@ Scope: the P1 items that Bootstrap or Lumo ships. Left out because only Vuetify 
 | Text decoration, monospace | `z-text-decoration-underline/line-through/none`, `z-font-monospace` | `_typography.css` | `utility/typography.zul` |
 | Wrap / break / whitespace | `z-text-wrap`, `z-text-break`, `z-whitespace-pre/pre-line/pre-wrap` | `_typography.css` | `utility/typography.zul` |
 | Border colour, style, width | `z-border-outline/primary/secondary/success/warning/error/info`, `z-border-dashed/dotted`, `z-border-2` | `_borders.css` | `utility/borders.zul` |
-| Colours for existing tokens | `z-bg-surface-container-lowest/high/highest`, `z-text-on-primary/secondary/error/success/warning-container` | `_colors.css` | `utility/colors.zul` |
+| Colours for existing tokens | `z-bg-surface-container-lowest/high/highest`, `z-bg-inverse-surface`, `z-text-on-primary/secondary/error/success/warning-container` | `_colors.css` | `utility/colors.zul` |
 | Elevation | `z-elevation-4/5` | `_elevation.css` | `utility/elevation.zul` |
 
 ### 6.1 Verification
 
 Every class is applied with `sclass` to a real ZK widget (Button, Textbox, Label, A, Image,
 Groupbox, Window, Vlayout, Checkbox) and checked by `zkpreview/src/test/playwright/utility-additions.spec.ts`
-(project `utility-additions`, 17 tests). Each test checks the computed value and the effect the
+(project `utility-additions`, 18 tests). Each test checks the computed value and the effect the
 class is meant to have: the click passes through, the row renders C B A, the skip link appears on
 focus, one click selects the whole id, and so on.
 
@@ -186,6 +212,10 @@ focus, one click selects the whole id, and so on.
 - Correction: the Button case was wrong too. It passed because the spec selected the text with a
   programmatic Range, which no user can do; with the mouse, a Button's text cannot be selected
   even with the class. Selection tests now drag the real mouse, and the case is a Grid header.
+- D3 (`z-bg-inverse-surface`, the 18th test): checks the colours and a 4.5:1 contrast between the
+  inverse text and the background it is actually painted on. The first contrast check read the
+  transparent background as black and passed with the rule removed; it now walks up to the first
+  opaque ancestor, and with the rule removed it measures 1.10:1 and fails.
 - Regression: `smoke`, `responsive`, `print` and `zindex` pass. `font-size` changed only on the 9
   pages edited here (8 utility pages + the SPA nav); its baseline was recaptured and re-run green.
   `focus-scan` fails 2 forced-colors cases (tree row, organigram node); they fail the same way with

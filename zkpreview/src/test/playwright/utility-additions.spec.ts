@@ -303,6 +303,34 @@ test.describe('colors', () => {
     expect(await css(page.locator('.z-label.pv-container-plain'), 'color'))
       .not.toBe(await fg('--zk-color-on-primary-container'));
   });
+
+  test('inverse surface pairs with inverse text', async ({ page }) => {
+    await open(page, '/utility/colors.zul');
+    const surface = page.locator('.pv-bg-inverse');
+    expect(await css(surface, 'background-color')).toBe(await resolve(page, 'background-color', 'var(--zk-color-inverse-surface)'));
+    expect(await css(surface, 'color')).toBe(await resolve(page, 'color', 'var(--zk-color-inverse-on-surface)'));
+    // The demo's point: the inverse text reads on the dark surface (WCAG AA, 4.5:1).
+    const ratio = await page.evaluate(() => {
+      const rgba = (el: Element, p: string) => getComputedStyle(el).getPropertyValue(p).match(/[\d.]+/g)!.map(Number);
+      // The background the text is painted on: the nearest ancestor with an opaque one.
+      const paintedBg = (el: Element | null): number[] => {
+        for (; el; el = el.parentElement) {
+          const c = rgba(el, 'background-color');
+          if (c.length < 4 || c[3] === 1) return c;
+        }
+        return [255, 255, 255];
+      };
+      const lum = ([r, g, b]: number[]) => {
+        const c = [r, g, b].map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; });
+        return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+      };
+      const text = document.querySelector('.z-label.pv-text-inverse')!;
+      const fg = lum(rgba(text, 'color'));
+      const bg = lum(paintedBg(text));
+      return (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05);
+    });
+    expect(ratio).toBeGreaterThanOrEqual(4.5);
+  });
 });
 
 test.describe('elevation', () => {
