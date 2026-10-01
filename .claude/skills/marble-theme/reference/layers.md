@@ -1,10 +1,20 @@
 # Cascade layers
 
-Order, declared once at the top of `base/_reset.css` and loaded first:
+Order, declared once in `zul/css/_layer-order.css` — the first entry of `normFiles`, so the first
+file in `zk.wcs`. It sits at the CSS root, not in `base/`, because `assertLayer()` requires every
+`base/` file to wrap its rules in `zk-base`:
 
 ```css
 @layer zk-base, zk-components, zk-utilities;   /* lowest → highest */
 ```
+
+It is **not** in `_reset.css`. `reset.css` loads ahead of `zk.wcs` but holds only `zk-base`, the
+lowest layer, so it cannot change the order. With the statement there instead, a page that never
+loaded `reset.css` (a custom `ThemeProvider` that does not insert it, a failed request) got
+`zk-utilities` first from `zk.wcs` — utilities became the *weakest* layer and every `z-text-*` /
+`z-bg-*` / `z-p-*` silently lost to component CSS. `reset-scoping.spec.ts` guards this by aborting
+`reset.css` and asserting `.z-p-0` still beats the button padding. Do not add an order statement
+to any source file.
 
 The spec is `doc/spec/layer-architecture-review.md`. This page is the operating knowledge.
 
@@ -23,8 +33,7 @@ in source.
 
 Left unlayered, `a { color }`, `::-webkit-scrollbar`, `img` and `.z-page` beat every layered
 component rule — because **unlayered author CSS outranks every layer**. This bit once (the
-"reset-floor" fix). The bare `@layer …;` *order statement* stays outside any block, at the top;
-the reset *rules* go inside `@layer zk-base { }`.
+"reset-floor" fix). The reset *rules* go inside `@layer zk-base { }`.
 
 ## What is deliberately unlayered, and why that is load-bearing
 
@@ -45,20 +54,19 @@ update the stale "ZK85Icons, FontAwesome" comment and `font-family` reset in `_i
 whether the empty stub is still needed, and re-run the icon screenshots (checkbox, radio, listbox,
 tree). Separate task; do not fold it into layer work.
 
-## The minifier and `@layer` — two silent traps
+## The minifier and `@layer` — a silent trap
 
-1. **`minifyCss` extracts bare `@layer …;` statements by regex, including from comments.** Never
-   write a literal `@layer name;` inside a CSS comment, or it is hoisted into the output. Block
-   form `@layer x { … }` in a comment is safe.
-2. **Lightning CSS rewrites the order statement rather than preserving it.** It emits the layer
-   *blocks* in declared order and leaves any still-empty names as a **trailing** placeholder:
-   `@layer zk-base, zk-components, zk-utilities;` + `@layer zk-base {…}` comes back as
-   `@layer zk-base{…}@layer zk-components,zk-utilities;`. Semantics survive — but anything that
-   fishes the statement back *out of the minified output* gets the wrong subset. `toEmbedReset()`
-   did exactly that and **inverted the cascade** for `reset-embed.css` (`zk-base` created last, so
-   the reset outranked every component and utility rule on `browserDefault=true` pages). **Read
-   the order statement from source and strip it before minifying.** The earlier minifier had the
-   opposite failure: a bare `@layer a, b;` emptied the *entire* output at exit 0.
+**Lightning CSS rewrites the order statement rather than preserving it.** It emits the layer
+*blocks* in declared order and leaves any still-empty names as a **trailing** placeholder:
+`@layer zk-base, zk-components, zk-utilities;` + `@layer zk-base {…}` comes back as
+`@layer zk-base{…}@layer zk-components,zk-utilities;`. Semantics survive inside one file — but
+anything that moves the statement *out of the minified output* gets the wrong subset.
+`toEmbedReset()` once did exactly that and **inverted the cascade** for `reset-embed.css`. So never
+extract or match the statement text in built output: the shipped `zk.wcs` has no
+`@layer zk-base, zk-components, zk-utilities;` line, and that is correct. Check the order in which
+layer names first appear (as `reset-scoping.spec.ts` does). The
+earlier minifier (CleanCSS) had the opposite failure: a bare `@layer a, b;` emptied the *entire*
+output at exit 0.
 
 ## Layers cannot beat inline styles — what `!important` is still for
 

@@ -102,3 +102,48 @@ test.describe('reset scoping — org.zkoss.zul.theme.browserDefault', () => {
     expect(css, 'no <body> frame reset leaks to the host').not.toMatch(/body\s*\{/);
   });
 });
+
+// The cascade layer order (zk-base < zk-components < zk-utilities) is declared by
+// zul/css/_layer-order.css, the first file of the zk.wcs bundle, not in reset.css. reset.css only
+// carries zk-base, the lowest layer, so loading it first cannot change the order — and a page
+// without it (a custom ThemeProvider that does not insert it, or a failed request) still gets
+// utilities above components.
+test.describe('cascade layer order — declared by zk.wcs, not reset.css', () => {
+  async function wcsHref(page): Promise<string> {
+    return page.$$eval('link[rel="stylesheet"]', (els: HTMLLinkElement[]) =>
+      els.map(e => e.href).find(h => /zk\.wcs/.test(h)) || '');
+  }
+
+  // The minifier rewrites the order statement into layer blocks emitted in that order, so check
+  // the order the layer names first appear in — that is what the browser uses — not the text.
+  test('zk.wcs creates the layers in order: base, components, utilities', async ({ page, request }) => {
+    await page.goto(PAGE, { waitUntil: 'domcontentloaded' });
+    const css = (await (await request.get(await wcsHref(page))).text()).replace(/\/\*[\s\S]*?\*\//g, '');
+    const seen: string[] = [];
+    for (const m of css.matchAll(/@layer\s+([\w\s,-]+?)\s*[{;]/g)) {
+      for (const name of m[1].split(',').map(s => s.trim())) {
+        if (!seen.includes(name)) seen.push(name);
+      }
+    }
+    expect(seen).toEqual(['zk-base', 'zk-components', 'zk-utilities']);
+  });
+
+  test('reset.css carries no order statement of its own', async ({ page, request }) => {
+    await page.goto(PAGE, { waitUntil: 'domcontentloaded' });
+    const href = await resetHref(page);
+    const css = (await (await request.get(href)).text()).replace(/\/\*[\s\S]*?\*\//g, '');
+    expect(css, 'only the zk-base block').not.toMatch(/@layer\s+[\w-]+(?:\s*,\s*[\w-]+)*\s*;/);
+  });
+
+  test('utilities still beat components when reset.css never loads', async ({ page }) => {
+    await page.route(/\/zul\/css\/reset\.css/, route => route.abort());
+    await page.goto(PAGE, { waitUntil: 'networkidle' });
+    // .z-button (zk-components) sets padding; .z-p-0 (zk-utilities) has the same specificity,
+    // so only the layer order decides which one applies.
+    const padding = await page.locator('.z-button').first().evaluate(el => {
+      el.classList.add('z-p-0');
+      return getComputedStyle(el).paddingLeft;
+    });
+    expect(padding, '.z-p-0 must override the button padding').toBe('0px');
+  });
+});

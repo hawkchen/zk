@@ -44,9 +44,9 @@ the property and prefixed `.z-page ` onto every selector. Marble does **not** us
    emitted as their own stylesheets (no longer bundled into `norm.css.dsp`):
    - `reset.css` — the source verbatim (global, frame intact, unscoped).
    - `reset-embed.css` — the page-frame block dropped and the remaining widget reset wrapped
-     in **`@scope (.z-page) { … }`**, so it can only match inside the ZK subtree. The bare
-     `@layer` order statement is lifted above `@scope` so it still governs the layered utility
-     CSS in `norm.css.dsp`.
+     in **`@scope (.z-page) { … }`**, so it can only match inside the ZK subtree. Neither
+     variant declares the layer order; `norm.css.dsp` does (see
+     [layer-architecture-review.md](layer-architecture-review.md)).
 3. **Java picks the variant** — [`MarbleThemeProvider.getThemeURIs`](../../zul/src/main/java/org/zkoss/zul/theme/StandardThemeProvider.java)
    reads the property with `Boolean.parseBoolean(Library.getProperty(…))` and inserts the
    chosen file **immediately before the `~./zul/css/zk.wcs` widget bundle**, preserving the

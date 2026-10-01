@@ -15,7 +15,10 @@ their CSS could override the theme without `!important`. The `zk-components` lay
 ## The model (as built)
 
 Cascade layer order, lowest → highest priority, declared once in
-[`_reset.css`](../../zul/src/main/resources/web/zul/css/base/_reset.css):
+[`_layer-order.css`](../../zul/src/main/resources/web/zul/css/_layer-order.css), the first entry of
+`norm.css.dsp` and so the first file in `zk.wcs`. It is not in
+`reset.css`: that sheet holds only `zk-base`, so loading it first cannot change the order, and a page that never
+loads it (a custom `ThemeProvider`, a failed request) still keeps utilities above components:
 
 ```
 @layer zk-base, zk-components, zk-utilities;
@@ -46,17 +49,16 @@ inject layers; it concatenates the source and **verifies** the wrapper is presen
 - `assertLayer(relPath, content, layer)` runs on every component (`zk-components`) and base (`zk-base`) source file
   during the build. A file that forgets its wrapper **fails the build** instead of silently shipping unlayered
   (where it would beat utilities + user CSS). This guard is what makes source-level layering robust — fire-tested.
-- The reset rules carry their own `@layer zk-base { … }` block in `_reset.css`, with the bare `@layer …;` order
-  statement kept OUTSIDE it (and loaded first). The embed variant (`toEmbedReset`) just scopes that block to
+- The reset rules carry their own `@layer zk-base { … }` block in `_reset.css`; the file has no order statement.
+  Lightning CSS does not keep the order statement verbatim — it emits the layer blocks in the declared order
+  instead, which declares the same order — so tests check the order layer names first appear in `zk.wcs`, not
+  the statement text. The embed variant (`toEmbedReset`) just scopes that block to
   `.z-page` via `@scope` — it adds no layer of its own. The reset MUST be in `zk-base` — unlayered it would beat the
   layered components (`a{color}`, `::-webkit-scrollbar`, `img`, `.z-page`).
 - The generated Lucide `.z-icon-*{--_icon}` rules are emitted by the build (not a source file), so the generator
   wraps its own output in `@layer zk-base { … }`.
 - Tablet CSS and `_cssflex`/`_dnd` stay unlayered by design: tablet must override desktop components on mobile, and
   the ZK-JS-toggled `z-flex`/`z-dragged` classes must win when applied.
-
-> Comments in `_reset.css` must contain no literal bare `@layer <name>;` form — `minifyCss` extracts bare `@layer`
-> statements by regex (including from comments) for the CleanCSS guard.
 
 ## The three review questions
 

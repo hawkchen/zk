@@ -167,6 +167,8 @@ function assertLayer(relPath, content, layer) {
 
 // norm.css.dsp = tokens + base + global styles (loaded first by WCS). zul only.
 const normFiles = [
+    // Cascade layer order — must stay first so it precedes every layer in zk.wcs.
+    'zul/css/_layer-order.css',
     'zul/css/tokens/_fonts.css',
     'zul/css/tokens/_colors.css',
     'zul/css/tokens/_typography.css',
@@ -651,37 +653,21 @@ function assertNoOrphanComponentCss() {
     }
 }
 
-// Bare `@layer <names>;` order statement (same shape minifyCss guards against).
-const LAYER_STMT_RE = /@layer\s+[\w-]+(?:\s*,\s*[\w-]+)*\s*;/;
 // The html/body page-frame block, delimited by markers in _reset.css.
 const PAGE_FRAME_RE = /\/\* page-frame:start[\s\S]*?page-frame:end \*\//;
 
 // Derive the JS-Embed-safe reset from the single _reset.css source: drop the html/body
 // page-frame block (so ZK never touches the host page's frame) and confine the remaining
-// widget reset to the ZK subtree with @scope (.z-page). The bare @layer order statement is
-// lifted above @scope so it still declares layer order first; the reset rules already carry
-// their own `@layer zk-base { … }` block in source, so we just scope it (no @layer added here).
+// widget reset to the ZK subtree with @scope (.z-page). The reset rules already carry their
+// own `@layer zk-base { … }` block in source, so we just scope it (no @layer added here).
 //
 // Ordering: minify the inner body first, then wrap the result in @scope. Lightning CSS
 // parses @scope correctly (CleanCSS did not — it dropped the first nested rule and hoisted
 // the rest out of the block), so this order is no longer forced by the minifier. It is kept
 // because it keeps the emitted wrapper byte-identical to what shipped before the swap.
-//
-// The order statement is read from SOURCE and removed before minifying — never fished back
-// out of the minified output. A minifier may legally rewrite a bare `@layer` statement:
-// Lightning CSS emits the layer *blocks* in declared order and leaves the names that are
-// still empty behind as a trailing placeholder statement, so the first statement in its
-// output is `@layer zk-components,zk-utilities;`. Lifting THAT above @scope would leave
-// zk-base to be created last (inside @scope) and invert the whole cascade — the reset would
-// outrank every component and utility rule. Only the browserDefault=true path is served
-// this file, so the inversion is invisible in the default build.
 function toEmbedReset(src) {
-    const noFrame = src.replace(PAGE_FRAME_RE, '');
-    const layerStmt = (noFrame.match(LAYER_STMT_RE) || [''])[0];
-    // Body = "@layer zk-base{…}" only; with no bare statement in the input the minifier has
-    // no layer names to reorder or re-emit.
-    const body = minifyCss(noFrame.replace(LAYER_STMT_RE, '')).trim();
-    const open = isDev ? `${layerStmt}\n@scope (.z-page) {\n` : `${layerStmt}@scope (.z-page){`;
+    const body = minifyCss(src.replace(PAGE_FRAME_RE, '')).trim();
+    const open = isDev ? '@scope (.z-page) {\n' : '@scope (.z-page){';
     return `${open}${body}${isDev ? '\n}\n' : '}'}`;
 }
 
