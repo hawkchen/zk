@@ -1,0 +1,58 @@
+name: Sync Marble CSS to zkThemeTemplate
+
+on:
+  push:
+    branches: [ "marble" ]
+    paths:
+      - 'zul/src/main/resources/web/zul/css/**'
+      - 'zul/src/main/resources/web/js/zul/*/css/**'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout zk
+        uses: actions/checkout@v4
+        with:
+          path: zk
+
+      - name: Checkout zkThemeTemplate
+        uses: actions/checkout@v4
+        with:
+          repository: zkoss/zkThemeTemplate
+          ref: marble
+          ssh-key: '${{ secrets.ZKTHEMETEMPLATE_DEPLOY_KEY }}'
+          path: zkThemeTemplate
+
+      - name: Sync Marble CSS sources
+        run: |
+          set -euo pipefail
+
+          SRC_ZUL="zk/zul/src/main/resources/web/zul/css"
+          DST_ZUL="zkThemeTemplate/src/main/resources/web/zul/css"
+          rsync -a --delete "$SRC_ZUL"/ "$DST_ZUL"/
+
+          SRC_JS="zk/zul/src/main/resources/web/js/zul"
+          DST_JS="zkThemeTemplate/src/main/resources/web/js/zul"
+          find "$SRC_JS" -type d -name css | while read -r dir; do
+            rel="${dir#"$SRC_JS"/}"
+            mkdir -p "$DST_JS/$rel"
+            rsync -a --delete "$dir"/ "$DST_JS/$rel"/
+          done
+
+      - name: Commit and push if changed
+        working-directory: zkThemeTemplate
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No CSS changes to sync."
+            exit 0
+          fi
+
+          git add -A
+          git commit -m "sync Marble CSS from zkoss/zk@${{ github.sha }}"
+          git push origin marble

@@ -1,5 +1,9 @@
 @.github/copilot-instructions.md
 
+## Communication Language
+
+Discuss this project in Traditional Chinese (繁體中文), except for proper nouns and technical terms (component names, API names, file paths, code identifiers, etc.), which stay in their original English/technical form.
+
 ## Architecture: Component-Widget Duality
 
 ZK uses a dual-object model — every UI element has two halves:
