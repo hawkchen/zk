@@ -10,12 +10,13 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
-      - name: Checkout zk
+      - name: Checkout zk (full history, needed to walk the pushed commit range)
         uses: actions/checkout@v4
         with:
           path: zk
+          fetch-depth: 0
 
       - name: Checkout zkThemeTemplate
         uses: actions/checkout@v4
@@ -25,34 +26,81 @@ jobs:
           ssh-key: '${{ secrets.ZKTHEMETEMPLATE_DEPLOY_KEY }}'
           path: zkThemeTemplate
 
-      - name: Sync Marble CSS sources
+      - name: Replay each zk commit as its own commit in zkThemeTemplate
+        shell: bash
         run: |
           set -euo pipefail
 
-          SRC_ZUL="zk/zul/src/main/resources/web/zul/css"
+          SRC_ZUL_REL="zul/src/main/resources/web/zul/css"
+          SRC_JS_REL="zul/src/main/resources/web/js/zul"
           DST_ZUL="zkThemeTemplate/src/main/resources/web/zul/css"
-          rsync -a --delete "$SRC_ZUL"/ "$DST_ZUL"/
-
-          SRC_JS="zk/zul/src/main/resources/web/js/zul"
           DST_JS="zkThemeTemplate/src/main/resources/web/js/zul"
-          find "$SRC_JS" -type d -name css | while read -r dir; do
-            rel="${dir#"$SRC_JS"/}"
-            mkdir -p "$DST_JS/$rel"
-            rsync -a --delete "$dir"/ "$DST_JS/$rel"/
-          done
 
-      - name: Commit and push if changed
+          git -C zkThemeTemplate config user.name "github-actions[bot]"
+          git -C zkThemeTemplate config user.email "github-actions[bot]@users.noreply.github.com"
+
+          sync_one_commit () {
+            sha="$1"
+            rm -rf /tmp/zk-css-extract
+            mkdir -p /tmp/zk-css-extract
+            git -C zk archive "$sha" -- "$SRC_ZUL_REL" "$SRC_JS_REL" | tar -x -C /tmp/zk-css-extract
+
+            rsync -a --delete "/tmp/zk-css-extract/$SRC_ZUL_REL"/ "$DST_ZUL"/
+
+            find "/tmp/zk-css-extract/$SRC_JS_REL" -type d -name css | while IFS= read -r dir; do
+              rel="${dir#/tmp/zk-css-extract/$SRC_JS_REL/}"
+              mkdir -p "$DST_JS/$rel"
+              rsync -a --delete "$dir"/ "$DST_JS/$rel"/
+            done
+
+            if git -C zkThemeTemplate diff --quiet -- src/main/resources/web/zul/css src/main/resources/web/js/zul \
+               && git -C zkThemeTemplate diff --cached --quiet -- src/main/resources/web/zul/css src/main/resources/web/js/zul; then
+              echo "  (no net CSS change at $sha, skipping)"
+              return
+            fi
+
+            subject=$(git -C zk log -1 --format='%s' "$sha")
+            body=$(git -C zk log -1 --format='%b' "$sha")
+            author_name=$(git -C zk log -1 --format='%an' "$sha")
+            author_email=$(git -C zk log -1 --format='%ae' "$sha")
+            author_date=$(git -C zk log -1 --format='%ad' --date=iso-strict "$sha")
+
+            msg="$subject"
+            if [ -n "$body" ]; then
+              msg="$msg
+
+          $body"
+            fi
+            msg="$msg
+
+          Synced-from: zkoss/zk@$sha"
+
+            git -C zkThemeTemplate add -- src/main/resources/web/zul/css src/main/resources/web/js/zul
+            GIT_AUTHOR_DATE="$author_date" git -C zkThemeTemplate commit --author="$author_name <$author_email>" -m "$msg"
+            echo "  committed for $sha"
+          }
+
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.sha }}"
+          ZERO_SHA="0000000000000000000000000000000000000000"
+
+          if [ "$BEFORE" = "$ZERO_SHA" ] || ! git -C zk rev-parse --quiet --verify "$BEFORE^{commit}" >/dev/null; then
+            echo "==> No usable 'before' commit (new branch or force-push); syncing HEAD only"
+            sync_one_commit "$AFTER"
+          else
+            echo "==> Replaying commits $BEFORE..$AFTER"
+            git -C zk rev-list --reverse --first-parent "$BEFORE..$AFTER" | while IFS= read -r sha; do
+              echo "==> $sha"
+              sync_one_commit "$sha"
+            done
+          fi
+
+      - name: Push synced commits
         working-directory: zkThemeTemplate
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          if git diff --quiet && git diff --cached --quiet; then
-            echo "No CSS changes to sync."
-            exit 0
+          if [ -n "$(git log origin/marble..HEAD --oneline)" ]; then
+            git push origin marble
+          else
+            echo "No new commits to push."
           fi
-
-          git add -A
-          git commit -m "sync Marble CSS from zkoss/zk@${{ github.sha }}"
-          git push origin marble

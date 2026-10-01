@@ -40,14 +40,20 @@ Job。
    PAT），加到 `zkThemeTemplate` 的 Deploy Keys（勾選 Allow write access）。
 2. 把私鑰存進 `zk` repo 的 GitHub Actions Secrets（建議命名 `ZKTHEMETEMPLATE_DEPLOY_KEY`，比照現有
    `SSH_KEY` 的用法但這組要有寫入權限，`SSH_KEY` 目前只拿來唯讀 checkout `zkcml`，不能重複用）。
-3. 我這邊新增 `.github/workflows/sync-marble-theme.yml`：
+3. `.github/workflows/sync-marble-theme.yml`：
    - 觸發條件：push 到 `marble` 分支，且改動落在
      `zul/src/main/resources/web/zul/css/**` 或 `zul/src/main/resources/web/js/zul/*/css/**`。
-   - checkout `zk`，再用 `ZKTHEMETEMPLATE_DEPLOY_KEY` checkout `zkThemeTemplate` 的 `marble`
-     分支。
-   - 依照路徑對照表複製有變動的檔案。
-   - 若有差異才 commit + push，commit message 帶上觸發它的 `zk` commit SHA；沒有差異就不動作，避免
-     空 commit。
+   - checkout `zk`（完整歷史，`fetch-depth: 0`，因為要逐一走訪這次 push 帶的每個 commit），再用
+     `ZKTHEMETEMPLATE_DEPLOY_KEY` checkout `zkThemeTemplate` 的 `marble` 分支。
+   - **一對一重放（1:1 replay）：** 用 `git rev-list --reverse --first-parent` 列出這次 push 範圍內
+     （`github.event.before`..`github.sha`）的每個 commit，依序處理。每個 commit 都用 `git archive`
+     取出「那個時間點」的 CSS 原始檔狀態，整個 rsync 進 `zkThemeTemplate`；如果跟上一個狀態比對後有
+     實際差異，就在 `zkThemeTemplate` 建立**一個對應的 commit**（保留原 commit 的 subject/body、作者
+     姓名信箱、作者時間，並在 commit message 加一行 `Synced-from: zkoss/zk@<sha>` 可追溯回去）；沒有
+     實際改到 CSS 的 commit（例如只是改 demo ZUL、文件）就跳過，不產生對應 commit。
+   - 所有 commit 都處理完之後，一次性 `push` 回 `zkThemeTemplate` 的 `marble` 分支。
+   - 如果 `github.event.before` 是全零（新分支）或不是 `zk` 這邊可辨識的祖先（例如 force-push），就
+     退回成只同步「這次 push 完的最終狀態」當一個 commit，不嘗試逐筆重放。
 
 ### 階段 2：驗證
 1. 找一個真實的 CSS 變動（或刻意做一個小變動）push 到 `marble`，確認 workflow 有觸發，
@@ -84,9 +90,20 @@ Job。
 `secrets.SSH_KEY` 傳給 `actions/checkout` 唯讀 checkout 私有的 `zkoss/zkcml`。目前沒有任何 workflow
 會 push commit 到別的 repo，所以這次需要新的、有寫入權限的 secret，不能沿用 `SSH_KEY`。
 
+### 執行狀態（持續更新）
+- 階段 0（一次性校準）已完成：`zkThemeTemplate` 建了 `marble_origin` 備份分支保留校準前狀態，
+  `marble` 分支已校準到跟 `zk` 一致，逐檔比對過確認無差異。
+- `marble` 的實際開發目前是在 `hawkchen/zk`（個人 fork）進行，不是直接 push `zkoss/zk`——
+  `zkoss/zk` 目前沒有 `marble` 分支。因此 `ZKTHEMETEMPLATE_DEPLOY_KEY` 這組 Secret 實際上要放在
+  **`hawkchen/zk`**，不是原本以為的 `zkoss/zk`（第一次設定時放錯地方，已修正，用
+  `scripts/setup-fork-deploy-key.sh` 重新設定在正確位置）。
+- Workflow 已驗證過實際運作：`hawkchen/zk` 的 `marble` push 後，`zkThemeTemplate` 的 `marble` 分支
+  有正確收到對應的同步 commit。
+- `zkThemeTemplate` 的預設分支仍是 `master`，沒有受影響。
+
 ### 待確認事項
-- 我目前這個環境對 `zkThemeTemplate` 只確認得到 read 權限，沒辦法確認 write 權限，也不會在未經確認
-  的情況下嘗試 push 到這個外部 shared repo。
 - `zkThemeTemplate` 本地 clone（`/Users/hawk/Documents/workspace/zkThemeTemplate`）除了 `marble`
   外還有不少 local-only 分支（如 `backup/pre-merge-ab-2026-08-13`、`iceblue`、`breeze` 等），這些
   跟這次同步計畫無關，執行時只會動到 `marble` 這一支。
+- 如果之後 `marble` 的開發改成直接在 `zkoss/zk` 進行（或透過 PR 合併進去），`ZKTHEMETEMPLATE_DEPLOY_KEY`
+  這組 Secret 需要跟著搬到 `zkoss/zk`，並考慮要不要把現在掛在 `hawkchen/zk` 上的那把 Deploy Key 收回。
