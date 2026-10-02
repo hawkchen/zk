@@ -19,8 +19,8 @@ source color (same hue, lower chroma), so Marble derives it from `--zk-color-pri
 and its container pair then derives from *that* — a two-level relative color, which
 browsers resolve through `var()` (verified in Chrome). One consequence worth knowing:
 overriding primary alone re-tints secondary too, which is the point — a literal
-secondary would leave a blue-grey accent beside a crimson primary under
-`data-brand="rose"`. This is defined once in
+secondary would leave a blue-grey accent beside an orange-brown primary under
+`data-brand="copper"`. This is defined once in
 [_colors.css](../../zul/src/main/resources/web/zul/css/tokens/_colors.css):
 
 ```css
@@ -165,22 +165,20 @@ Safari 16.4+, and Firefox 128+ — within Marble's modern-browser support window
 ## Built-in presets + the `MarbleBrand` runtime switcher
 
 The seed-override contract above is the customer's *own-brand* path (a static `:root`
-rule). On top of it, Marble ships a small set of **built-in brand presets** exposed as a
-runtime switch — useful for letting an end user pick a brand, or for demos. Each preset
+rule). On top of it, Marble ships three **built-in brands** — **Blue** (the default), **Slate** and
+**Copper** — exposed as a runtime switch — useful for letting an end user pick a brand, or for demos. Each preset
 is nothing more than the single-seed override, keyed off a `data-brand` attribute on the
 document root, defined in
 [_colors.css](../../zul/src/main/resources/web/zul/css/tokens/_colors.css):
 
 ```css
-:root[data-brand="marine"] { --zk-color-primary: #00729c; }
 :root[data-brand="slate"]  { --zk-color-primary: #506274; }
 :root[data-brand="copper"] { --zk-color-primary: #b45309; }
-:root[data-brand="rose"]   { --zk-color-primary: #be185d; }
 ```
 
 `:root[data-brand="…"]` (specificity 0,2,0) beats the base `:root` block (0,1,0), so it
 wins regardless of bundle order. There is **no `default` block** — the default (Marble
-blue) is just the base `:root`, reached by removing the attribute. All five presets are
+blue) is just the base `:root`, reached by removing the attribute. All three brands are
 mid-to-dark, so the literal white `--zk-color-on-primary` stays AA on their solid fills;
 a light preset would also need `--zk-color-on-primary` (the caveat above).
 
@@ -190,7 +188,7 @@ Flip a preset from Java with the `MarbleBrand` helper
 ```java
 MarbleBrand.apply(MarbleBrand.Brand.SLATE);     // whole app
 MarbleBrand.apply(MarbleBrand.Brand.DEFAULT);   // removes data-brand → back to blue
-// Presets: DEFAULT, MARINE, SLATE, COPPER, ROSE
+// Presets: DEFAULT (blue), SLATE, COPPER
 ```
 
 **Whole-app only — by design.** Unlike density (`MarbleDensity`), which re-points size

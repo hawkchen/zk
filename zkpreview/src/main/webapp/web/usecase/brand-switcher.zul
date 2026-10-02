@@ -10,7 +10,7 @@
     <div sclass="z-d-flex z-flex-col z-gap-1">
         <label value="Brand Presets" sclass="z-h2"/>
         <label sclass="z-text-sm z-text-secondary"
-               value="Marble ships a few built-in brand colors. Pick one below and the whole UI recolors instantly — containers, fills, focus rings, selected rows, switches and progress bars all derive from a single primary seed."/>
+               value="Marble ships three built-in brand colors: Blue (default), Slate and Copper. Pick one below and the whole UI recolors instantly — containers, fills, focus rings, selected rows, switches and progress bars all derive from a single primary seed."/>
     </div>
 
     <!-- Switcher -->
@@ -27,14 +27,6 @@
             </div>
 
             <div sclass="z-d-flex z-flex-col z-items-center z-gap-1" style="cursor:pointer"
-                 onClick="@command('switchBrand', brand='marine')">
-                <div sclass="@load(bvm.currentBrand eq 'marine' ? 'brand-swatch brand-swatch-active' : 'brand-swatch')"
-                     style="background-color:#00729c"/>
-                <label value="Marine" sclass="z-text-xs z-fw-medium"/>
-                <label value="#00729c" sclass="z-text-xs z-text-secondary"/>
-            </div>
-
-            <div sclass="z-d-flex z-flex-col z-items-center z-gap-1" style="cursor:pointer"
                  onClick="@command('switchBrand', brand='slate')">
                 <div sclass="@load(bvm.currentBrand eq 'slate' ? 'brand-swatch brand-swatch-active' : 'brand-swatch')"
                      style="background-color:#506274"/>
@@ -48,14 +40,6 @@
                      style="background-color:#b45309"/>
                 <label value="Copper" sclass="z-text-xs z-fw-medium"/>
                 <label value="#b45309" sclass="z-text-xs z-text-secondary"/>
-            </div>
-
-            <div sclass="z-d-flex z-flex-col z-items-center z-gap-1" style="cursor:pointer"
-                 onClick="@command('switchBrand', brand='rose')">
-                <div sclass="@load(bvm.currentBrand eq 'rose' ? 'brand-swatch brand-swatch-active' : 'brand-swatch')"
-                     style="background-color:#be185d"/>
-                <label value="Rose" sclass="z-text-xs z-fw-medium"/>
-                <label value="#be185d" sclass="z-text-xs z-text-secondary"/>
             </div>
 
         </div>
@@ -165,7 +149,7 @@ import org.zkoss.theme.marble.MarbleBrand;
 MarbleBrand.apply(MarbleBrand.Brand.SLATE);
 MarbleBrand.apply(MarbleBrand.Brand.DEFAULT);  // back to blue
 
-// Presets: DEFAULT, MARINE, SLATE, COPPER, ROSE
+// Presets: DEFAULT (blue), SLATE, COPPER
 // Sets data-brand on the document root; covers popups too.</attribute></label>
             </div>
         </div>

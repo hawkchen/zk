@@ -57,14 +57,10 @@ public final class MarbleBrand {
 	public enum Brand {
 		/** Default Marble blue (#376fd0) — matches the theme's base :root seed. */
 		DEFAULT("default"),
-		/** Marine (#00729c). */
-		MARINE("marine"),
 		/** Slate (#506274). */
 		SLATE("slate"),
 		/** Copper (#b45309). */
-		COPPER("copper"),
-		/** Rose (#be185d). */
-		ROSE("rose");
+		COPPER("copper");
 
 		private final String token;
 
