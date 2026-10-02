@@ -24,6 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const { transform: lightningTransform } = require('lightningcss');
+const { buildUtilityManifest } = require('./utility-manifest');
 
 function argFor(flag) {
     const i = process.argv.indexOf(flag);
@@ -241,6 +242,10 @@ const normFiles = [
     'js/zul/wgt/css/image.css',
     'js/zul/wgt/css/imagemap.css',
 ];
+
+// The utility subset of the bundle, reused by the manifest generator so the catalogue can never
+// list a file the browser does not actually load. See doc/utility-class-discovery.md.
+const utilityFiles = normFiles.filter(f => f.startsWith('zul/css/utility/'));
 
 // combo.css.dsp = merged dropdown-type input components. zul only.
 const comboFiles = [
@@ -753,6 +758,25 @@ function build() {
 
         // Copy vendored Inter font files (zul only — CE asset, see FONT_SOURCES above)
         copyFonts();
+
+        // 1d. Utility-class manifest — the machine-readable catalogue of authorable z-* classes.
+        // Written under web/ so it ships in zul.jar beside the CSS it describes and is reachable
+        // from a running app at /zkau/web/zul/css/utility-classes.json. Always emitted (not
+        // --emit-docs gated): the IDE plugin and AI agents read it from the jar, so a build that
+        // omitted it would ship a version with no catalogue. Emitted compact — it is a machine
+        // artifact (39 KB), and readers pipe it through jq.
+        const utility = buildUtilityManifest(webDir, utilityFiles,
+            path.join(webDir, 'zul/css/tokens'), path.join(webDir, 'js/zul'));
+        writeRaw('zul/css/utility-classes.json', JSON.stringify({
+            schemaVersion: 1,
+            theme: 'marble',
+            module: 'zul',
+            generatedBy: 'scripts/build-css.js',
+            sources: utilityFiles,
+            classes: utility.classes,
+        }) + '\n');
+        console.log(`  zul/css/utility-classes.json (${utility.classes.length} utility classes,`
+            + ` ${utility.excludedComponentClasses.length} component classes excluded)`);
 
         // 1b/1c. Side outputs — icons-lucide.zul + doc/spec/icon-index.md — only with --emit-docs.
         if (emitDocs) {
