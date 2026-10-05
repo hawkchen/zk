@@ -48,7 +48,24 @@ So overriding the seed is genuinely a one-line change for the common case.
 
 ## How to rebrand
 
-Add your override **after** the theme CSS loads (later in the cascade wins), scoped
+**From `zk.xml` (no CSS file)** — set the library property to your seed or to a built-in
+preset name:
+
+```xml
+<library-property>
+    <name>org.zkoss.theme.marble.brand</name>
+    <value>#6a1b9a</value>   <!-- #rgb | #rrggbb | default | slate | copper -->
+</library-property>
+```
+
+A hex seed is rendered as `<style>:root{--zk-color-primary:#6a1b9a}</style>` right after
+the theme stylesheets (before the page's own `<?link?>` CSS, which can still override it);
+a preset name is rendered as `data-brand` on `<html>`. Either way it is in the page, so
+there is no flash. Other formats are logged and ignored. Like the density property, it
+applies when ZK renders the whole HTML document (a top-level ZUL page); runtime
+`MarbleBrand.apply(...)` still overrides it.
+
+**With CSS** — for more than the primary seed, add your override **after** the theme CSS loads (later in the cascade wins), scoped
 to `:root` so it reaches body-appended popups (menus, modal windows, notifications)
 too:
 
@@ -196,8 +213,9 @@ tokens as *literals* so its `data-density` attribute works at any scope, the bra
 presets override only the seed and rely on the `oklch(from …)` derivations declared at
 `:root`. A `data-brand` on a descendant would *not* re-derive the containers there (they
 resolved at `:root` and inherit frozen), and a brand is an app-wide identity anyway — so
-`MarbleBrand` exposes a single whole-app method. Prefer the static `:root` rule (above)
-for a fixed default; the runtime helper runs after first paint and can flash (FOUC).
+`MarbleBrand` exposes a single whole-app method. Prefer the `org.zkoss.theme.marble.brand`
+library property or the static `:root` rule (above) for a fixed default; the runtime
+helper runs after first paint and can flash (FOUC).
 
 **Try it:** the `usecase/brand-switcher.zul` showcase page (nav: *Use Cases → Brand
 Presets*, deep link `usecase/index.zul#usecase/brand-switcher`) has clickable swatches, a

@@ -35,8 +35,21 @@ global density.
 
 ## Switching to compact
 
-**Whole app** — set the attribute on the document root (covers body-appended popups —
-menus, modal windows, notifications — too):
+**Whole app, fixed default** — set the library property in `zk.xml`. ZK renders
+`data-density="compact"` on `<html>` with the page, so there is no flash and no code:
+
+```xml
+<library-property>
+    <name>org.zkoss.theme.marble.density</name>
+    <value>compact</value>   <!-- comfortable (default) | compact -->
+</library-property>
+```
+
+It applies when ZK renders the whole HTML document (a top-level ZUL page). A page's own
+`<?root-attributes data-density="…"?>` wins over it. When the `<html>` tag is yours (a ZUL
+included in a JSP or another template, or a zhtml `<html>` root), put the attribute there
+instead — the attribute on the document root covers body-appended popups (menus, modal
+windows, notifications) too:
 
 ```html
 <html data-density="compact">
@@ -57,9 +70,9 @@ it back to `comfortable`:
 <vlayout data-density="compact"> … a dense grid … </vlayout>
 ```
 
-For a fixed whole-app *default*, prefer the attribute in your page template (or a CSS
-preset) over the Java call — the latter runs after first paint and can briefly flash. See
-the FOUC note in MarbleDensity's Javadoc.
+For a fixed whole-app *default*, prefer the library property (or the attribute in your
+page template) over the Java call — the latter runs after first paint and can briefly
+flash. See the FOUC note in MarbleDensity's Javadoc.
 
 **Tuning the values** — the shipped compact values (below) are a balanced starting point.
 To change them, copy `marble-compact.css` (a retired example file) — it targets

@@ -40,11 +40,13 @@ import org.zkoss.zk.ui.util.Clients;
  * inherit frozen), so this helper deliberately exposes a single whole-app method.
  * A brand is an app-wide identity, not a per-region concern.
  *
- * <p><b>When to use this vs. static CSS.</b> This API is for <em>runtime</em>
- * switching (a user picking a brand). For a customer's own fixed brand color,
- * prefer a static {@code :root { --zk-color-primary: #…; }} rule loaded after the
- * theme CSS (the {@code brand-override.md} recipe) — calling {@link #apply(Brand)}
- * on page load runs after the first paint and can cause a brief color flash (FOUC).
+ * <p><b>When to use this vs. the library property.</b> This API is for <em>runtime</em>
+ * switching (a user picking a brand). For a fixed whole-app brand, prefer the
+ * {@code org.zkoss.theme.marble.brand} library property in {@code zk.xml} — a preset
+ * name or a {@code #rgb}/{@code #rrggbb} seed, rendered with the page. A static
+ * {@code :root { --zk-color-primary: #…; }} rule loaded after the theme CSS (the
+ * {@code brand-override.md} recipe) also works. Calling {@link #apply(Brand)} on page
+ * load runs after the first paint and can cause a brief color flash (FOUC).
  *
  * @since 11.0.0
  */

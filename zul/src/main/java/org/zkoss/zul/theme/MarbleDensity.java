@@ -42,12 +42,12 @@ import org.zkoss.zk.ui.util.Clients;
  *       string), which re-renders that subtree when the value changes.</li>
  * </ul>
  *
- * <p><b>When to use this vs. a CSS preset.</b> This API is for <em>runtime</em>
+ * <p><b>When to use this vs. the library property.</b> This API is for <em>runtime</em>
  * switching (a user flipping a density preference). For a fixed whole-app
- * <em>default</em>, prefer the CSS preset ({@code html[data-density="compact"]},
- * shipped as {@code marble-compact.css}) or set the attribute server-side at
- * render time — calling {@link #apply(Density)} on page load runs after the first
- * paint and can cause a brief comfortable→compact flash (FOUC).
+ * <em>default</em>, prefer the {@code org.zkoss.theme.marble.density} library property
+ * in {@code zk.xml}, which renders {@code data-density} on {@code <html>} with the page —
+ * calling {@link #apply(Density)} on page load runs after the first paint and can cause
+ * a brief comfortable→compact flash (FOUC).
  *
  * @since 11.0.0
  */
