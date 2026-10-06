@@ -161,17 +161,20 @@ async function tagCandidates(page: Page, selectors: string[]) {
 }
 
 /** Force (or release) `:focus-visible` on every tagged candidate. */
-async function forceFocus(cdp: CDPSession, count: number, on: boolean) {
+async function forceFocus(
+  cdp: CDPSession, count: number, on: boolean,
+  attr = 'data-fs-idx', pseudo = ['focus-visible'],
+) {
   const { root } = await cdp.send('DOM.getDocument', { depth: -1 });
   for (let i = 0; i < count; i++) {
     const { nodeId } = await cdp.send('DOM.querySelector', {
       nodeId: root.nodeId,
-      selector: `[data-fs-idx="${i}"]`,
+      selector: `[${attr}="${i}"]`,
     });
     if (!nodeId) continue;
     await cdp.send('CSS.forcePseudoState', {
       nodeId,
-      forcedPseudoClasses: on ? ['focus-visible'] : [],
+      forcedPseudoClasses: on ? pseudo : [],
     });
   }
 }
@@ -340,22 +343,30 @@ test.describe('focus-ring scan', () => {
 // class rather than driving a real selection: what is under test is the cascade
 // the two rules produce together, and that is identical either way.
 //
+// Tree and listbox rows are never DOM-focused: keyboard focus sits on the hidden
+// `a.z-focus-a` inside the widget, and the row ring comes from
+// `.z-tree:has(.z-focus-a:focus-visible) .z-treerow.z-treerow-focus`. Those
+// entries therefore set `addCls` (the row's focus class) and `host` (the widget
+// whose `.z-focus-a` gets the forced focus) instead of forcing focus on the row.
+//
 // Families deliberately NOT listed, with the reason:
 //   - accordion tab (.z-tab): focus is a `::before` state-layer opacity, not an
 //     outline. forced-colors drops pseudo-element backgrounds outright, so its
 //     focus is invisible in WHCM whether or not the tab is selected — a
 //     different gap (no outline at all), not this collision.
-//   - listbox row (.z-listitem): focus is `box-shadow: inset …` on the first
-//     cell, and forced-colors strips box-shadow. Same story as the tab.
 //   - searchbox: `.z-searchbox-focus` is the root's focus class while
 //     `.z-searchbox-selected` is a row inside the popup — different elements, so
 //     the two colours never meet.
 const SELECTED_FAMILIES = [
   { name: 'navbar item',     page: 'navbar',     focus: '.z-navitem-content', on: 'parent', cls: 'z-navitem-selected' },
-  { name: 'tree row',        page: 'tree',       focus: '.z-treerow',         on: 'self',   cls: 'z-treerow-selected' },
+  { name: 'tree row',        page: 'tree',       focus: '.z-treerow',         on: 'self',   cls: 'z-treerow-selected', addCls: 'z-treerow-focus', host: '.z-tree' },
+  { name: 'listbox row',     page: 'listbox',    focus: '.z-listitem',        on: 'self',   cls: 'z-listitem-selected', addCls: 'z-listitem-focus', host: '.z-listbox' },
   { name: 'paging button',   page: 'paging',     focus: '.z-paging-button',   on: 'self',   cls: 'z-paging-selected' },
   { name: 'organigram node', page: 'organigram', focus: '.z-orgnode',         on: 'parent', cls: 'z-orgitem-selected' },
-] as const;
+] as const satisfies readonly {
+  name: string; page: string; focus: string; on: 'self' | 'parent'; cls: string;
+  addCls?: string; host?: string;
+}[];
 
 test.describe('focus-ring scan — selected + focused under forced-colors', () => {
   for (const fam of SELECTED_FAMILIES) {
@@ -365,6 +376,11 @@ test.describe('focus-ring scan — selected + focused under forced-colors', () =
       await page.waitForSelector(fam.focus, { timeout: 15000 });
       await page.evaluate(() => document.fonts.ready.then(() => true));
 
+      // The selected class and the forced focus change background-color; a
+      // transition (.z-orgnode has 0.25s) would make the sample below land
+      // mid-fade and read a blend instead of the settled fill.
+      await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' });
+
       const ok = await page.evaluate((f) => {
         const el = document.querySelector(f.focus);
         if (!el) return false;
@@ -372,6 +388,12 @@ test.describe('focus-ring scan — selected + focused under forced-colors', () =
         if (!target) return false;
         target.classList.add(f.cls);
         el.setAttribute('data-fs-idx', '0');
+        if ('host' in f) {
+          target.classList.add(f.addCls);
+          const a = el.closest(f.host)?.querySelector('.z-focus-a');
+          if (!a) return false;
+          a.setAttribute('data-fs-force', '0');
+        }
         return true;
       }, fam);
       expect(ok, `no ${fam.focus} on ${fam.page}.zul`).toBe(true);
@@ -379,7 +401,8 @@ test.describe('focus-ring scan — selected + focused under forced-colors', () =
       const cdp = await context.newCDPSession(page);
       await cdp.send('DOM.enable');
       await cdp.send('CSS.enable');
-      await forceFocus(cdp, 1, true);
+      if ('host' in fam) await forceFocus(cdp, 1, true, 'data-fs-force', ['focus', 'focus-visible']);
+      else await forceFocus(cdp, 1, true);
 
       const m = await page.evaluate(() => {
         const el = document.querySelector('[data-fs-idx="0"]')!;
@@ -424,7 +447,8 @@ test.describe('focus-ring scan — selected + focused under forced-colors', () =
           ring: rgb(cs.outlineColor), fill: rgb(fill), fillFrom: from.slice(0, 40),
         };
       });
-      await forceFocus(cdp, 1, false);
+      if ('host' in fam) await forceFocus(cdp, 1, false, 'data-fs-force');
+      else await forceFocus(cdp, 1, false);
       await cdp.detach();
 
       test.skip(
