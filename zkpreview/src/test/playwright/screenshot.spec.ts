@@ -411,6 +411,19 @@ test.describe('combobox', () => {
     });
   }
 
+  // Open dropdown with one keyboard-selected item. Batch 2 moved the selected item to
+  // --zk-color-secondary-container; the closed-state shots above never reach it.
+  test('dropdown', async ({ page }) => {
+    await page.locator('.z-combobox-button').first().click();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowDown');
+    await page.mouse.move(0, 0); // keep the pointer off the popup so :hover cannot tint an item
+    const popup = page.locator('.z-combobox-popup.z-combobox-open');
+    await expect(popup).toBeVisible();
+    await expect(popup.locator('.z-comboitem-selected')).toHaveCount(1);
+    await padShot(page, popup, `${DIR}-dropdown.png`);
+  });
+
   // Comboitem with iconSclass: the leading icon must be separated from the
   // label, not glued to it. ZK renders `.z-comboitem-icon` + `.z-comboitem-text`
   // as adjacent flex children with no built-in gap. See doc/skill-gaps.md 2026-06-15.
@@ -2213,6 +2226,58 @@ for (const { comp, focus, shot } of FORM_CONTROL_STATES) {
     }
   });
 }
+
+// -------------------------------------------------------
+// Dropdown popups with a highlighted item (searchbox, chosenbox)
+// Batch 2 changed the list-row selected colour; the popups were never captured open.
+// Searchbox: the second default searchbox has a pre-selected item, which carries
+// `.z-searchbox-selected` (secondary-container). Chosenbox dropdown: ArrowDown moves
+// `.z-chosenbox-option-hover`, whose fill is hardcoded (follow-up item 10 in
+// doc/marble-theme-followups.md), so that shot does NOT cover batch 2's colour. The
+// chosenbox chip shot below covers batch 2's `--zk-chosenbox-item-focus-bg`
+// (`.z-chosenbox-item-focus`).
+// -------------------------------------------------------
+test.describe('searchbox dropdown', () => {
+  test('dropdown', async ({ page }) => {
+    await page.goto('/searchbox.zul');
+    await page.waitForLoadState('networkidle');
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+    await page.locator('.z-searchbox:not(.z-searchbox-disabled)').nth(1).click();
+    await page.mouse.move(0, 0);
+    const popup = page.locator('.z-searchbox-popup:visible');
+    await expect(popup).toHaveCount(1);
+    await expect(popup.locator('.z-searchbox-selected')).toHaveCount(1);
+    await padShot(page, popup, 'searchbox-dropdown.png');
+  });
+});
+
+test.describe('chosenbox dropdown', () => {
+  test('dropdown', async ({ page }) => {
+    await page.goto('/chosenbox.zul');
+    await page.waitForLoadState('networkidle');
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+    await page.locator('.z-chosenbox').first().click();
+    await page.keyboard.press('ArrowDown');
+    await page.mouse.move(0, 0);
+    const popup = page.locator('.z-chosenbox-popup:visible');
+    await expect(popup).toHaveCount(1);
+    await expect(popup.locator('.z-chosenbox-option-hover')).toHaveCount(1);
+    await padShot(page, popup, 'chosenbox-dropdown.png');
+  });
+
+  // Clicking a selected chip gives it `.z-chosenbox-item-focus` (batch 2's
+  // `--zk-chosenbox-item-focus-bg`).
+  test('chip focus', async ({ page }) => {
+    await page.goto('/chosenbox.zul');
+    await page.waitForLoadState('networkidle');
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+    const box = page.locator('.z-chosenbox:has(.z-chosenbox-item)').first();
+    await box.locator('.z-chosenbox-item').first().click();
+    await page.mouse.move(0, 0);
+    await expect(page.locator('.z-chosenbox-item-focus')).toHaveCount(1);
+    await padShot(page, box, 'chosenbox-chip-focus.png');
+  });
+});
 
 // -------------------------------------------------------
 // Scrollbar (custom / simulated overlay + embedded)
