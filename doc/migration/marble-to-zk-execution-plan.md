@@ -212,7 +212,7 @@ disk. Every verify counts with `git ls-files`, never `ls | wc -l`.
 | 4.5 | Write the D18 sync script beside the release tooling, **with** the version-drift check on the synced result | ~build-css paths | Sonnet | **Opus** | dry run produces a tree byte-identical to core's Marble CSS; the four version locations agree, and a deliberately drifted `Version.java` makes it fail |
 | 4.6 | Execute D17 — promote Marble onto template `master` | — | **Planner** (irreversible; user-authorised) | Sonnet | `master` tree equals the theme branch tree; `git log` shows the chosen D19 shape | **blocked**: D19 + the `iceblue` branch (other workstream) |
 | 4.7 | Mark template `master` as generated | < 1 | Sonnet | Sonnet | banner present in `README`/`CLAUDE.md`; a CI or hook refuses hand edits (or the decision that none is wanted is recorded) |
-| 4.8 | Resume the 50 Jess issues in `zk` | — | — | — | **Not sized here.** Each issue is its own Planner → Generator → Evaluator cycle with the tracker as the ledger; they start after the P4 gate |
+| 4.8 | Resume the 50 Jess issues in `zk` | — | — | — | **Not sized here.** Each issue is its own Planner → Generator → Evaluator cycle with the tracker as the ledger; ~~they start after the P4 gate~~ **D208: they start now, before 4.1** |
 | **P4 gate** | Full `zktest` triaged against 4.1's baseline; this workspace read-only | — | — | **Opus** | every new failure has a cause; no failure attributable to Marble remains |
 
 ---
@@ -504,6 +504,24 @@ the pre-fix tree with a computed-style probe (deterministic, unlike F61's pixel 
 consecutive `focus-scan` runs under full-suite load; PASS commits with ZK-6112. `doc/skill-gaps.md:308` stays wrong in
 both repositories by design (D69-B); 3.20's gate file is the record that supersedes it. **B** — leave it to P4: the
 defect survives the P3 drill and the wrong sentence has no owner.
+
+### D208 — When the Jess issues resume — **RULED 2026-10-05: now, before the `zktest` work**
+
+Row 4.8 originally waited for the P4 gate, so a Marble regression and a design fix could not be confused
+in the `zktest` comparison. With ZK 11.0 due at the end of October and P4 not started, the user ruled that the
+Jess issues go first and the `zktest` work (4.1 baseline, the P4 gate) goes last. Consequence: 4.1 no longer
+measures "Marble as migrated" — its baseline must be taken on a tree that predates every Marble commit
+(the row's original wording), and the gate's triage must attribute each new failure to Marble, a Jess fix, or
+neither. The Jess board moves into `zk` at `doc/jess-review/` (D209).
+
+### D209 — Template documents the manifest classified MOVE / STAGED COPY — **RULED 2026-10-05: transfer them now**
+
+No P3 row carried the manifest's MOVE / STAGED COPY documents beyond `doc/spec`, `doc/contracts`,
+`doc/screenshots` and 3.18's twelve paths, so 24 of them (including this plan and `doc/jess-review/`) never
+reached `zk`. Copied 2026-10-05 from template HEAD `182e1092` via `git archive`, each file `cmp`-verified:
+156 files (manifest A + the three SKILL-classified `doc/` files kept as files, user D4-A) plus 8 of the 11
+files added after the manifest was written. Inventory and per-file reasoning:
+[doc-transfer-gap.md](doc-transfer-gap.md). From this date the `zk` copies are the ones edited.
 
 ## 4. Workflow shape
 

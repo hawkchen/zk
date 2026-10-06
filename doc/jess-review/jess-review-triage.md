@@ -7,29 +7,42 @@ default. No blockers.
 
 ---
 
-## ⚠️ FROZEN pending the zk migration
+## Resumed in `zk` (2026-10-05)
 
-**Do not start a Jess issue.** The 50 in-scope issues are solved **after** Marble moves into
-the `zk` repository, and in `zk` — not here. A fix applied in this workspace now would have to
-be re-applied on the other side, against a different build and a different CSS location.
+Frozen 2026-09-09 until the migration finished; **resumed 2026-10-05, before the `zktest` work**
+(D208 in [../migration/marble-to-zk-execution-plan.md](../migration/marble-to-zk-execution-plan.md)).
+This board was copied into `zk` the same day (D209) and is edited here from now on; the template
+copy is no longer maintained.
 
-Frozen 2026-09-09 by the migration ruling; see
-[../migration/marble-to-zk-migration-plan.md](../migration/marble-to-zk-migration-plan.md),
-where resuming this work is the last item of P4. The 6 already-fixed issues are unaffected and
-still awaiting the designer to close them.
+**Paths in this file are still the template's.** Map them before use:
+
+| Template path | `zk` path |
+|---|---|
+| `src/main/resources/web/js/zul/...` | `zul/src/main/resources/web/js/zul/...` |
+| `src/main/resources/web/js/zkmax/...`, `.../zkex/...` | `../zkcml/zkmax/src/main/resources/web/js/zkmax/...`, `../zkcml/zkex/...` |
+| `src/main/resources/web/zul/css/...` | `zul/src/main/resources/web/zul/css/...` |
+| `src/test/resources/web/*.zul` (preview pages) | `zkpreview/src/main/webapp/web/*.zul` |
+| `npm run build:css` / `lint:css` | see `.claude/skills/marble-theme/SKILL.md` |
+
+Tracker check 2026-10-02: all 82 issues still open, last activity 2026-09-07 — the designer has
+not closed any of the 6 fixed issues yet.
 
 ## Status board
 
-**Last updated 2026-09-09.** 6 of 82 done. **Work frozen — see above.**
+**Last updated 2026-10-06.** 6 of 82 done and closed-pending; batch 1 fixed and verified, not yet commented (see table).
 
 | State | Issues | Count |
 |---|---|---|
 | Fixed, commented, awaiting the designer to close | #2, #76, #77, #79, #80, #81 | 6 |
+| Fixed and verified in `zk` (batch 1), not yet commented | #41, #43, #52, #67, #65 (button part; drag cursor pending D11) — gates in [gates/](gates/) | 5 |
 | Classified, in scope, not yet started | P1 (46) + DECIDE (4) | 50 |
 | Classified, deferred out of scope | see [jess-review-deferred.md](jess-review-deferred.md) | 26 |
 
 **Resume here:** the verified P1 quick wins (#41 #43 #52 #65 #67) — all located to an exact
-line. Then the grid cluster #34-#39 (six issues, one file).
+line. Then the grid cluster #34-#39 (six issues, one file). Re-checked in `zk` 2026-10-02: all
+five are still unfixed — `zul/.../sel/css/listbox.css:267-270` (#41; not :323, see the proposal),
+`zul/.../sel/css/tree.css:168-171`, `zul/.../tab/css/tabbox.css:94`, `zul/.../wgt/css/errorbox.css:52`,
+and `../zkcml/zkmax/.../layout/css/splitlayout.css:156`.
 
 **Follow-ups raised while fixing #2 (not tracker issues — local backlog):**
 
@@ -103,11 +116,11 @@ Grouped by file so one sitting can clear a cluster.
 | Issues | Component | Note |
 |---|---|---|
 | #2 | tokens | `secondary` + `status-info` roles. **Do this first** — widest blast radius; every later colour call depends on it |
-| #41 ✔ | listbox | `border-left: 3px solid primary` at listbox.css:323 — *the same pattern just removed from notification*; reuse that fix |
+| #41 ✔ | listbox | ~~`border-left: 3px solid primary` at listbox.css:323~~ — **wrong line** (that is the group header); the bar is the row focus indicator at `listbox.css:267-270`, one defect with #43 — see [jess-review-issue-41-43-proposal.md](jess-review-issue-41-43-proposal.md) |
 | #43 ✔ | tree | tree.css already uses `:focus-visible`; the outline comes from ZK's `.z-treerow-focus` class (tree.css:169). Her suggested fix is already in place — the class is the culprit |
 | #52 ✔ | tabbox | `border-bottom: 2px` at tabbox.css:94 → MD3 wants 3dp |
-| #65 ✔ | splitlayout | `col-resize`/`row-resize` exist (:91/:95) but the splitter button sets `cursor: pointer` (:156) and wins |
-| #67 ✔ | errorbox | `cursor: move` at errorbox.css:52 |
+| #65 ✔ | splitlayout | `col-resize`/`row-resize` exist (:91/:95). **Corrected 2026-10-05:** on the non-collapsible splitters she tested the button carries `-disabled`, so `cursor: default` at :205 wins, not `pointer` at :156; while dragging, the pointer is over ZK's `#zk_ddghost.z-splitter-ghost`, which no rule gives a cursor — see the verification plan |
+| #67 ✔ | errorbox | `cursor: move` at errorbox.css:52. **Added 2026-10-05:** a real errorbox *is* draggable (`Errorbox.ts:99`); the box she hovered is a static `h:div` sample on `errorbox.zul:16` with no widget, so this leans DEMO — see the verification plan |
 | #34 #35 #36? #37? #38 #39 | grid | #38 is a specificity fix (striping beats hover); #37 needs a feasibility check against ZK's split frozen panes |
 | #31 #78 | biglistbox | scrollbar overlaps header / differs from the documented scrollbar style |
 | #8 #12 #13 #16 #17 #22 | cascader, chosenbox, combobox, inputgroup | #16 and #17 come with exact tokens/properties |
@@ -204,6 +217,21 @@ Verdict vocabulary:
 ---
 
 ## The per-issue fix process
+
+> **Amended 2026-10-05 (user rulings), takes precedence over the steps below where they differ:**
+>
+> 1. **Verification is decided before fixing starts — one batch at a time.** Before step 3 begins on
+>    a batch, every issue in *that batch* has its verification method written and approved in
+>    [jess-review-verification-plan.md](jess-review-verification-plan.md). Methods for later batches
+>    are written only when that batch comes up — not all issues up front. A fix is judged only
+>    against its pre-approved method; the method is not rewritten after the fix to match what the
+>    fix did.
+> 2. **Three roles, three separate agents:** the **Planner** (the main session) triages, writes the
+>    verification method and the Generator brief, and records verdicts; the **Generator**
+>    (a Sonnet subagent) implements and builds only; the **Verifier** (an Opus subagent, fresh
+>    context) runs the pre-approved method against the live preview app and returns
+>    pass / fail with evidence. The Verifier gets the issue and the method, never the diff or the
+>    Generator's reasoning, and never edits. A FAIL goes back through the Planner, max 3 rounds.
 
 Seven steps. Steps 1–2 are the gate: nothing below step 2 happens without Hawk
 saying so, and only one issue is in flight at a time.

@@ -239,7 +239,9 @@ before the LESS-to-Marble CSS pipeline replacement (`2100200284`) and everything
 - [ ] Regenerate with bare `--update-snapshots` (preset `changed`), never `=all`.
 - [ ] 26 are `[chromium] screenshot.spec.ts` gallery + hover/focus shots; 2 are
       `[focus-scan]` forced-colors assertions (`tree: tree row`, `organigram: organigram
-      node`) which are **assertion** failures, not image diffs — those two need a real fix
+      node`) which are **assertion** failures (`tree: tree row` passes since the #41/#43 fix of
+      2026-10-06 — see `doc/jess-review/gates/batch1-41-43.md`; `organigram` still fails, its
+      0.25s background transition is sampled mid-fade), not image diffs — those two need a real fix
       or an explicit waiver, not a regenerated image.
 - [ ] Beware: `forced-colors-gallery.spec.ts` is a visual-review spec that **rewrites** ~100
       tracked PNGs on every run. Revert those before staging unless they are the point of
@@ -252,3 +254,24 @@ before the LESS-to-Marble CSS pipeline replacement (`2100200284`) and everything
   visual-review-spec trap.
 - `doc/screenshot-tolerance-policy.md` — the existing tolerance ruling; the `padShot` floor
   (20px) is why a one-step font change is invisible to these shots.
+
+## 9. A truncated tab label never shows an ellipsis
+
+Found while verifying Jess #52 (2026-10-06, user ruling D14-A: tracked here, not part of #52).
+
+`.z-tab-text` declares `overflow: hidden; text-overflow: ellipsis; white-space: nowrap`, but it is
+a flex item of `.z-tab-content` (itself a flex item of `li.z-tab`) and neither carries
+`min-width: 0`, so the label never shrinks below its content width. With a fixed narrow tab width
+the label keeps its full width, `li.z-tab`'s `overflow: hidden` clips it on both sides, and no
+ellipsis appears. Measured after the #52 fix: a 219px label in a 60px tab is shown as a centred
+middle slice. The pre-fix rules have the same structure, so this is inferred to predate #52; it
+has not been measured on the pre-fix tree.
+
+- [ ] Confirm on the pre-fix tree (or accept the inference from the rule structure).
+- [ ] Let the label shrink (`min-width: 0` on `.z-tab-content` and `.z-tab-text`) and check that
+      the #52 indicator, which is sized from `.z-tab-content`'s padding, still matches the
+      visible label width once the label is truncated.
+
+### Cross-references
+
+- `doc/jess-review/gates/batch1-52.md` — round 1 and round 2 extra checks.
