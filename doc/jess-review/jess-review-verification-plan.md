@@ -136,6 +136,7 @@
     這一點在 RED 階段由 Verifier 量出來：拖動中 `.z-splitlayout-splitter` 的 class 有沒有變化。
   - **RED run 結果（2026-10-06）：** 拖動中 splitter、root 的 class 和 attribute 完全不變；ghost 只有 `z-splitter-ghost` 一個 class，方向只寫在 inline 的 width/height。
     **純 CSS 分不出方向，步驟 3、4 必須改 `Splitlayout.ts` 的 ghost（ZK-CORE）**，待核准（對話中 D11）。步驟 1、2（按鈕游標）是純 CSS，可以先做。
+  - **裁示（2026-10-06，D11-B）：** 步驟 3、4 不在這一批處理，改成另開 ZK Jira。依「所有 P1 元件 issue 做完才開 Jira」的規則，先記在看板的 BLOCKED 那一組，之後再一起開。
 
 ### #67 — 不能移動的 errorbox 不該顯示移動游標
 

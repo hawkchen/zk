@@ -19,6 +19,6 @@
 
 ## 拖動中的部分（步驟 3、4）— **未處理**
 
-仍然是 `auto`，跟 RED 時一樣。拖動中沒有任何 class 能讓 CSS 判斷方向，要改 `Splitlayout.ts`，等使用者裁示（對話中 D11）。
+仍然是 `auto`，跟 RED 時一樣。拖動中沒有任何 class 能讓 CSS 判斷方向，要改 `Splitlayout.ts`。使用者裁示 D11-B（2026-10-06）：另開 ZK Jira，不在 Jess 這一批處理。
 
 取證放在 [batch1-65/](batch1-65/)。

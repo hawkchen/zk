@@ -152,6 +152,7 @@ The 14 preview-page defects and the 12 ZK-core issues now live in
 one still needs. They stay open in the tracker; they are simply not in the current
 working scope.
 
+- **Pending ZK Jira from batch 1 (D11-B, 2026-10-06):** #65's drag half — while a splitlayout splitter is dragged, the pointer is over ZK's ghost element (`#zk_ddghost.z-splitter-ghost`, created in `Splitlayout.ts` `_ghostsizing`), which carries no cursor and no orientation class, so the cursor reverts to the arrow; CSS cannot tell col- from row-resize. Fix belongs in the widget (add an orientation class or inline cursor to the ghost). Box splitter (`#zk_ddghost`) and borderlayout (`#zk_layoutghost`) behave the same. File with Group A below.
 - **Group A — ZK core (12):** #9 #14 #20 #21 #28 #32 #44 #50 #56 #58 #69 #75 — to be
   filed as ZK Jira issues (decision A). Each needs its ZK-source claim confirmed
   first; #58 is the highest-severity item in the whole review.
