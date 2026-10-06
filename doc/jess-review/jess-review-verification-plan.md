@@ -232,3 +232,185 @@
 - **`forced-colors`、`focus-scan`：** 預期全部通過。已知 organigram 那一項是修正前就存在的失敗（follow-up item 8）。
 - **`chromium` 截圖：** 上面 7 個元件中，畫面上有選取狀態的截圖預期會變。其他元件的截圖只能出現已知的反鋸齒落差（follow-up item 8）。
 - **`tablet`：** 同上。
+
+---
+
+## 前置工作：重新產生過時的截圖 baseline（follow-up item 8，D19-A）
+
+狀態：**已核准**（D20-A，2026-10-06）。這不是 Jess 的 issue，但照同樣的流程辦：先訂驗證方法，再動手。
+
+### 現況（2026-10-06 實測，修正後的 8085）
+
+- `chromium` 專案：**27 項失敗**、99 項通過。
+  - 預期內 4 項：第一、二批造成的變動，包括 listbox gallery、tree gallery、tabbox gallery 和 hover。
+  - 其餘 23 項：bandbox、button、checkbox、chosenbox、combobox、datebox、grid、longbox、panel、searchbox、selectbox、spinner、textbox、timebox、toast、window 的 gallery、hover 或 focus。
+- `focus-scan`：1 項失敗，「selected + focused under forced-colors › organigram」。`.z-orgnode` 有 0.25s 的背景色 transition，測試在漸變途中取樣。
+- `tablet`：沒有失敗。它容許 2% 的差異，所以有些變動沒被抓到。
+
+### 方法
+
+**步驟 1：分類（由 Opus Verifier 做，重新產生之前）**
+
+逐一比對 27 項的 expected、actual 和 diff，每項歸入一類：
+
+| 類別 | 判定條件 |
+|---|---|
+| **E：預期的變動** | diff 只出現在第一、二批改過的地方：清單列的選取色、焦點框、tab 指示線 |
+| **D：既有的落差** | 改變的像素只有灰階反鋸齒，或是文字變寬造成的整體位移（≤ 3px）；沒有任何色相改變，也沒有元素出現或消失 |
+| **U：無法解釋** | 不屬於 E 或 D 的其他情況 |
+
+U 類**不重新產生**，個別回報。
+
+**步驟 2：人工確認（使用者核准）**
+
+把 27 項的 expected、actual、diff 並排做成一頁，依 E、D、U 分組，交給使用者看。使用者核准的項目，才進入下一步。這是 item 8 要求的「接受之前先看 diff」。
+
+**步驟 3：重新產生（由 Generator 做）**
+
+- 只針對核准的項目，用 Playwright 不加參數的 `--update-snapshots`（只會更新失敗的那些，**不可**用 `=all`）。
+- 不執行 `forced-colors-gallery`，因為它每次跑都會改寫大約 100 張受追蹤的 PNG。如果它有改到檔案，就還原。
+
+**步驟 4：organigram 的 focus-scan 測試（由 Generator 修正測試）**
+
+在取樣之前先停掉 transition，或等 transition 結束。
+
+### 判定檢查（步驟 3、4 完成後，由全新的 Opus Verifier 做）
+
+1. `chromium` 專案連續跑 **2 次**，兩次都是**全數通過**；如果 U 類有被保留下來，那幾項除外。
+2. `git status zkpreview/doc/screenshots`：
+   - 變動的 PNG **正好**是步驟 2 核准的那些，不多也不少；
+   - **沒有**新增的 PNG（有新增就代表某個 baseline 原本不存在，跑過等於沒比對）；
+   - `*-forced-colors.png` 沒有任何變動。
+3. `focus-scan` 連續跑 **3 次**，「organigram」那一項 3 次都通過。
+4. **organigram 測試仍然能抓到真正的問題**（防止修成永遠通過）：用 `addStyleTag` 注入一條規則，讓選取節點的焦點框變成 `Highlight`（跟底色同色）後重跑那一項，它必須**失敗**。
+
+### RED
+
+步驟 3、4 動手之前：
+- 判定 1 失敗（27 項）；
+- 判定 3 失敗；
+- 判定 4 今天的狀態先記錄下來（今天的測試因為取樣時機的問題，結果可能不穩定）。
+
+### 步驟 1 結果：分類（2026-10-06，Opus Verifier）
+
+報告：[gates/baseline-classify.md](gates/baseline-classify.md)；量測 script：`gates/baseline-classify/measure.js`。27 項的 expected 與 actual 尺寸都相同，log 沒有尺寸不符的訊息。
+
+| 類別 | 項數 | 項目 |
+|---|---|---|
+| E | 1 | tabbox › hover：舊 tab 指示線少了 1 個像素 |
+| D | 10 | chosenbox、longbox、searchbox、selectbox、textbox 的 focus 和 hover：只有輸入框內文字的次像素重繪 |
+| U | 16 | 全部 16 項 gallery |
+
+**U 的共同原因（Planner 查證）：** 預覽頁本身的文字變了：頁面標題變大，段落標題和列標籤變小、變粗、變灰；元件被變窄的標籤往左推，最多推了 83px。來源是 `47d26068ed`（2026-09-11 19:59，「move dead typography utilities onto the labels that carry the text」），它讓原本沒生效的文字 utility 生效。baseline 是在 `cd02d18943`（同一天 17:50）拍的，比這個修正早。所以這是刻意的修正，不是 regression。重新產生之前要不要核准，由使用者決定（D21）。
+
+**Verifier 另外發現的兩件事：**
+1. **目前的門檻看不到第二批的選取色變動。** listbox 和 tree 的選取列從 213,230,255 變成 200,213,234，每個像素每個 channel 的差都小於 25，Playwright 不算差異。listbox 和 tree 的 gallery 之所以失敗，只是因為頁面文字。重新產生之後，新的 baseline 會帶入新的選取色，但未來同樣幅度的色彩退步，這組截圖測試一樣抓不到。
+2. **截圖都沒有展開下拉選單。** combobox、searchbox、chosenbox 和 selectbox 的截圖都沒有打開 dropdown，所以第二批的下拉選取色不在這組截圖的涵蓋範圍內。
+
+人工確認頁：https://claude.ai/artifact/GPReThL2MpipS4kQfrKQQD
+
+### 步驟 2 結果：人工確認（2026-10-06）
+
+使用者在確認頁核准全部 27 項，0 項不核准，包含 16 項 U 類 gallery（等於 D21-A）。D22（截圖測試的涵蓋缺口）尚未裁示。
+
+### 步驟 3、4 結果：Generator（2026-10-06）
+
+報告：[gates/baseline-regen-gen.md](gates/baseline-regen-gen.md)。
+- 27 張 PNG 已重新產生，`git status` 只有這 27 張被改，沒有新增 PNG，forced-colors PNG 都沒變。chromium 全數通過（126 項）。
+- organigram：修改前 3 次都失敗；測試在取樣前注入 `transition: none` 之後，3 次都通過。這項注入對 `SELECTED_FAMILIES` 的 4 列都生效。
+- **新發現：** 整個 `focus-scan` 專案跑下來，「tree: tree row」失敗，量到的是 Highlight 焦點框畫在 Highlight 底色上。
+
+**Planner 查證（tree row）：** 這是測試模型和實際狀態不一致，不是元件的缺陷。
+- 測試用 CDP 把 `:focus-visible` 強加在 `.z-treerow` 本身。但 ZK 的列從來不會拿到 DOM focus。#43 之後，列上的焦點框只會在 tree 的 `.z-focus-a:focus-visible` 時出現，而 #43 也把 `_forced-colors.css` 裡的 `.z-treerow-selected:focus-visible` 改成了這個條件。
+- 所以測試量到的，是瀏覽器預設的 `outline: auto` 焦點框（`rgba(5,0,73,.8)`），這個狀態在實際使用時不會發生。
+- 按照實際狀態量測（列加上 `z-treerow-focus` 和 `z-treerow-selected`，並把 `:focus-visible` 強加在 `.z-focus-a` 上）：焦點框是 `solid 2px rgb(255,255,255)`（HighlightText），offset 是 -2px，畫在 Highlight 上，沒有問題。
+- 先前記錄的「tree row 在 #41/#43 之後通過」是錯的。那次通過也只是因為取樣時剛好落在 transition 漸變途中。已在 follow-up item 8 更正。
+- 修正的方式等使用者裁示（D23）。
+
+### D23-A：tree row 和 listbox row 的 focus-scan 改成照實際方式模擬（已核准）
+
+做法：列加上 `-selected` 和 `-focus` 兩個 class，`:focus-visible` 改加在同一個 tree 或 listbox 的 `.z-focus-a` 上。另外新增 listbox row 一項。
+驗收（由最後的 Verifier 一併做）：
+- tree row 和 listbox row 各跑 3 次，3 次都通過；
+- 注入 `outline-color: Highlight` 到 forced-colors 的 (2a focus) 選取 + 焦點規則後，兩項都必須失敗；
+- navbar、paging、organigram 這 3 項的結果跟修改前相同。
+
+## 前置工作（續）：補上截圖測試的兩個涵蓋缺口（D22-B）
+
+狀態：**已核准**（D24-A，2026-10-06）。
+
+### 缺口與現況
+
+1. **色差門檻太寬。** `chromium` 專案的 gallery 截圖沒有設定 `threshold`，用的是 Playwright 預設的 0.2（YIQ 色差）。第二批把選取列從 `213,230,255` 改成 `200,213,234`，換算成 YIQ 色差只有 0.0625（Planner 依 pixelmatch 公式計算），低於 0.2，所以 41,628 個像素的改變完全沒被算進差異。
+2. **下拉選單沒有截圖。** combobox、searchbox、chosenbox 的截圖都沒有打開下拉選單，第二批改的下拉選取色和 item focus 色不在保護範圍內。
+   - selectbox 和 listbox `mold="select"` 的 `option:checked` 是瀏覽器原生的下拉清單，畫在網頁以外，截圖拍不到。預覽頁上也沒有 `size > 1` 的 select。這兩項**不納入**，在報告中註明。
+
+### 方法
+
+**缺口 1：在 `chromium` 專案層級設定 `expect.toHaveScreenshot.threshold: 0.05`**
+- 只改 `chromium` 這個專案。`gallery`、`tablet` 等其他專案不動，它們有各自的容許政策（見 `doc/screenshot-tolerance-policy.md`）。
+- 0.05 比第二批這次的色差（0.0625）小，所以同樣幅度的變動會被抓到。比 0.05 更小的色差仍然抓不到，這一點會寫進 tolerance policy 文件。
+- padShot 的 `maxDiffPixels: 20` 不變。
+- **連帶影響：** 這次重新產生 baseline 時，只更新了失敗的 27 張。另外 99 張在 0.2 之下通過，但可能有低於 0.2 的差異。改成 0.05 之後，如果出現新的失敗，照前面的流程處理：Opus 分類、做確認頁給使用者看，使用者核准後才更新。
+
+**缺口 2：新增 3 張下拉選單的截圖**
+- combobox：打開下拉選單，用鍵盤讓一個 item 進入選取狀態。
+- searchbox：打開下拉選單，讓一個 item 呈現選取狀態。
+- chosenbox：打開下拉選單，用鍵盤讓一個 item 進入 focus 狀態。
+- 截圖範圍是下拉選單本身，外加 `PAD`。命名照現有規則，例如 `combobox-dropdown.png`。
+
+### 判定檢查（由全新的 Opus Verifier 做）
+
+1. **門檻真的有效（mutation）：** 用 `addStyleTag` 把 listbox 的選取色改回舊值 `rgb(213,230,255)`，重跑 listbox gallery：threshold 0.05 時必須**失敗**；Verifier 另外用 0.2 跑一次對照，必須**通過**，證明是門檻造成的差別。
+2. **門檻不會造成誤判：** 在 0.05 之下，`chromium` 連續跑 3 次，3 次都全數通過。如果中途有經使用者核准而重新產生的截圖，那幾張也包含在這 3 次之內。
+3. **新截圖拍到正確的東西：** 3 張新截圖中，選取或 focus 的那個 item：
+   - 中心點的像素顏色，等於它在頁面上的 computed `background-color`（每個 channel 差 ±2 以內）；
+   - 這個顏色等於 `--zk-color-secondary-container` 解析後的值。
+4. **新截圖抓得到退步（mutation）：** 把那個 item 的底色改回舊的選取色後重跑，3 張都必須**失敗**。
+5. **新截圖穩定：** 3 張各跑 3 次，3 次都通過。
+6. **git 範圍：**
+   - 只有 `playwright.config.ts`、`screenshot.spec.ts` 和 `doc/screenshot-tolerance-policy.md` 有修改；
+   - 新增的 PNG 正好是這 3 張；
+   - 其他 PNG 的變動必須都是步驟中使用者核准的項目；
+   - `*-forced-colors.png` 沒有任何變動。
+
+### RED（修改前）
+
+- 判定 1：以目前的 0.2 跑，注入舊色後 listbox gallery **會通過**（就是這個缺口本身）；
+- 判定 3 到 5：那 3 張截圖目前不存在。
+
+### D22-B 結果：Generator 與第二輪分類（2026-10-06）
+
+Generator 報告：[gates/baseline-d22-gen.md](gates/baseline-d22-gen.md)。分類報告：[gates/baseline-classify.md](gates/baseline-classify.md) 的「第二輪」一節。
+- **RED：** 注入舊的選取色後，listbox gallery 在 0.2 下**通過**、在 0.05 下**失敗**。
+- **門檻改成 0.05 後新增 6 項失敗：** doublebox、decimalbox、combobutton 的 hover 和 focus，連跑兩次都是同樣這 6 項。Opus 判定全部是 D（文字次像素重繪，重心移動 ≤ 0.5px）。還沒有更新，等使用者在確認頁（第二輪）核准。
+- **3 張新的下拉選單截圖：** 用 `--update-snapshots=missing` 產生，3 次都通過。
+  - combobox 和 searchbox 選取 item 的底色是 200,213,234，等於 `--zk-color-secondary-container`。
+  - **chosenbox 跟計畫的前提不符：** 它的鍵盤 focus item 是 `.z-chosenbox-option-hover`，底色是寫死的 `rgba(0,0,0,.04)`（`zkcml/.../chosenbox.css:147-150`），不是 secondary-container。第二批裡的 chosenbox knob `--zk-chosenbox-item-focus-bg` 指的是輸入框中被點選的 chip，不是下拉選單的 option。已記為 follow-up item 10。判定 3、4 對 chosenbox 怎麼處理，等使用者裁示（D25）。
+
+**D25-A（2026-10-06）：** 保留 `chosenbox-dropdown.png`，只當一般的畫面保護，不套用判定 3、4。另外新增 `chosenbox-chip-focus.png`：點選輸入框中的一個 chip，讓它帶 `.z-chosenbox-item-focus`。判定 3、4 改套用在這一張，比對的是 `--zk-chosenbox-item-focus-bg` 解析後的 secondary-container。
+
+**第二輪人工確認（2026-10-06）：** 使用者全部核准：6 項 D（doublebox、decimalbox、combobutton 的 hover 和 focus），以及 4 張新截圖（combobox-dropdown、searchbox-dropdown、chosenbox-dropdown、chosenbox-chip-focus）。
+
+### 最終判定（2026-10-06，全新的 Opus Verifier）
+
+[gates/baseline-verify.md](gates/baseline-verify.md)：**VERDICT: PASS**，15 項檢查全部通過。所有 mutation 都是在 scratch 複本上做的，repo 檔案的 shasum 前後一致。
+- **A（baseline）：**
+  - chromium 3 次都是 130 項全數通過；
+  - 變動的 PNG 是核准的 33 張，新增的是 4 張；
+  - focus-scan 3 次都是 57 項通過、0 項失敗；
+  - organigram 的 mutation 會讓測試失敗。
+- **B（D23-A）：**
+  - tree row 和 listbox row 確實有被檢查（沒有被跳過），mutation 時兩項都失敗；
+  - navbar、paging、organigram 的結果跟修改前相同。
+- **C（D22-B / D25-A）：**
+  - 注入舊的選取色後，在 0.05 下失敗、在 0.2 下通過；
+  - 3 張截圖中的 item 底色都是 200,213,234，等於 secondary-container；
+  - 3 張的 mutation 都會讓測試失敗。
+
+Verifier 提醒的小風險（在它的幾次測試裡都沒有發生）：
+- combobox 的測試沒有指定選中的是哪一個 item；
+- searchbox 的測試靠 `.nth(1)` 找到預先選取的那一個 searchbox；
+- ZK 打開 popup 用的是 JS 動畫，`animations: 'disabled'` 停不了它；
+- gallery 截圖在 0.05 之下沒有 `maxDiffPixels` 的容許量；
+- tree 和 listbox 的 `.z-focus-a` 是取 widget 裡的第一個，如果預覽頁出現巢狀的 listbox 或 tree，可能會取錯。

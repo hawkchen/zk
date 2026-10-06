@@ -225,6 +225,12 @@ That blocker is now gone: the names are final and `doc/spec/utility-naming.md` i
 
 ## 8. Regenerate the stale screenshot baselines
 
+**Done 2026-10-06** (Jess review prerequisite, rulings D19-A to D25-A). 33 baselines regenerated
+after per-image review, the organigram and tree/listbox row forced-colors focus checks fixed in the
+test, the `chromium` threshold tightened to 0.05 and 4 dropdown/chip shots added. Verifier verdict
+PASS: `doc/jess-review/gates/baseline-verify.md`. Plan and rulings: the baseline sections of
+`doc/jess-review/jess-review-verification-plan.md`.
+
 Goal: get `screenshot.spec.ts` and `focus-ring-scan.spec.ts` back to green, so a real
 regression is visible instead of being buried under 28 known failures.
 
@@ -233,16 +239,20 @@ on `15bc0c7eeb`, the commit before that series, with the preview app rebuilt and
 each side. The baselines under `zkpreview/doc/screenshots/` were last regenerated 2026-09-12,
 before the LESS-to-Marble CSS pipeline replacement (`2100200284`) and everything after it.
 
-- [ ] Confirm the 28 are all stale-baseline, not real defects — inspect the diff images in
+- [x] Confirm the 28 are all stale-baseline, not real defects — inspect the diff images in
       `test-results/` before accepting any of them. A genuinely broken component would hide
       in this set perfectly.
-- [ ] Regenerate with bare `--update-snapshots` (preset `changed`), never `=all`.
-- [ ] 26 are `[chromium] screenshot.spec.ts` gallery + hover/focus shots; 2 are
+- [x] Regenerate with bare `--update-snapshots` (preset `changed`), never `=all`.
+- [x] 26 are `[chromium] screenshot.spec.ts` gallery + hover/focus shots; 2 are
       `[focus-scan]` forced-colors assertions (`tree: tree row`, `organigram: organigram
-      node`) which are **assertion** failures (`tree: tree row` passes since the #41/#43 fix of
-      2026-10-06 — see `doc/jess-review/gates/batch1-41-43.md`; `organigram` still fails, its
-      0.25s background transition is sampled mid-fade), not image diffs — those two need a real fix
-      or an explicit waiver, not a regenerated image.
+      node`) which are **assertion** failures, not image diffs — those two need a real fix
+      or an explicit waiver, not a regenerated image. Correction (2026-10-06): `tree: tree row`
+      did not really pass after the #41/#43 fix; it passed only because it, too, sampled a
+      mid-transition blend. With transitions disabled it fails, because the test still forces
+      `:focus-visible` on the `.z-treerow` itself, a state ZK never produces (the row ring is
+      gated on the tree's `.z-focus-a:focus-visible` since #43). In the real state the ring is
+      HighlightText on Highlight. See the baseline section of
+      `doc/jess-review/jess-review-verification-plan.md`.
 - [ ] Beware: `forced-colors-gallery.spec.ts` is a visual-review spec that **rewrites** ~100
       tracked PNGs on every run. Revert those before staging unless they are the point of
       the commit.
@@ -275,3 +285,26 @@ has not been measured on the pre-fix tree.
 ### Cross-references
 
 - `doc/jess-review/gates/batch1-52.md` — round 1 and round 2 extra checks.
+
+## 10. Chosenbox dropdown option hover is a hardcoded black 4% fill
+
+Found while adding the dropdown screenshots for D22-B (2026-10-06).
+
+`zkcml/zkmax/src/main/resources/web/js/zkmax/inp/css/chosenbox.css:147-150` paints
+`.z-chosenbox-option:hover, .z-chosenbox-option-hover` with `rgba(0, 0, 0, 0.04)`. That class is
+also the keyboard-highlighted option (ArrowDown in the open dropdown). Three problems:
+
+- It is a literal colour, against the "no hardcoded colour values" rule; no token or knob reaches it.
+- Black at 4% disappears on a dark surface, so the dark preset has no visible keyboard highlight.
+- MD3's hover state layer is `on-surface` at 8%; 4% is half of that.
+
+Batch 2 (#23) did not cover it: its chosenbox knob `--zk-chosenbox-item-focus-bg` is the fill of a
+clicked **chip** in the input, not of a dropdown option.
+
+- [ ] Decide the state for a keyboard-highlighted option (hover state layer, or the list-row
+      family's `secondary-container` as combobox uses) and route it through a token.
+- [ ] Check the dark preset.
+
+### Cross-references
+
+- `doc/jess-review/gates/baseline-d22-gen.md` — the measured colours of the three dropdown items.
