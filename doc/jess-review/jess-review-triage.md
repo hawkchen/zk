@@ -29,12 +29,13 @@ not closed any of the 6 fixed issues yet.
 
 ## Status board
 
-**Last updated 2026-10-06.** 11 of 82 fixed and awaiting the designer to close (6 earlier + batch 1, see table).
+**Last updated 2026-10-06.** 12 of 82 fixed and awaiting the designer to close (6 earlier + batches 1 and 2, see table).
 
 | State | Issues | Count |
 |---|---|---|
 | Fixed, commented, awaiting the designer to close | #2, #76, #77, #79, #80, #81 | 6 |
-| Fixed and verified in `zk` (batch 1), commented 2026-10-06, awaiting the designer to close | #41 (selected fill pending D10), #43, #52, #67, #65 (button part; drag cursor pending D11) — gates in [gates/](gates/) | 5 |
+| Fixed and verified in `zk` (batch 1), commented 2026-10-06, awaiting the designer to close | #41, #43, #52, #67, #65 (button part; drag cursor → ZK Jira, D11-B) — gates in [gates/](gates/) | 5 |
+| Fixed and verified in `zk` (batch 2, list-row selection → secondary-container, D10-A), commented 2026-10-06 | #23 (and the second half of #41) — [gates/batch2.md](gates/batch2.md) | 1 |
 | Classified, in scope, not yet started | P1 (46) + DECIDE (4) | 50 |
 | Classified, deferred out of scope | see [jess-review-deferred.md](jess-review-deferred.md) | 26 |
 
@@ -125,7 +126,7 @@ Grouped by file so one sitting can clear a cluster.
 | #31 #78 | biglistbox | scrollbar overlaps header / differs from the documented scrollbar style |
 | #8 #12 #13 #16 #17 #22 | cascader, chosenbox, combobox, inputgroup | #16 and #17 come with exact tokens/properties |
 | #18 #19 | combobutton | hover lands on the wrong segment; disabled arrow fill |
-| #23 #29 | selectbox | `primary-container` → `secondary-container`; arrow proportion |
+| ~~#23~~ #29 | selectbox | #23 done in batch 2 (D10-A); #29 arrow proportion remains |
 | #24 #25 #26 | slider family | #24 is cursor + hover scoped to track instead of thumb |
 | #27? | rating | no `cursor` rule in rating.css — locate the source first |
 | #3 | bandbox | blue bar right of the listbox in bandpopup |

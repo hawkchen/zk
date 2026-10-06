@@ -163,3 +163,72 @@
 - **裁示：** D8-A（2026-10-06）：當作展示頁的問題處理，只改 `errorbox.zul` 的靜態範例，佈景 CSS 不動，並回覆 Jess 說明真正的 errorbox 本來就可以拖。
   另外，`cursor: move` 實際上是設在 `.z-errorbox-content`，不是 `.z-errorbox`（2026-10-05 實測）。#68 以後如果改成不能拖，下面這段要跟著改：
   如果 #68 決定 errorbox 不能拖動，步驟 2、3 就要反過來寫：游標不是 `move`，而且拖了不會移動。
+
+---
+
+## 第二批：清單列選取色改成 MD3 的 secondary-container（#41 後半、#23）
+
+狀態：**已核准**（2026-10-06，對話中 D18-A）。依據是使用者裁示 D10-A：7 個元件一起改。
+**結果：PASS**（2026-10-06，第一輪），見 [gates/batch2.md](gates/batch2.md)。
+
+### 修正範圍（給 Generator 的清單，不屬於驗證方法）
+
+| 元件 | 選取色來源 | 位置 |
+|---|---|---|
+| listbox 列 | `--zk-listbox-selected-bg/-fg` 預設值 | `_component-theme.css:89-90` |
+| listbox group 列 | 直接寫死 | `listbox.css:701-702` |
+| listbox `mold="select"` | 直接寫死 | `listbox.css:~905` |
+| tree 列 | `--zk-tree-selected-bg/-fg` | `_component-theme.css:100-101` |
+| combobox 下拉項目 | `--zk-combobox-selected-bg/-fg` | `_component-theme.css:138-139` |
+| menu | `--zk-menuitem-selected-bg`；文字色直接寫死 | `_component-theme.css:260`、`menu.css:373` |
+| searchbox 下拉項目 | `--zk-searchbox-selected-bg/-fg` | `_component-theme.css:702-703` |
+| chosenbox 鍵盤焦點的 chip | `--zk-chosenbox-item-focus-bg` | `_component-theme.css:244` |
+| selectbox 原生選項 | 直接寫死 | `selectbox.css:174-179` |
+
+規範文件也要一起改：`.claude/skills/zk-component-rules/reference/selected-state-families.md`、`doc/spec/component-theme-variables.md`、`doc/spec/DESIGN.md`，以及上面各元件的 `doc/contracts/*.md`。
+**不在範圍內**（各自屬於別的選取色家族，維持現狀）：paging、navitem、organigram、calendar 的選取日。
+公開 knob 的**名稱不變**，只改預設值。
+
+### 判定檢查
+
+- **修好的樣子：** 7 個元件的選取（或目前所在）項目，底色等於 `--zk-color-secondary-container` 的計算值，文字色等於 `--zk-color-on-secondary-container` 的計算值。依據是 MD3 token `md.comp.list.list-item.selected.container.color` / `label-text.color`（material-web tokens v34）。
+- **量法：**
+  - 先在頁面上建一個探針元素，讀 `background-color: var(--zk-color-secondary-container)` 和 `color: var(--zk-color-on-secondary-container)` 的計算值，當作期望值。
+  - 再讀各目標元素的計算值，跟期望值做字串比對。
+  - 如果某個目標元素的底色是透明的（顏色畫在子元素上），就往下找實際畫出底色的那個元素，並在報告裡寫明量的是哪個元素。
+- **各元件的頁面和狀態：**
+
+| # | 頁面 | 怎麼進入選取狀態 | 目標 |
+|---|---|---|---|
+| 1 | `listbox.zul` 第一個 listbox | 頁面本來就有選取列 | `.z-listitem-selected`，底色和格內文字色 |
+| 2 | `listbox-grouping.zul` | 這個頁面的 `groupSelect` 是 false，ZK 不會產生這個狀態（`ItemWidget.ts:240`）。改成：用 JS 在第一個 `tr.z-listgroup` 加上 `z-listgroup-selected` 再量，只驗 CSS 規則本身。**只量底色**（RED run 發現） | `tr.z-listgroup.z-listgroup-selected` |
+| 3 | `listbox.zul` 的 `mold="select"`（`:129`） | 載入時沒有選取任何選項。改成 `page.locator('select.z-select').selectOption({label:'Received'})`（RED run 發現） | `select.z-select option:checked` |
+| 4 | `tree.zul` 第一個 tree | 頁面本來就有選取列 | `.z-treerow-selected` |
+| 5 | `combobox.zul` 第一個 combobox | 打開下拉 → 點一個項目 → 再打開下拉 | `.z-comboitem-selected` |
+| 6 | `menubar.zul` | RED run 確認：ZK 從來不會加上 `.z-menuitem-selected`（`Menuitem.ts` 只會加 `-hover/-focus/-checked/-checkable/-disabled`），這個 knob 沒有任何可以觸發的狀態。改量 knob 本身：在 `.z-menuitem` 內放一個探針，讀 `background-color: var(--zk-menuitem-selected-bg)` | 探針 |
+| 7 | `searchbox.zul` | 方向鍵只會加上 `.z-searchbox-active`（那是另一種顏色）。改成：點第一個 `.z-searchbox` → ArrowDown 兩次 → Enter → 再點一次打開 → 把滑鼠移開（RED run 發現） | **只取看得見的下拉**：`.z-searchbox-popup:visible .z-searchbox-selected` |
+| 8 | `chosenbox.zul` | 點第一個 `.z-chosenbox` 的 `input` → Escape → Backspace（最後一個 chip 會取得焦點） | `span.z-chosenbox-item.z-chosenbox-item-focus`，**只量底色**（RED run 發現） |
+| 9 | `selectbox.zul` | 頁面本來就有選取的選項 | `.z-selectbox option:checked` |
+
+- **今天的 RED：** 9 項的底色都等於 `--zk-color-primary-container`（2026-10-06 實測 L=0.92；`secondary-container` 是 L=0.87），所以判定應該全部失敗。哪一項今天就已經通過，就代表那一項量錯了。
+- **RED run（2026-10-06，Opus Verifier）：** 9 項的判定都失敗，符合要求。上表第 2、3、6、7、8 列已依 RED run 的發現修正。腳本、操作步驟和基準值都放在 [gates/batch2-red/](gates/batch2-red/)，修正後的驗證可以直接重跑 `rows2.js`、`menu.js`、`protect.js`。
+- **範圍外的發現：** group 列（第 2 項）和 chip（第 8 項）的文字色原本就不會跟著選取狀態變化，一直是 `rgba(0,0,0,0.87)`。這不是本批造成的，也不在本批範圍內，所以這兩列只量底色。
+
+### 也必須成立
+
+- **滑鼠移到選取列上的效果還在：** 第 1、4 項的選取列在 hover 時，底色要跟「選取但沒有 hover」不同，也要跟「沒選取但 hover」不同。
+- **文字讀得清楚：** 第 1、4、5、7 項，選取列文字和底色的對比 **≥ 4.5:1**。用截圖取文字筆畫的像素和底色像素來算。
+- **換品牌色時跟著換：** 在 `<html>` 加上 `data-brand="copper"` 後重量第 1、4 項，底色要等於該品牌下 `--zk-color-secondary-container` 的計算值，而且跟 `data-brand="blue"` 時不同。
+- **公開 knob 照樣有效：** 在 `:root` 設定 `--zk-listbox-selected-bg: rgb(255, 0, 0)` 後，第 1 項的底色要變成紅色。這項由 `component-theming` 回歸測試涵蓋。
+- **高對比模式不變：** `forcedColors: 'active'` 下，第 1、4 項的選取列仍然是 `Highlight` 底、`HighlightText` 字。由 `forced-colors` 回歸測試涵蓋。
+- **其他家族不變：** paging 的目前頁、navitem 的目前項目、organigram 的選取節點、calendar 的選取日，計算值都跟 RED run 記錄的基準值（`gates/batch2-red/protect.json`）一樣。
+- **第一批的成果不被破壞：** 對選取列按鍵盤操作時，第一批 #41 的焦點框仍然出現（`outline-style: solid`）。
+
+### 回歸範圍
+
+- **`component-theming`：** 如果有測試寫死了舊的預設值（`primary-container`），預期會失敗。
+  Generator 只能把「預設值」那一處改成新值，必須逐條列出改了哪些測試；Planner 會檢查這些修改，Verifier 判定時要確認失敗的只有這些。
+  RED run 查過了：`component-theming` 和 `forced-colors` 裡**沒有**任何測試寫死舊的預設值，所以 Generator 沒有可以改的測試；這兩個 project 修正後必須全部通過。
+- **`forced-colors`、`focus-scan`：** 預期全部通過。已知 organigram 那一項是修正前就存在的失敗（follow-up item 8）。
+- **`chromium` 截圖：** 上面 7 個元件中，畫面上有選取狀態的截圖預期會變。其他元件的截圖只能出現已知的反鋸齒落差（follow-up item 8）。
+- **`tablet`：** 同上。
