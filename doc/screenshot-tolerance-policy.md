@@ -28,7 +28,7 @@ The everyday regression gate is the Playwright suite in
 |---|---|---|
 | `maxDiffPixelRatio` | fraction of the shot's pixels | `gallery-scan.spec.ts:73` → `0.01`; `tablet.spec.ts` per-case → `0.02` |
 | `maxDiffPixels` | absolute pixel count | **not used anywhere** |
-| `threshold` | per-pixel YIQ colour distance (default `0.2`) | left at default everywhere |
+| `threshold` | per-pixel YIQ colour distance (default `0.2`) | `0.05` on the `chromium` project (`playwright.config.ts`, 2026-10-06); default `0.2` everywhere else |
 | `mask: [locator]` | blanks a region before comparing | not used — the obvious fix for the date-dependent case 04 |
 
 `playwright.config.ts` has **no** global `expect: { toHaveScreenshot: … }` block and **no** `retries`,
@@ -83,7 +83,20 @@ Verified two ways, with the preview server down (so no state shot was re-run):
    ("30 pixels (ratio 0.01 of all image pixels) are different"). The floor absorbs AA flicker and still
    catches anything larger.
 
-## 5. What no option changes
+## 5. Tightened colour threshold for the `chromium` project (2026-10-06, D22-B / D24-A)
+
+`playwright.config.ts` now sets `expect: { toHaveScreenshot: { threshold: 0.05 } }` on the `chromium`
+project only. `gallery`, `tablet` and the other projects keep their own policy.
+
+Why: Jess review batch 2 moved the listbox selected row from `rgb(213,230,255)` to `rgb(200,213,234)`.
+Playwright's pixelmatch YIQ distance for that change is 0.0625, below the 0.2 default, so 41,628 changed
+pixels in `listbox-gallery.png` were not counted as differences and the old colour still passed
+(reproduced by injecting the old `--zk-listbox-selected-bg`). At 0.05 the same injection fails.
+
+Limit: a colour change whose YIQ distance is below 0.05 still passes. `padShot`'s `maxDiffPixels: 20`
+is unchanged and applies on top of the threshold.
+
+## 6. What no option changes
 
 The zero-tolerance equivalence run stays at zero — that is its purpose. When it is re-run (a move, a
 refactor, a version bump), every differing pair still needs the explanation `README.md` gives each of
