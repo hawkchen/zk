@@ -22,7 +22,7 @@ zk-version: 10.2.1-jakarta
 | c4  | `.z-chosenbox-item` | background-color | `--zk-color-surface-container-high` (neutral grey, ~rgb(232,238,247)) — NOT primary; matches MUI default `MuiChip-filled` `rgba(0,0,0,0.08)` |
 | c5  | `.z-chosenbox-item` | border-radius | 4px (extra-small chip) |
 | c6  | `.z-chosenbox-item` | height | 28px |
-| c7  | `.z-chosenbox-item-focus` | background-color | `rgb(214, 228, 255)` (= `--zk-color-primary-container`, LIST-ROW family per `reference/selected-state-families.md`) — only on keyboard focus, not default |
+| c7  | `.z-chosenbox-item-focus` | background-color | `rgb(201, 213, 234)` (≈ `--zk-color-secondary-container`, LIST-ROW family per `reference/selected-state-families.md`) — only on keyboard focus, not default |
 | c7a | `.z-chosenbox-item-focus` | background-color | MUST NOT be `rgb(178, 223, 219)` (= `--zk-color-secondary-container`) — wrong family |
 | c8  | `.z-chosenbox-input` | font-size | 13px |
 | c9  | `.z-chosenbox-focus` | border-color | `--zk-color-primary` |
@@ -40,7 +40,7 @@ zk-version: 10.2.1-jakarta
 - [ ] focus-visible (wrapper border highlights primary)
 - [ ] popup-open — **measure popup rendered width vs trigger width** (must match, not full viewport)
 - [ ] option-hover (popup row tinted)
-- [ ] item-focus (chip keyboard-focused → primary-container background)
+- [ ] item-focus (chip keyboard-focused → secondary-container background)
 - [ ] disabled (chips show no close button, opacity reduced)
 - [ ] creatable + empty-result ("create new" row visible)
 

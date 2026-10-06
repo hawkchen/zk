@@ -16,17 +16,18 @@ Mirror grid expected values c1–c12 with selectors → `.z-listitem`, `.z-listc
 
 ### Selection (list-row family)
 Listbox row is the LIST-ROW selection family per
-`reference/selected-state-families.md`. MUST use `primary-container` background
-and `on-primary-container` text — never a hardcoded rgba, never
-`secondary-container`. (Pre-2026-05-29 the CSS shipped a hardcoded
+`reference/selected-state-families.md`. MUST use `secondary-container` background
+and `on-secondary-container` text (MD3 `md.comp.list.list-item.selected.container.color`;
+revised 2026-10-06, was `primary-container`) — never a hardcoded rgba, never
+`primary-container`. (Pre-2026-05-29 the CSS shipped a hardcoded
 `rgba(55,111,208,0.12)`; if the evaluator sees that literal again, FAIL.)
 
 | id | selector | property | expected |
 |----|----------|----------|----------|
-| s1 | `.z-listitem.z-listitem-selected` | background-color | `rgb(214, 228, 255)` (= `--zk-color-primary-container`) |
-| s2 | `.z-listitem.z-listitem-selected .z-listcell-content` | color | `rgb(0, 28, 61)` (= `--zk-color-on-primary-container`) |
+| s1 | `.z-listitem.z-listitem-selected` | background-color | `rgb(201, 213, 234)` (≈ `--zk-color-secondary-container`) |
+| s2 | `.z-listitem.z-listitem-selected .z-listcell-content` | color | `rgb(21, 30, 45)` (≈ `--zk-color-on-secondary-container`) |
 | s3 | `.z-listitem.z-listitem-selected` | background-color | MUST NOT be `rgba(55, 111, 208, 0.12)` (the pre-fix hardcoded literal) |
-| s4 | `.z-listitem.z-listitem-selected` | background-color | MUST NOT be `rgb(178, 223, 219)` (= `--zk-color-secondary-container`) — wrong family |
+| s4 | `.z-listitem.z-listitem-selected` | background-color | MUST NOT be `rgb(214, 228, 255)` (= `--zk-color-primary-container`) — the pre-2026-10-06 value |
 
 ### Checkmark column (checkbox in `multiple`, radio in single selection)
 
@@ -163,7 +164,7 @@ See `components/selectbox.md` → "Sized / multiple select is an in-page list bo
 |----|-------|----------|----------|----------|--------|
 | sm1 | sized list lays options vertically | `.z-select[size]:not([size="1"])` | `display` | `block` (NOT `flex` — a flex-row select flows the `<optgroup>`s into 2+ columns) | computedStyle |
 | sm2 | single-row select keeps base-select | `.z-select[size="1"]` | `display` | `flex` / `inline-flex` (the dropdown trigger; base-select still applies) | computedStyle (base-select browsers) |
-| sm3 | selected option = list-row family (blue, not green) | `.z-select option:checked` | `background-color` | `--zk-color-primary-container` (list-row family — NOT `secondary-container`/chip). MUST equal `.z-selectbox option:checked` (same native-select control). Read the **CSS rule** (`document.styleSheets`), not the live `<option>` — `getComputedStyle` on an `<option>` returns transparent. | CSS-rule lookup |
+| sm3 | selected option = list-row family (secondary-container) | `.z-select option:checked` | `background-color` | `--zk-color-secondary-container` (list-row family). MUST equal `.z-selectbox option:checked` (same native-select control). Read the **CSS rule** (`document.styleSheets`), not the live `<option>` — `getComputedStyle` on an `<option>` returns transparent. | CSS-rule lookup |
 | sm4 | focus ring causes no layout shift | `.z-select:focus` | `border-width` / box | `border-width` stays `1px` (ring drawn via `box-shadow: inset 0 0 0 1px primary`, NOT a 2px border — a `<select>` is auto-sized so a 2px border grows the box). Outer dims at `:focus` == at rest (±0px). | computedStyle + bbox rest-vs-focus |
 
 ## Outer frame (container)

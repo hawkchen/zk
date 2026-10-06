@@ -251,7 +251,7 @@ on the base tokens. `--zk-grid-row-hover-bg` keeps its stock `rgba` literal for 
 ### Listbox — shipped
 
 Grid's outlined-table model **plus row selection** (`.z-listitem` / `.z-listheader`). Selection
-uses the MD3 list-row family (primary-container fill + paired text). Foot/group accents and
+uses the MD3 list-row family (secondary-container fill + paired text). Foot/group accents and
 legacy striping fallbacks stay on the base tokens.
 
 | Knob | Default |
@@ -262,8 +262,8 @@ legacy striping fallbacks stay on the base tokens.
 | `--zk-listbox-header-fg` | `var(--zk-color-on-surface-variant)` |
 | `--zk-listbox-row-hover-bg` | `color-mix(… on-surface 8%, surface)` |
 | `--zk-listbox-stripe-bg` | `var(--zk-color-surface-container-lowest)` |
-| `--zk-listbox-selected-bg` | `var(--zk-color-primary-container)` |
-| `--zk-listbox-selected-fg` | `var(--zk-color-on-primary-container)` |
+| `--zk-listbox-selected-bg` | `var(--zk-color-secondary-container)` |
+| `--zk-listbox-selected-fg` | `var(--zk-color-on-secondary-container)` |
 | `--zk-listbox-cell-padding` (size — in `_sizing.css`) | `var(--zk-spacing-4)` |
 
 ### Tree — shipped
@@ -277,8 +277,8 @@ Same as listbox, minus striping (`.z-tree` / `.z-treerow` / `.z-treecol`).
 | `--zk-tree-radius` | `var(--zk-shape-card)` |
 | `--zk-tree-header-fg` | `var(--zk-color-on-surface-variant)` |
 | `--zk-tree-row-hover-bg` | `color-mix(… on-surface 8%, surface)` |
-| `--zk-tree-selected-bg` | `var(--zk-color-primary-container)` |
-| `--zk-tree-selected-fg` | `var(--zk-color-on-primary-container)` |
+| `--zk-tree-selected-bg` | `var(--zk-color-secondary-container)` |
+| `--zk-tree-selected-fg` | `var(--zk-color-on-secondary-container)` |
 | `--zk-tree-cell-padding` (size — in `_sizing.css`) | `var(--zk-spacing-2) var(--zk-spacing-4)` |
 
 ### Panel — shipped
@@ -331,8 +331,8 @@ on the root, focus = inset ring). Same knobs, different plumbing.
 | `--zk-combobox-popup-bg` | `var(--zk-color-surface)` |
 | `--zk-combobox-popup-radius` | `var(--zk-shape-menu)` |
 | `--zk-combobox-item-hover-bg` | `rgba(0, 0, 0, 0.08)` |
-| `--zk-combobox-selected-bg` | `var(--zk-color-primary-container)` |
-| `--zk-combobox-selected-fg` | `var(--zk-color-on-primary-container)` |
+| `--zk-combobox-selected-bg` | `var(--zk-color-secondary-container)` |
+| `--zk-combobox-selected-fg` | `var(--zk-color-on-secondary-container)` |
 
 ### Datebox / Timebox / Spinner / Bandbox — shipped
 
@@ -439,7 +439,7 @@ input/button).
 | `--zk-chosenbox-popup-bg` | `var(--zk-color-surface)` | option-popup surface |
 | `--zk-chosenbox-popup-radius` | `var(--zk-shape-menu)` | option-popup corners |
 | `--zk-chosenbox-item-bg` | `var(--zk-color-surface-container-high)` | selected-chip resting fill |
-| `--zk-chosenbox-item-focus-bg` | `var(--zk-color-primary-container)` | selected-chip armed-for-delete fill |
+| `--zk-chosenbox-item-focus-bg` | `var(--zk-color-secondary-container)` | selected-chip armed-for-delete fill |
 
 ### Cascader — shipped
 
@@ -483,7 +483,7 @@ ring (Mechanism A), so `--zk-searchbox-border-color-focus` tints both the outlin
 (non-selected) item's text — all four read `var(--zk-color-on-surface)` today, the same "one
 knob, several roles" precedent as chosenbox/cascader's `fg`. The selected item is the component's
 one defining state, and per `doc/contracts/searchbox.md` it belongs to the **LIST-ROW** selection
-family (primary-container fill + paired text — NOT the chip/secondary-container family), so it
+family (secondary-container fill + paired text, MD3 `list-item.selected`), so it
 gets its own pair: `--zk-searchbox-selected-bg` / `-selected-fg` (same pairing precedent as
 combobox's `-selected-bg`/`-fg`); the selected item's hover fill (`color-mix`) also reads this
 pair, so an override stays tonally consistent. The placeholder text, trigger/item icons, item
@@ -510,8 +510,8 @@ existing treatment of the other wrapper-border family members' popup knobs.
 | `--zk-searchbox-border-color-focus` | `var(--zk-color-primary)` | focus/open outline + inset ring |
 | `--zk-searchbox-popup-bg` | `var(--zk-color-surface)` | search-popup surface |
 | `--zk-searchbox-popup-radius` | `var(--zk-shape-corner-medium)` | search-popup corners |
-| `--zk-searchbox-selected-bg` | `var(--zk-color-primary-container)` | selected-item fill (+ hover) |
-| `--zk-searchbox-selected-fg` | `var(--zk-color-on-primary-container)` | selected-item text |
+| `--zk-searchbox-selected-bg` | `var(--zk-color-secondary-container)` | selected-item fill (+ hover) |
+| `--zk-searchbox-selected-fg` | `var(--zk-color-on-secondary-container)` | selected-item text |
 
 ### Tab (tabbox) — shipped
 
@@ -539,7 +539,7 @@ Menu/menuitem hover uses a shared `::before` overlay (not knob-driven).
 | `--zk-menupopup-bg` | `var(--zk-color-surface)` |
 | `--zk-menupopup-radius` | `var(--zk-shape-menu)` |
 | `--zk-menupopup-border-color` | `var(--zk-color-outline-variant)` |
-| `--zk-menuitem-selected-bg` | `var(--zk-color-primary-container)` |
+| `--zk-menuitem-selected-bg` | `var(--zk-color-secondary-container)` |
 
 ### Avatar / avatar-group — shipped
 

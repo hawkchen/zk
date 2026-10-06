@@ -18,8 +18,8 @@ zk-version: 10.2.1-jakarta
 | c2 | `.z-menu-content` | padding | 8px 16px |
 | c3 | `.z-menu-content` | font-size | 14px |
 | c4 | `.z-menu:hover .z-menu-content` | background-color | state-layer tint |
-| c5 | `.z-menu-selected .z-menu-content` | background-color | `rgb(214, 228, 255)` (= `--zk-color-primary-container`) — LIST-ROW family, see `reference/selected-state-families.md` |
-| c6 | `.z-menu-selected .z-menu-content` | color | `rgb(0, 28, 61)` (= `--zk-color-on-primary-container`) |
+| c5 | `.z-menu-selected .z-menu-content` | background-color | `rgb(201, 213, 234)` (≈ `--zk-color-secondary-container`) — LIST-ROW family, see `reference/selected-state-families.md` |
+| c6 | `.z-menu-selected .z-menu-content` | color | `rgb(21, 30, 45)` (≈ `--zk-color-on-secondary-container`) |
 | c7 | `.z-menu-selected .z-menu-content` | background-color | MUST NOT be `rgb(178, 223, 219)` (= `--zk-color-secondary-container`) — wrong family |
 | c8 | `.z-menubar-scroll .z-menubar-icon` | color | `var(--zk-color-on-surface)` — inherits the bar's text color; MUST contrast with `--zk-color-surface-container`. MUST NOT be `--zk-color-on-primary` (white → invisible on the light bar) |
 | c9 | `.z-menubar-scroll` | padding-left / padding-right | `0` — the bar's default `0 16px` gutter must reset when scrollable, else the abs-positioned arrows are inset 16px and float inside the bar instead of flush at its edges |

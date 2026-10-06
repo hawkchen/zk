@@ -23,8 +23,8 @@ menu / searchbox dropdown.
 
 | id | selector | property | expected |
 |----|----------|----------|----------|
-| s1 | `.z-treerow-selected` (or `.z-treerow.z-treerow-selected`) | background-color | `rgb(214, 228, 255)` (= `--zk-color-primary-container`) |
-| s2 | `.z-treerow-selected .z-treecell-content` | color | `rgb(0, 28, 61)` (= `--zk-color-on-primary-container`) |
+| s1 | `.z-treerow-selected` (or `.z-treerow.z-treerow-selected`) | background-color | `rgb(201, 213, 234)` (≈ `--zk-color-secondary-container`) |
+| s2 | `.z-treerow-selected .z-treecell-content` | color | `rgb(21, 30, 45)` (≈ `--zk-color-on-secondary-container`) |
 | s3 | `.z-treerow-selected` | background-color | MUST NOT be `rgb(178, 223, 219)` (= `--zk-color-secondary-container`) — wrong family |
 
 ### Checkmark column (checkbox in `multiple`, radio in single selection)

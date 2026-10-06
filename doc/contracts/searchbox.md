@@ -22,13 +22,13 @@ Evaluator should check if a dedicated `.z-searchbox` CSS file is served; if not,
 ### Selection (list-row family)
 The searchbox dropdown is a keyboard-navigable list of options — semantically
 a LIST-ROW selection, NOT a chip. Per `reference/selected-state-families.md`
-it MUST use `primary-container`. Pre-2026-05-29 it used `secondary-container`
-(the chip-family colour) — if the evaluator sees that again, FAIL.
+it MUST use `secondary-container` (MD3 `list-item.selected`; revised 2026-10-06 from
+`primary-container`, which followed MUI). Do not use `primary-container` here.
 
 | id | selector | property | expected |
 |----|----------|----------|----------|
-| s1 | `.z-searchbox-selected` | background-color | `rgb(214, 228, 255)` (= `--zk-color-primary-container`) |
-| s2 | `.z-searchbox-selected` | color | `rgb(0, 28, 61)` (= `--zk-color-on-primary-container`) |
+| s1 | `.z-searchbox-selected` | background-color | `rgb(201, 213, 234)` (≈ `--zk-color-secondary-container`) |
+| s2 | `.z-searchbox-selected` | color | `rgb(21, 30, 45)` (≈ `--zk-color-on-secondary-container`) |
 | s3 | `.z-searchbox-selected` | background-color | MUST NOT be `rgb(178, 223, 219)` (= `--zk-color-secondary-container`) — wrong family (the pre-fix bug) |
 
 ### Popup open behaviour (detached-popup display scoping)

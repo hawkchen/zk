@@ -547,7 +547,7 @@ rounded corners. Do not re-introduce any left accent (`border-left`, `::before`,
 `::after` strip). See `doc/skill-gaps.md`.
 
 **Navigation-active ≠ list-row focus.** The `.z-listitem` blue *left line* is
-NOT a selected-state accent — the selected state is a `primary-container` fill
+NOT a selected-state accent — the selected state is a `secondary-container` fill
 (list-row family, per the selected-state-families skill). That left line is the listbox
 **focus** indicator (`box-shadow: inset 3px 0 0 var(--zk-color-primary)` on the
 first cell), a separate affordance that merely resembles the navbar accent. They
