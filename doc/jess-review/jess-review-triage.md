@@ -36,7 +36,7 @@ not closed any of the 6 fixed issues yet.
 | Fixed, commented, awaiting the designer to close | #2, #76, #77, #79, #80, #81 | 6 |
 | Fixed and verified in `zk` (batch 1), commented 2026-10-06, awaiting the designer to close | #41, #43, #52, #67, #65 (button part; drag cursor → ZK Jira, D11-B) — gates in [gates/](gates/) | 5 |
 | Fixed and verified in `zk` (batch 2, list-row selection → secondary-container, D10-A), commented 2026-10-06 | #23 (and the second half of #41) — [gates/batch2.md](gates/batch2.md) | 1 |
-| Fixed and verified in `zk` (batch 3, grid; Fable gate PASS 2026-10-07), uncommitted, baselines not yet regenerated | #34 (DEMO, Hawk edited `grid.zul`), #35, #36, #37 (CSS part; widget part → ZK Jira), #38, #39 — [gates/batch3-final-r2.md](gates/batch3-final-r2.md) | 6 |
+| Fixed and verified in `zk` (batch 3, grid; Fable gate PASS), committed `2efcdc65c9` `c333a2912d` `8770af7a09` `0a8d008bda`, baselines regenerated, commented 2026-10-07, awaiting the designer to close | #34 (DEMO, Hawk edited `grid.zul`), #35, #36, #37 (CSS part; widget part → ZK Jira), #38, #39 — [gates/batch3-final-r2.md](gates/batch3-final-r2.md) | 6 |
 | Classified, in scope, not yet started | P1 (40) + DECIDE (4) | 44 |
 | Classified, deferred out of scope | see [jess-review-deferred.md](jess-review-deferred.md) | 26 |
 
