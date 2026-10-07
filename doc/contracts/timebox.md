@@ -13,21 +13,19 @@ zk-version: 10.2.1-jakarta
 ## Expected values
 Same input metrics as combobox c1–c7 (selectors → `.z-timebox-*`).
 
-### Content-fit input width — hug the time, not a fixed collapse (gap 2026-07-20)
-The time `<input>` ships **size-less** (same mechanism as datebox; see `components/combo-trio.md`).
-The former `flex: 1; min-width: 0` collapsed it to a fixed width that ignored content. The default
-time fits without clipping, so the applied `field-sizing` is the primary proof here. Per
-`DESIGN.md §10` (input-width policy) the input MUST hug its content, mirroring datebox. No
-`text-align` is added — the field stays left-aligned.
+### Input width follows `cols` (ZK-6112)
+The time `<input>` always renders a `size` (`Timebox.renderProperties` derives the default `cols` from the
+formatted value length, 5 when empty). Marble does **not** use `field-sizing: content` on it, because that
+makes the browser ignore `size` and an explicit `cols` would have no effect (see `DESIGN.md §10`).
 
 | id | selector | property | expected |
 |----|----------|----------|----------|
-| tw1 | `.z-timebox-input` | field-sizing | `content` — hug the time text; degrades to the prior look where unsupported (no regression) |
-| tw2 | `.z-timebox-input` | flex + min-width | `flex: 1 1 auto` (basis = content, so it hugs in an auto context yet still grows to fill an `hflex`/width-forced root) AND a `min-width` time floor (`~5em`) keeping an empty field a usable target |
+| tw1 | `.z-timebox-input` | field-sizing | **not** `content` (default `fixed`) so `size` drives the width |
+| tw2 | `.z-timebox-input` | flex + min-width | `flex: 1 1 auto` (still grows to fill an `hflex`/width-forced root) AND a `min-width` time floor (`~5em`) |
 
-**Outcome (M1):** with a seeded value, `.z-timebox-input` has `field-sizing: content` applied and its
-content is **not clipped** (`scrollWidth <= clientWidth`). Guarded by
-`screenshot.spec.ts › timebox › input hugs its time content (field-sizing, no clip)`.
+**Outcome (M1):** `cols=30` renders **wider** than `cols=8`. Guarded by
+`screenshot.spec.ts › timebox › input width follows cols (no field-sizing: content)` and
+`B110_ZK_6112_DateTimeboxColsTest`.
 
 ## States to evaluate
 - [ ] default, hover, focus, disabled, readonly, invalid

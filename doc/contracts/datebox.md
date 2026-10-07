@@ -13,24 +13,20 @@ zk-version: 10.2.1-jakarta
 ## Expected values
 Same input metrics as combobox c1–c8 (just selectors → `.z-datebox-*`). Calendar popup styled separately; cross-reference `calendar` contract.
 
-### Content-fit input width — hug the date, not a fixed collapse (gap 2026-07-20)
-The date `<input>` ships **size-less** (ZK `InputWidget._cols=0` → `ComboWidget.redraw_` writes only
-class/aria/autocomplete; see `components/combo-trio.md`). The former `flex: 1; min-width: 0`
-collapsed it to a **fixed ~108px** that ignored its content — an empty field, a short date and a
-long-format date all rendered the same width, and the long `yyyy/MM/dd HH:mm` value
-("2025/01/15 00:00") was **clipped** (scrollWidth 132 > clientWidth 108). Per `DESIGN.md §10`
-(input-width policy) the input MUST hug its content. No `text-align` is added — the field stays
-left-aligned.
+### Input width follows `cols` (ZK-6112)
+The date `<input>` always renders a `size` (`Datebox` constructor `setCols(11)`; `textAttrs_()` writes
+`size="N"` when `cols > 0`). `field-sizing: content` makes the browser ignore `size`, so an explicit
+`cols` had no effect; Marble therefore does **not** use it on datebox (see `DESIGN.md §10`). A format
+longer than ~11 characters is clipped by the default `cols` unless the app raises it (core defect: ZK-6178).
 
 | id | selector | property | expected |
 |----|----------|----------|----------|
-| dw1 | `.z-datebox-input` | field-sizing | `content` — the input hugs its date text (short dates hug; long formats grow to fit, no clipping). Degrades to the prior look where unsupported (no regression) |
-| dw2 | `.z-datebox-input` | flex + min-width | `flex: 1 1 auto` (basis = content, so it hugs in an auto context yet still **grows to fill** an `hflex`/width-forced root — forms keep working) AND a `min-width` date floor (`~6.5em`) keeping an empty field a usable target. Differs deliberately from daterangebox's `flex: 0 1 auto`, whose two side-by-side inputs must NOT grow |
+| dw1 | `.z-datebox-input` | field-sizing | **not** `content` (default `fixed`) so `size` drives the width |
+| dw2 | `.z-datebox-input` | flex + min-width | `flex: 1 1 auto` (still **grows to fill** an `hflex`/width-forced root) AND a `min-width` date floor (`~6.5em`) keeping a small `cols` a usable target |
 
-**Outcome (M1):** with seeded values, `.z-datebox-input` **width tracks its content** — a longer value
-(long `yyyy/MM/dd HH:mm` format) renders **wider** than a shorter one (default format), and the
-long-format value is **not clipped** (`scrollWidth <= clientWidth`). Guarded by
-`screenshot.spec.ts › datebox › input hugs its date content (field-sizing, no clip, tracks length)`.
+**Outcome (M1):** `cols=30` renders **wider** than `cols=8`. Guarded by
+`screenshot.spec.ts › datebox › input width follows cols (no field-sizing: content)` and
+`B110_ZK_6112_DateTimeboxColsTest`.
 
 ### Timezone `<select>` focus — Mechanism A (gap 2026-07-14)
 The in-popup timezone `<select>` (`.z-datebox-timezone > select`) is a native, intrinsically-sized

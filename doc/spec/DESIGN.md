@@ -202,17 +202,18 @@ The theme honors `@media (forced-colors: active)` (Windows High-Contrast Mode; a
 
 Rule: **table rows are ~52px** (16px padding all sides + 13px text + line-height). Inputs ~39px inner height. Buttons ~35px.
 
-### Input width: fixed-format date/time fields hug their content
+### Input width: datebox / timebox follow the `cols` API
 
-ZK ships every combo-trio input size-less (no `size`/`width`; see `zk-component-rules/components/combo-trio.md`), so the theme must choose a width policy. Marble's choice:
+datebox and timebox always render a `size` on the `<input>` (`Datebox` defaults `cols` to 11; `Timebox` derives it from the formatted value length), so Marble does **not** use `field-sizing: content` on them — it makes the browser ignore `size`, so an explicit `cols` would have no effect (ZK-6112). Width follows `cols`, as in IceBlue. A date format longer than ~11 characters is clipped unless the app raises `cols` (the core defect is tracked as ZK-6178). daterangebox and timepicker do not render a `size`, so they keep a content-hug policy.
 
 | Field | Width behaviour |
 |-------|-----------------|
-| **datebox, timebox, daterangebox** (fixed-format date/time) | **hug content** — `field-sizing: content` + a `min-width` floor (`~6.5em` date, `~5em` time), so the field sizes to its value: short values hug, long formats (e.g. `yyyy/MM/dd HH:mm`) grow to fit instead of clipping. |
+| **datebox, timebox** | **follow `cols`** (rendered as `size`) + a `min-width` floor (`~6.5em` date, `~5em` time). |
+| **daterangebox, timepicker** | **hug content** — `field-sizing: content` + a `min-width` floor, because ZK renders no (or a hardcoded) `size` for them. |
 | **combobox, bandbox** (free-text) | keep the default / container-fill width. Content-hug would resize the box on every keystroke while typing — jarring. |
 | **spinner, doublespinner** (numeric) | keep the default / container-fill width (numeric length is unbounded and typed). |
 
-datebox/timebox use `flex: 1 1 auto` (basis = content, so they hug in an auto context yet still **fill** an `hflex`/width-forced root — forms are unaffected); daterangebox uses `flex: 0 1 auto` because its two side-by-side inputs must not grow.
+datebox/timebox use `flex: 1 1 auto` (basis = `size`, and they still **fill** an `hflex`/width-forced root — forms are unaffected); daterangebox uses `flex: 0 1 auto` because its two side-by-side inputs must not grow.
 
 This is a deliberate divergence from MUI, whose single `OutlinedInput` fills its container (or the UA default) with left-aligned text and no content-hug. MUI has no opinion on a *standalone* date field's width; Marble sizes it to its content so a bare date/time field reads as one compact field rather than a fixed box with dead space, and long formats are never clipped. See contracts `datebox.md` / `timebox.md` / `daterangebox.md` and `doc/skill-gaps.md` (2026-07-20).
 
