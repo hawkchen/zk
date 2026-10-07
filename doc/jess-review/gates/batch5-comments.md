@@ -1,4 +1,4 @@
-# Batch 5 — drafted issue comments (NOT posted; Hawk reviews first)
+# Batch 5 — issue comments (POSTED 2026-10-07 with after-fix screenshots under `screenshots/batch5/` in the tracker repo; the posted text adds a "Result" image section)
 
 Post with `GH_TOKEN=$(gh auth token --user hawkchen) gh issue comment --repo hawkchen/marble-issue <n> --body-file ...`. The designer closes the issues.
 
