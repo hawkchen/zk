@@ -752,3 +752,112 @@ Jess 的截圖已存在 [gates/batch4-red/ref/](gates/batch4-red/ref/)；現況�
 - 回歸：component-theming 107/107、forced-colors 17/17、hit-target 3/3、chromium 130/130、focus-scan 57 通過、tablet 52/55。3 項失敗：`biglistbox-tablet` E；`slider-tablet`、`calendar-tablet` U（來源是 `64f1c07b9d`、`778b5a809f`，與本批無關）。
 - 議題頁：https://claude.ai/artifact/MHmozeSCPGHFAvkUDL9bs6。使用者裁示（2026-10-07）：**D41-A**（重生 `biglistbox-tablet.png`）、**D42-A**（slider、calendar 的 tablet baseline 不在本批處理，記進 follow-up）、**D43-A**（thumb hover 保留比靜止深一階，`--zk-color-outline`）。
 - 備註：8085 是共用資源，回歸中途被另一個 session 停掉一次；方法層的建議是回歸前先在看板宣告使用中。
+
+---
+
+## 第五批：cascader／chosenbox／combobox 清單與晶片（#8 #12 #13 #16 #17）
+
+> 狀態：**方法草案，待使用者裁示（D44–D47），尚未動工。** 本節的 D 編號延續本文件（上一個是 D43）。
+> 日期：2026-10-07。看板上第四批之後的下一個 P1 群組。
+
+### 為什麼是這五個、不含 #22 與 #27
+
+- #8、#12、#13、#16、#17 都是「輸入元件的彈出清單或晶片」，檔案集中：`../zkcml/zkmax/src/main/resources/web/js/zkmax/inp/css/{cascader,chosenbox}.css` 與 `zul/src/main/resources/web/js/zul/inp/css/combobox.css`，沿用同一組預覽頁（`cascader.zul`、`chosenbox.zul`、`combobox.zul`）。
+- **#22（inputgroup）與 #27（rating）不排入：** 工作樹上 `inputgroup.css`、`rating.css`、`_forced-colors.css` 有另一個 session 未提交的修改（對應 `doc/marble-inputgroup-rating-fixes-plan.md`，已標記「已實作並驗證」但還沒 commit）。等那邊提交後，再看這兩個 issue 是否已被涵蓋，不在這邊重做。
+- 預覽頁沒有 `inputgroup`、`rating` 以外的衝突檔案；本批只會碰上述三個 CSS 檔與（若需要）三個預覽頁。
+
+### 共用量法
+
+- **頁面：** `${PREVIEW_URL}/{cascader,chosenbox,combobox}.zul`；`devicePixelRatio` 2；量之前注入 `*{transition:none!important;animation:none!important}` 並等 `document.fonts.ready`。
+- **字型屬性（#12、#16）直接讀 `getComputedStyle`：** 這兩項問的就是字型屬性本身，沒有「改法不同但像素相同」的問題，所以不必繞像素。
+- **幾何與位置（#8、#13）只看像素與命中測試**，不讀 CSS，沿用第四批的規矩。文字位置用 `Range.getBoundingClientRect()` 量裸文字節點。
+- **Verifier 不看 CSS diff**；Generator 為 Sonnet；最終判定模型沿用 D35（Fable）。
+
+### #12 — chosenbox 晶片不要特殊字型
+
+- **判定：** 對 `chosenbox.zul` 上每一個晶片（`.z-chosenbox-item-content`，至少 3 個，含 hover 與 focus 狀態各量一次）：`font-style` = `normal`；`font-weight` = `400`。
+- **今天的 RED（預測，RED run 要確認）：** `font-weight` 失敗（`label-large` 的 weight token，原始碼 `chosenbox.css:55`）；`font-style` 是否為 italic **尚未在原始碼找到**，可能來自 ZK 預設樣式或預覽頁本身 —— RED run 要量出來源；若是預覽頁造成的，記為 DEMO，不算本批修正。
+- **保護項：** 晶片字級不變（仍為 `label-large` 的 size）；晶片高度不變（±0px）；刪除鈕仍可點（命中測試）。
+
+### #13 — 建立新晶片的那一列，圖示與文字的間距與對齊
+
+- **判定：** 在 `chosenbox.zul` 上開 creatable 的 chosenbox，輸入不存在的字，量 `.z-chosenbox-empty-creatable` 那一列：
+  1. 圖示右緣到文字左緣的水平距離 **≥ 8px**。
+  2. 圖示垂直中心與文字垂直中心的差 **≤ 1px**。
+  3. 圖示與文字的左緣與其他選項（`.z-chosenbox-option`）的文字左緣對齊（差 ≤ 1px）。
+- **今天的 RED（預測）：** 判定 1 失敗；原始碼寫了 `gap: var(--zk-spacing-2)`（`chosenbox.css:166`）卻看起來沒生效，要查原因（圖示是 `::before` 還是真的元素、文字是不是裸節點）。2、3 不確定，RED run 如實回報。
+- **保護項：** 該列整列可點、hover 色塊涵蓋整列寬度。
+
+### #16 — combobox 說明文字的層級
+
+- **判定：** `combobox.zul` 的「With description」那一組，對每個 `.z-comboitem`：說明文字的 `color` = `--zk-color-on-surface-variant` 的計算值；`font-size` = `--zk-typescale-body-small-size` 的計算值；主標籤的 color 與 size **不變**。再用像素確認：說明文字與主標籤的前景色 ΔE ≥ 15（Jess 說的「讀起來不是同一級」）。
+- **今天的 RED：** 說明文字 color 為 `rgba(0,0,0,0.87)`、size 與標籤相同（issue 內文已量過）→ 3 項皆失敗。
+- **保護項：** 選中與 hover 狀態下，說明文字仍與背景維持 ≥ 4.5:1；列高不低於今天（兩行不被截）。
+- **注意：** 說明文字的 class 要先確認（`.z-comboitem-description` 是否存在），Generator brief 要寫明。
+
+### #17 — 唯讀 combobox 不該能選取文字
+
+- **判定：** `combobox.zul` 上的 `readonly="true"` combobox，對輸入框做三連點與 Ctrl+A；`window.getSelection().toString()` 為空，且輸入框內沒有選取高亮的像素（與非選取狀態的同區域 ΔE ≤ 2）。
+- **保護項（今天就通過）：** 非唯讀的 combobox 仍能選取、輸入；唯讀 combobox 仍能點開下拉並選項（value 會變）；鍵盤 Tab 可聚焦、焦點環還在。
+- **今天的 RED：** 選取字串非空、高亮像素出現。
+- **取捨見 D45：** 唯讀欄位通常仍允許複製。
+
+### 這一批要先裁示的事
+
+**D44 · 批次範圍。**
+- **A（建議）：** 只做 #8 #12 #13 #16 #17（五個，三個檔案）。 ｜ 代價：combobutton（#18 #19）、slider（#24–26）留給下一批。
+- **B：** 加上 combobutton #18 #19 一起做。 ｜ 代價：多一個檔案、一組新的預覽頁量法，RED run 時間約 +40%；hover 區段歸屬的量法要另外設計。
+
+**D45 · #17 的做法。**
+- **A（建議）：** 照 Jess 的要求，唯讀輸入框 `user-select: none`。 ｜ 代價：使用者無法反白複製唯讀欄位的文字；ZK 的 `readonly` combobox 是「只能選」的狀態，複製的需求低，但不是零。
+- **B：** 保留可選取、只把選取高亮設成透明。 ｜ 代價：看不到反白但字還是可以複製，「不要暗示可編輯」達成，但行為上仍可選取，和 Jess 寫的「不該被選取」字面不符，可能被再回報。
+
+**D46 · #8 要怎麼解讀「選項要撐滿下拉寬度」。** Jess 只給了一張圖，沒有說明哪一欄。
+- **A（建議）：** RED run 先重現她的畫面並截圖給你確認；預設解讀為「最後一欄（或單欄）的選項列，hover／選取的色塊要到達 popup 右緣」。 ｜ 代價：多一個確認點，通常不會卡住。
+- **B：** 解讀為「所有欄平分 popup 寬度」。 ｜ 代價：會改變多層級展開時整個 popup 的寬度行為，不只是樣式，可能碰到 `Cascader.ts`。
+
+**D47 · #12 若 italic 來自預覽頁而非 CSS。**
+- **A（建議）：** 只修 `font-weight`；italic 記為 DEMO 並回覆 Jess，不算本批。 ｜ 代價：Jess 那邊那一項要等 demo 修。
+- **B：** 同一批把預覽頁也修掉。 ｜ 代價：多碰一個預覽檔；#12 的完成要等 demo 頁的 commit。
+
+### 共同注意事項
+
+- RED run 先確認：判定今天**必須失敗**、保護項**必須通過**；有判定今天就通過，代表方法量錯，退回 Planner（同第四批）。
+- 8085 是共用資源：回歸前先在看板宣告使用中；另一個 session 目前在動 inputgroup／rating，回歸時 `inputgroup`、`rating`、`forced-colors` 的失敗要先對照它的變更再歸因。
+- `doc/screenshots/` 與 `zkpreview/doc/screenshots/` 的變動只能是本批預期的三個元件 baseline；**工作樹上現有的 `*-forced-colors.png` 變動不是本批的，不得 `git add`**，逐路徑暫存。
+
+### 裁示（2026-10-07，議題頁：https://claude.ai/artifact/8eruz4g5LioBRxk5njrHCL）
+
+使用者：「先照建議的做」→ **D44-A、D45-A、D46-A、D47-A**。
+- D44-A：只做 #8 #12 #13 #16 #17。
+- D45-A：#17 用 `user-select: none`；已知代價是唯讀欄位不能反白複製。
+- D46-A：#8 解讀為最後一欄的色塊到 popup 右緣；RED run 先重現她的畫面並截圖，Planner 確認解讀後才算定稿。
+- D47-A：#12 只修 `font-weight`；italic 若來自預覽頁，記為 DEMO，不在本批。
+
+### 第五批 RED run 結果（2026-10-07，Fable）
+
+報告：[gates/batch5-red.md](gates/batch5-red.md)；證據：`gates/batch5-red/`。結論 `RED5: METHOD-DEFECTS`。沒有暫時頁、沒有改來源檔。8085 在中途被別的 session 重啟過一次（約 55 秒），chosenbox 用舊 server、combobox／cascader 用新 server，同一工作樹，未見差異。
+
+**今天的量測（RED-correct = 判定今天失敗）：**
+- **#8：** 單欄 hover 色塊 160px、popup 內緣差 38px → 失敗（RED-correct）。**雙欄色塊已到 popup 內緣（0px）→ 今天就過，列保護項。** 選取列沒有背景色塊（只有藍字），「選取色塊」沒有東西可量。
+- **#12：** 4 個晶片 rest／hover／focus 全是 `italic`、`500` → 兩項皆失敗。**italic 來源是根元素 `<i class="z-chosenbox">`（`zkmax/inp/mold/chosenbox.js:21`）的瀏覽器預設，不是預覽頁。**
+- **#13：** 建立列計算 `display:block`，所以 `gap`、`align-items` 無效，圖示與文字貼在一起（gap 0px）→ 判定 1 失敗。圖示是 `<i class="z-chosenbox-icon z-chosenbox-create z-icon-plus-square">`，文字是 `<span>`。
+- **#16：** 說明文字的 class 是 `.z-comboitem-inner`（不是 description）；今天 color `rgba(0,0,0,0.87)`、13px、與主標籤 ΔE 0 → 三項失敗。
+- **#17：** 三連點與 Cmd+A 都選到 "Item 1"、高亮 2304 px → 失敗。**頁內注入 `user-select:none` 後仍選得到、高亮不變：Chromium 對 `<input readonly>` 不理會 `user-select`，D45-A 純 CSS 做不到。** `::selection{background:transparent}` 高亮 0 px，但字串仍可選。
+
+**方法修正（Planner 裁定，動工之前；取代上文對應措辭）：**
+1. **#8：** 補判定小節。判定＝單欄 hover 時，最後一欄色塊右緣到 popup 內緣的差 ≤ 1px，且空帶命中測試不是 popup 空白。雙欄 0px 列保護項（修法不能把它弄壞）。「選取」那一半刪除（今天沒有色塊，Jess 也沒要求）。
+2. **#12：** font-style 與 font-weight 兩項都在本批（italic 是 theme 範圍，D47-A 的條件分支不成立，不需裁示）。
+3. **#13：** 判定 2 以「字形 ink 中心」為基準（今天差 1.25，門檻 ≤ 1px）；判定 3 改列保護項（今天 icon 左緣 = 選項文字左緣，差 0），並寫明比的是 icon 左緣；「可點」只做命中測試（預覽頁無伺服端處理，點了不會建晶片）。
+4. **#16：** Generator brief 註明：說明元素是 `.z-comboitem-inner`、主標籤是裸文字節點；選取列的 color 設在 `li` 上會一併套到說明文字，要處理。
+5. **#17：** Ctrl+A 改 Cmd+A（macOS Chromium 的 Ctrl+A 是游標移動）；像素基準取「已聚焦、選取收合」的狀態（否則焦點環本身 3150 px 差異）；判定改量法見 D48。
+
+**D45 重問 → D48（待裁示）。** 見議題頁。
+
+### 裁示（2026-10-07，議題頁：https://claude.ai/artifact/B5HBezUYQVC7Gez41CtemT）
+
+**D48-A（使用者）：** 使用者的解讀：Jess 看到的是「從下拉選了項目之後，該項目文字變成選取反白」，只要避免這個情形就可以。
+- **#17 的判定改為：** 唯讀 combobox 從下拉選一個項目後、以及三連點、Cmd+A 之後，輸入框內的反白像素與未選取狀態的同區域 ΔE ≤ 2（反白像素數 0）。**不再要求 `getSelection().toString()` 為空。**
+- 做法：純 CSS，唯讀輸入框的 `::selection` 背景與文字色設成透明／繼承。
+- 保護項不變（非唯讀仍可選取與輸入、唯讀仍可開下拉挑選、Tab 聚焦與焦點環還在）。另加一項：**非唯讀 combobox 的反白仍然看得到**（防止修法把所有 combobox 的反白都關掉）。
+- 回覆 Jess 時說明：唯讀欄位的文字仍可複製，但不再出現會被誤認為可編輯的反白。
