@@ -308,3 +308,53 @@ clicked **chip** in the input, not of a dropdown option.
 ### Cross-references
 
 - `doc/jess-review/gates/baseline-d22-gen.md` — the measured colours of the three dropdown items.
+
+## 11. A long column label is covered by the sort icon (and the menu button)
+
+Found while verifying Jess #35/#39 (batch 3, 2026-10-07; user ruling D34-A: tracked here, no theme change).
+
+After #39 the grid sort icon is `position: absolute` at the right end of the header cell, so it no longer pushes the label. A label that fills a narrow column is drawn under the icon (and under the hover column-menu button) with no ellipsis, because `.z-column-content` is a block inside the `th` and carries no overflow rule.
+
+An application can fix it with ellipsis plus room for the icons:
+
+```css
+.z-column-content { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 22px; }
+.z-column:has(.z-column-button) .z-column-content { padding-right: 50px; }
+```
+
+Measured on the Basic grid, Author column at 130px: ellipsis alone still leaves the icon on top of the text; ellipsis plus padding stops the text before the icon.
+
+- [ ] Decide whether the theme should ship this for sortable columns. Cost: `align="center"` sortable columns shift left by half the padding, so header text no longer centres over the body text.
+
+## 12. Frozen divider is missing in the body under forced-colors
+
+`forced-colors: active` strips `box-shadow`, so the `inset -1px` body divider added for Jess #37 does not paint; the header divider survives through its border. Same result as before the fix (0 rows), not a regression.
+
+- [ ] Add a forced-colors rule that draws the body divider with a border (`ButtonBorder` / `CanvasText`).
+
+## 13. Header text is 4px off the body text in listbox and tree
+
+Found while measuring Jess #39: listbox and tree show the same 4px offset in non-first columns (first columns vary with indentation and structure). #39 only fixed the grid header (`.z-column-sorticon`); `.z-listheader` and `.z-treecol` have their own sort icon rules.
+
+- [ ] Measure and fix the listbox and tree headers with the same method.
+- [ ] Frozen-cell hover alpha is 0.9896 in listbox and tree (0.9948 in grid), so a scrolled-under label shows through very faintly. Pre-existing; the batch 3 gate accepts alpha >= 0.98.
+
+
+## 14. The tablet grid gallery shows a broken frozen header
+
+Found while classifying the batch 3 baselines (2026-10-07; user ruling D38-A: baseline regenerated anyway, tracked here).
+
+In `grid-tablet.png` the "Col B" and "Col C" headers overlap at x=433, the header underline has a gap, and the header boundary is at x=633 while the body boundary is at x=432. This was already in the committed baseline before batch 3, so the baseline stores a broken picture and will differ again when it is fixed.
+
+- [ ] Find why the frozen header is laid out differently at the tablet viewport (header boundary 633 vs body 432).
+- [ ] Regenerate `grid-tablet.png` once fixed.
+
+### Cross-references
+
+- `doc/jess-review/gates/batch3-baseline.md`, `sbs-grid-tablet.png`.
+
+## 15. No screenshot covers a sorted column header
+
+None of the 5 gallery screenshots shows a sort icon (0 of 85 headers), so the Jess #35 change (arrow glyph) and the #39 icon position are not protected by the screenshot tests. Same kind of gap as the dropdown screenshots added for D22-B.
+
+- [ ] Add a screenshot of a grid header with one column sorted ascending and one descending (Basic grid, real clicks).

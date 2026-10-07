@@ -414,3 +414,209 @@ Verifier 提醒的小風險（在它的幾次測試裡都沒有發生）：
 - ZK 打開 popup 用的是 JS 動畫，`animations: 'disabled'` 停不了它；
 - gallery 截圖在 0.05 之下沒有 `maxDiffPixels` 的容許量；
 - tree 和 listbox 的 `.z-focus-a` 是取 widget 裡的第一個，如果預覽頁出現巢狀的 listbox 或 tree，可能會取錯。
+
+---
+
+## 第三批：grid（#34–#39）
+
+狀態：**已核准**（2026-10-07，對話中 D26–D31 全部裁示，見下一節）。2026-10-06 由 Planner 起草；決策編號 D26 起，只在本文件內有效。
+這一批的 6 個 issue 都出在 grid，但**根因各自獨立**，不是一個修法。2026-10-06 先在 8085 實測過，下面「現況量測」是起草依據，不是 RED run；RED run 還是要由 Opus Verifier 另外跑。
+
+### 現況量測（2026-10-06，Planner，8085，viewport 1280×900）
+
+| Issue | 實測 | 判斷 |
+|---|---|---|
+| #34 | 第一個 grid（`grid.zul`，`width="370px"`）內部寬 368，但兩欄是 180+180，表格 `style="width:360px"`；列和表頭都停在 360，右邊留 8px 空白 | **DEMO 傾向**：表格寬度是 ZK 依欄寬算的，不是 CSS 給的；頁面宣告的寬度對不上 |
+| #35 | 排序圖示（desc）、欄選單按鈕都是 `z-icon-caret-down`；群組圖示是 `z-icon-angle-down` | THEME |
+| #36 | `.z-group` 整列 `cursor: pointer`（`grid.css:317`），但 ZK 只有點圖示才會展開（`Group.ts` `_doImgClick`）；實測點列右側空白，`z-group-open` 沒變 | THEME |
+| #37 | 表頭第 2 個凍結欄有 `box-shadow` + 1px 右邊框；body 的 cell 都是 `none`。body cell 靜止時沒有任何標記 class（ZK 只在**表頭**加 `z-frozen-col`，body 只在捲動後才寫 inline `transform/z-index`，`Frozen.ts:762`、`:872`） | **可能是 ZK-CORE**：純 CSS 不知道要對第幾欄畫線 |
+| #38 | 偶數列 hover = `rgba(0,0,0,0.04)`（`grid.css:220`，token `--zk-grid-row-hover-bg`）；odd 列 hover = 8% 混色（`:229`、`:378`）。疊在白底上：偶數列 245、odd 列約 237 | THEME |
+| #39 | 表頭文字左緣 53px、body 文字左緣 49px，差 4px。原因是表頭有一個空的 `.z-column-sorticon`（`inline-flex` + `margin-left: 4px`，`grid.css:438-445`）佔位，body 沒有 | THEME |
+
+### 這一批要先裁示的事（決定驗證方法的形狀）
+
+**裁示（2026-10-07）：**
+
+| 議題 | 裁示 | 對驗證方法的影響 |
+|---|---|---|
+| D26 · #34 | 使用者自己改了 `grid.zul`（拿掉第一個 grid 的 `width="370px"`），不經 Generator | 2026-10-07 Planner 量過：表頭、body 的表格右緣 = body 內框右緣（差 0），**#34 不跑 RED**，直接算已修。最終 Verifier 仍要重量一次，並確認佈景 CSS 沒有 diff |
+| D27 · #35 | A：只改排序圖示 | 判定 3 取消；欄選單維持 caret |
+| D28 · #36 | A：游標只留在圖示 | 保護項「點右側空白不會切換」維持原樣 |
+| D29 · #37 | A：RED 證實純 CSS 做不到就改開 ZK Jira，佈景不處理。使用者補充：**IceBlue 也有同樣的邊框問題**，開 ZK Jira 時要註明 | 看板 BLOCKED 一併記下。IceBlue 的說法是使用者提供的，尚未量過 |
+| D30 · #38 | A：全部 4% | 「hover 強度」那一項固定為 4%；token 預設值不變 |
+| D31 · #39 | A：排序圖示移到文字後面 | 跟 #35 一起做 |
+
+### #34 — 右側多出的空白
+
+- **元件 / 分類：** grid · **DEMO 傾向**（待 D26 確認）。
+- **修好的樣子：** 表頭和列的右緣貼齊 grid 內框的右緣，沒有空隙。
+- **頁面與目標：** `${PREVIEW_URL}/grid.zul` 第一個 grid（Row States）。
+- **量法：** 取 `.z-grid-body table` 和 `.z-grid-body` 的 `getBoundingClientRect().right`；表頭同樣取 `.z-grid-header table`。
+- **判定檢查：** 表格右緣 − body 內框右緣 **== 0**（±0.5px），表頭和 body 兩處都要成立。
+- **今天的 RED：** 8px（360 對 368）。
+- **也必須成立：** 同頁其他 grid（Basic、Auxhead 兩個）的差值仍是 0（保護項，今天就會通過）；Frozen 那個 grid 本來就水平捲動（表格 786px 寬於 body），不納入（RED run 發現）；若修法是改 `grid.zul`，佈景 CSS 的 diff 必須是空的。
+- **回歸範圍：** `chromium` 截圖（grid gallery）。
+
+### #35 — 排序、欄選單、群組圖示不該長得一樣
+
+- **元件 / 分類：** grid · THEME。範圍待 D27。
+- **她要的：** 排序圖示反映升冪／降冪（上下箭頭）；欄選單改成直排三點（她寫「optional, okay to leave current」）。
+- **頁面與目標：** `grid.zul` 第 2 個 grid（Basic）的 `Title` 欄；`grid-grouping.zul` 第一個 `.z-group-icon`。
+- **量法：** 圖示的形狀用截圖比對，不讀 class 名稱，這樣不限定修法。每個圖示取自己的 bounding box 往外 2px 截圖，縮成 16×16，把與背景色差 ΔE > 10 的像素當成「墨跡」，得到二值遮罩；兩個圖示的相似度 = 遮罩的 IoU（交集 ÷ 聯集）。
+  **RED run 發現（2026-10-07）：** 這樣量不出差別（降冪排序圖示 vs 欄選單 IoU 量到 0.318，但兩者其實是同一個 caret，只是 bounding box 位置不同）。**修正：** 先把墨跡裁到自己的 ink bounding box 再縮成 16×16，截圖 devicePixelRatio 用 4，墨跡門檻 0.5。實測相同圖示 0.867–1.0，不同圖示 ≤ 0.135（上箭頭 vs 下箭頭最高 0.455）。
+- **步驟：** 點 `Title` 欄一次（升冪）、量；再點一次（降冪）、量。每個狀態都量排序圖示、同欄的 `.z-column-button` 圖示（hover 該欄使它可見）、群組圖示。
+- **判定檢查：**
+  1. 降冪狀態：IoU(排序圖示, 欄選單圖示) **< 0.5**，IoU(排序圖示, 群組圖示) **< 0.5**（用上面修正後的量法；今天是 0.867 以上）。
+  2. 升冪狀態：同上兩項（用修正後的量法，今天是保護項，會通過）。
+  3. 若 D27 選 B（欄選單也改）：IoU(欄選單圖示, 群組圖示) **< 0.9**，而且欄選單圖示的墨跡寬 < 高（直排三點）。
+- **今天的 RED：** 1 和 2 的第一項：降冪是 caret-down，欄選單也是 caret-down，IoU 預期 ≥ 0.9，失敗。**升冪是 caret-up，今天就會通過，這一項是保護項。** 判定 3（若 D27 選 B）今天也失敗。
+- **也必須成立：**
+  - 升冪和降冪的排序圖示彼此 IoU **< 0.9**（今天就會通過）。
+  - 沒排序的欄，沒有排序圖示的墨跡。
+  - 排序真的有作用：點 `Title` 一次，第一列的 Title 文字會從 `The Northern Clemency` 變成 `Hurry Down Sunshine`（RED run 發現：點兩次會回到初始值，不能拿兩次來比）。
+  - 圖示對比：排序圖示和背景 ≥ 3:1（WCAG 1.4.11）。
+  - `forcedColors: 'active'` 下，排序圖示仍然看得見。
+  - 滑鼠移上去的 `title`（`Ascending Order` / `Descending Order`）仍然存在。
+- **回歸範圍：** `chromium` 截圖（grid、listbox、tree 的表頭；listbox/tree 共用 `HeaderWidget`，圖示若改在共用層，它們的截圖也會變）、`forced-colors`、`component-theming`。
+- **要注意：** 排序圖示和欄選單圖示是 `HeaderWidget.ts` 輸出的，`z-icon-caret-*` 這個 class 是 listbox、tree 共用的。如果 Generator 的修法是改 Java／TS 輸出的 class，就超出純 CSS，要回報 Planner，不要自己決定。
+
+### #36 — 不能點的列不該是 pointer
+
+- **元件 / 分類：** grid（`zkex` 的 group 列）· THEME。範圍待 D28。
+- **頁面與目標：** `${PREVIEW_URL}/grid-grouping.zul` 第一個 `.z-group`（`Dell`）；`grid.zul` 的一般 `.z-row`。
+- **量法：** 游標用共用規則的代理量測（`elementFromPoint` 的 computed `cursor`）。
+- **判定檢查：**
+  1. 滑鼠移到 group 列的**文字**中心：游標 **!= `pointer`**。
+  2. 滑鼠移到 group 列**右側空白**（列右緣內 30px）：游標 **!= `pointer`**。
+- **今天的 RED：** 兩項都是 `pointer`。
+- **保護項（今天就會通過）：**
+  - 滑鼠移到 `.z-group-icon` 中心：游標 == `pointer`。
+  - 點圖示會切換：`z-group-open` 這個 class 會消失或出現，再點一次回復。
+  - 點列右側空白**不會**切換（記錄現況；若 D28 選 B，這一項反過來）。
+  - 一般資料列 `.z-row` 的游標是 `auto`；可排序欄頭是 `pointer`；欄選單按鈕是 `pointer`；`.z-column-sizing` 時是 `col-resize`。
+- **也必須成立：** 鍵盤仍可切換群組（焦點在 group 的 `td` 上按 Enter 或 Space，結果跟實測現況相同；Verifier 在 RED 時先記錄現況，修完再比對）。
+- **回歸範圍：** `hit-target`、`chromium` 截圖（grid-grouping）。截圖預期不變，因為截圖看不到游標。
+- **不在範圍內：** group 列 hover 的底色變化會讓列「看起來可以點」，這是另一個設計問題，這一批不處理，只記錄。
+
+### #37 — 凍結欄的分界線只出現在表頭
+
+- **元件 / 分類：** grid（`mesh/css/frozen.css`，grid、listbox、tree 共用）· THEME，**可能是 ZK-CORE**。
+- **頁面與目標：** `grid.zul` 第 5 個 grid（Frozen Columns，`<frozen columns="2"/>`，共 4 列）。
+- **量法：** 只看像素。表頭第 2 個凍結欄（`Col B`）的右緣 x 當作分界線位置 `x0`。對 4 個資料列各取一條垂直帶（`x0 − 3` 到 `x0 + 3`，高度 = 該列高度）截圖，若帶內有任何一欄像素和該列背景色的 ΔE ≥ 2，就算這一列有分界線。
+- **步驟與判定檢查：**
+  1. 捲動位置 0：4 個資料列都有分界線 **== 4**。
+  2. 把 `.z-frozen-inner` 水平捲 200px 後重做：4 個資料列都有分界線，**而且 `x0` 沒有跟著動**（凍結欄不動，所以線不能動），分界線 x 的位移 ≤ 1px。
+- **今天的 RED：** 步驟 1 得到 0。
+- **可行性（RED run 一併回答）：** body 的 cell 在靜止時沒有任何標記 class（上面實測）。Verifier 要記錄：
+  1. 靜止時，body 凍結欄的 cell 有沒有任何 class、attribute 或 inline style 可以跟非凍結欄分開；
+  2. 捲動之後 ZK 寫的 inline `transform` / `z-index` 能不能拿來當選擇器（它只在捲動後才有，所以不能當唯一依據）。
+  如果兩個答案都是「不行」，**純 CSS 做不到**，這個 issue 比照 #65 的拖動那一半處理：改成 ZK Jira（widget 要在 body 凍結欄 cell 加 class），佈景這邊不處理。這個走向待 D29 核准。
+- **也必須成立：**
+  - 沒有設 `<frozen>` 的 grid 不出現任何分界線。
+  - 凍結欄 hover 時的底色仍是不透明（`frozen.css` 末段那條規則的目的），不會透出被蓋住的文字：alpha ≥ 0.99（RED run 補上門檻，今天 0.995）。
+  - listbox、tree 的凍結欄行為不變（`listbox.zul`、`tree.zul` 有 frozen 的範例就各量一次，量表頭分界線仍存在）。
+- **回歸範圍：** `chromium` 截圖（grid、listbox、tree 的 frozen 範例）、`forced-colors`、`tablet`。
+
+### #38 — odd / even 列的 hover 底色不一致
+
+- **元件 / 分類：** grid · THEME。強度待 D30。
+- **她要的：** 單一、一致的 hover 狀態。
+- **頁面與目標：** `grid.zul` 第 1 個 grid（Row States，4 列，偶數列和 odd 列都有）和第 2 個 grid（Basic）。
+- **量法：** 對每一列，hover 前後各截一次該列中心的像素（`p.mouse.move` 到列上，截圖取一個沒有文字的空白點）。hover 造成的變化量 Δ = hover 後 RGB − hover 前 RGB（逐 channel）。
+  不比較 computed 的 `background-color`，因為偶數列是半透明、odd 列是不透明，字串一定不同；只比最後看到的顏色。
+- **判定檢查：**
+  1. 同一個 grid 內，所有列的 Δ 彼此相差 **≤ 1**（每個 channel）。
+  2. Δ 不是零（hover 有效果）：至少一個 channel 的絕對值 ≥ 3。
+- **今天的 RED：** 偶數列約 −10、odd 列約 −18，相差約 8，判定 1 失敗。
+- **保護項（今天就會通過）：** 判定 2。
+- **也必須成立：**
+  - **（修後才成立，今天會失敗，不是保護項）** hover 的強度符合 D30 的裁示（4%）：Δ 等於 `--zk-color-on-surface` 以該百分比疊在列底色上的結果，±1。
+  - 凍結欄的 grid（Frozen Columns）hover 時，凍結欄 cell 的底色跟同一列其他 cell 一樣（沒有一格顏色不同）。
+  - **（修後才成立，今天 odd 列不變色，不是保護項）** 公開 knob `--zk-grid-row-hover-bg` 設成 `rgb(255,0,0)` 後，偶數列 hover 變紅（knob 照樣有效）；odd 列也要跟著變，因為判定 1 要求一致。
+  - `forcedColors: 'active'` 下的 hover 外觀不變。
+  - 分組列（`.z-group`）hover 的底色不變。
+- **回歸範圍：** `component-theming`（若有測試寫死 `grid-row-hover-bg` 的值）、`forced-colors`、`chromium` 截圖（hover 類的 baseline 可能變）。
+
+### #39 — 表頭和內容文字沒對齊
+
+- **元件 / 分類：** grid · THEME。她沒填嚴重度（模板預設值）。
+- **頁面與目標：** `grid.zul` 第 2 個 grid（Basic，`Author` 欄有排序）和第 1 個 grid；`listbox.zul`、`tree.zul` 當作對照。
+- **量法：** 用 `Range.selectNodeContents(文字節點).getBoundingClientRect().left` 取**文字本身**的左緣，不取欄位或 `padding` 的位置。表頭取 `.z-column-content` 底下的文字節點，內容取第一列對應欄的 `.z-label`。
+- **步驟與判定檢查：**
+  1. 未排序狀態：每一欄的 表頭文字左緣 − 第一列文字左緣 **== 0**（±0.5px），逐欄量（Name / Status；Author / Title / Publisher / Pages）。
+  2. 排序之後（點 `Author` 一次，再點一次）：同樣逐欄 **== 0**。排序圖示出現不能把文字推開。
+- **今天的 RED：** 4px（53 對 49），每一欄都一樣。
+- **也必須成立：**
+  - 排序圖示仍然看得見，而且沒有疊在文字上（圖示和文字的 bounding box 不相交）。
+  - 欄選單按鈕 hover 時仍在欄的右側，沒有擠壓文字。
+  - `align="right"` 的欄（Auxhead 範例）：表頭和內容的文字**右緣**對齊，誤差 ≤ 0.5px（保護項，今天 0）。
+  - `align="center"` 的欄：表頭和內容的文字**中心**對齊，誤差 ≤ 0.5px。**這是判定檢查，不是保護項**（RED run 發現：今天差 2.0px，同一個空的 sorticon 佔位造成）。
+  - listbox、tree 的表頭對齊結果跟 RED 記錄相同。如果它們今天也有 4px 的差，記進看板，**不在這一批順便修**。
+  - 欄寬、列高不變（±0）。
+- **回歸範圍：** `chromium` 截圖（grid 的所有 header baseline 會變）、`tablet`、`forced-colors`。
+- **跟 #35 的關係：** 兩者改的是同一個元素（`.z-column-sorticon`）。**建議一起做**，不然 #39 修完位置、#35 又要重改圖示。驗證方法各自獨立，判定檢查互不依賴。
+
+### 共同注意事項
+
+- 這 6 個 issue 在 RED run 裡必須「判定檢查」全部失敗，保護項必須通過；#34、#37 如果 RED 結果顯示不是 THEME，退回 Planner 改分類，不進入實作。
+- 「grid」的預覽頁沒有 `sort` 狀態的預設範例，Verifier 要用真的點擊產生，不要用 JS 直接加 class。
+- 腳本、操作步驟、基準值放在 `gates/batch3-red/`，格式照 batch2-red。
+- 跑完後，`doc/screenshots/` 的變動只能是上面各項列出的預期 baseline，其餘依「前置工作」那一節的流程（Opus 分類、使用者看過確認頁）處理。
+
+### RED run 結果（2026-10-07，Sonnet Verifier）
+
+報告：[gates/batch3-red.md](gates/batch3-red.md)；腳本與原始輸出：`gates/batch3-red/`。Opus 本週用量已滿，RED run 由 Sonnet 跑（使用者裁示）；修完後的最終判定仍等 Opus。
+
+- **RED-correct：** #36 判定 1、2（都是 `pointer`）；#37 步驟 1、2（0/4 列，靜止與捲動後都是）；#38 判定 1（偶數列 −10、odd 列 −18，差 8）；#39 判定 1、2（4px；排序後 Author 欄 22px）。
+- **方法有誤，已在上面各段修正（都發生在動工之前）：** #35 的 IoU 量法、#35「排序有作用」、#34 的 Frozen 保護項、#39 的 center 保護項；另補 #38 兩項的歸類和 alpha 門檻。#34 baseline 為 0。
+- **#35 的修正還沒有重跑。** 修正後的量法要在 Generator 動工前，由 Verifier 對現況再跑一次，確認判定 1 失敗（`gates/batch3-red/i35-method.js` 已有 ink-box 版本的數字）。
+- **#39 在 listbox 和 tree：** 非第一欄也有同樣 4px 差；第一欄因縮排和結構不同。依計畫不在這一批順便修，記進看板。
+
+### #37 可行性結果與重新裁示（2026-10-07）
+
+- **靜止時**：body 凍結欄 cell 在 grid、listbox、tree 都沒有任何 class、attribute、inline style，computed style 也沒差異。捲動後 ZK 才寫 `transform: translate3d(200px,0,0); z-index:1`。
+- **但純 CSS 做得到：** 表頭靜止時就有 `.z-frozen-col`，用 `:has()` 加 `:nth-child` 能對到 body 的同一欄。Verifier 用頁面內注入的樣式測過：4/4 列在靜止與捲動 200px 後都有線，`x0` 沒動。
+- 限制：凍結欄數要逐一列舉；group、auxhead、checkmark 欄可能讓 `:nth-child` 對不上；`:has()` 需要新瀏覽器。
+- D29-A 的前提（純 CSS 做不到才開 ZK Jira）不成立，需要重新裁示（D32）。
+- IceBlue：未量測（預覽頁沒有簡單的換主題方式）。
+
+### D32 裁示（2026-10-07）：C，CSS 先修，同時開 ZK Jira
+
+- **先做的（本批）：** 在 `frozen.css` 加規則，用 `:has()` + `:nth-child`，N = 1..4，線用 `box-shadow: inset -1px 0 0 var(--zk-color-outline-variant)`（外側陰影加邊框在水平捲動後 body 看不見，已量過 0/3，不採用）。對象：grid、listbox、tree。限制（colspan 列、5 欄以上、smooth 關閉、`:has()` 舊瀏覽器）寫進規則上方的註解。
+- **同時記錄的 ZK Jira（依「所有 P1 做完才開 Jira」的規則，先記在看板 BLOCKED 那組）：** 請 widget 在 body 凍結欄 cell 加 class，之後換成 class 選擇器、拿掉限制。Jira 內文註明使用者說 IceBlue 也有同樣的邊框問題（未量測）。
+- **#37 的驗證方法補充（Verifier 在 RED 之外另加；暫時頁的腳本還沒存進 gates/，由 Verifier 重建）：**
+  1. 原判定不變：grid.zul 第 5 個 grid，4 列都有分界線；捲動後線不動、仍 4 列。
+  2. 新增版面（用暫時頁，量完刪除，不進 repo）：凍結 1、3 欄；含 group 列；含 auxhead；`start="1"`；listbox + `checkmark`；listbox；tree。每種靜止與捲動到底後，所有**資料列**都要有線。
+  3. 已知限制，**不算失敗**：group 列本身沒有線；第一欄 cell 用 `colspan` 的那一列沒有線。Verifier 要確認這兩種情況只是「沒有線」，沒有線出現在錯的欄，也沒有版面位移。
+  4. 保護項：沒有 `<frozen>` 的 grid、listbox、tree 不出現分界線；凍結欄 hover 底色 alpha ≥ 0.99。
+  5. 參考結果（Planner 用注入規則量過，不是正式判定）：9 種版面 8 種全通過，colspan 那種 1/2。
+
+### D33 裁示（2026-10-07，post-fix 驗證之後）
+
+使用者：**第一欄 cell 用 `colspan` 在規格上本來就不支援**，所以驗證方法要呈現「不支援」的結果，不要求線出現在正確位置。
+
+- #37 的 colspan 那一列：**不對線的位置做任何斷言**（不要求沒有線，也不要求沒有錯位線），只要求記錄量到的現象，以及版面沒有位移（欄寬、列高、cell 位置與修前相同）。
+- 這一項不再是 FAIL 條件。Sonnet Verifier 回報的 GATE3: FAIL 因此只剩這一條的標準錯誤，**#37 其餘判定全部通過**，等同通過（暫定，Opus 重跑後正式）。
+- 規則本身不改，不加 `:not(:has(> [colspan]))`。規則上方註解的「colspan 列」限制改寫為「不支援」。
+
+### D34、D35 裁示與 Verifier 模型（2026-10-07）
+
+- **D34-A：** 長標籤被排序圖示壓住，這批不改佈景，把使用者可用的 CSS 寫法記進 follow-up（[marble-theme-followups.md](../marble-theme-followups.md) 第 11 項）。
+- **D35：** 凍結欄 hover 的不透明門檻，**使用者訂 alpha ≥ 0.98**（取代我原先的 0.99）。grid 0.9948、listbox 與 tree 0.9896 都通過；0.5、0.9 的透字仍會被擋下。
+- **最終判定的模型：** 使用者問為何要等 Opus。原因只是 2026-10-05 的裁示把 Verifier 定為 Opus。使用者同意改用 **Fable** 做最終判定（2026-10-07），不必等 10/10。
+
+### 第三批最終判定（2026-10-07，Fable）
+
+- 第 1 輪 [gates/batch3-final.md](gates/batch3-final.md)：`GATE3-FINAL: FAIL (#37)`。#34、#35、#36、#38、#39 通過；#37 判定通過，只有「巢狀元件不該有線」的保護項失敗（body 規則用後代選擇器，巢狀的 grid／listbox／tree 也被畫上線）。這是規則的缺陷，不是已知限制。
+- 第 2 輪 [gates/batch3-final-r2.md](gates/batch3-final-r2.md)：Generator 把 body 規則改成從 widget 根到列的完整子選擇器鏈；**`GATE3-FINAL-R2: PASS`**。巢狀的非凍結 widget 0 條線，巢狀的凍結 widget 只有自己的線；D32 所有版面靜止與捲動後都通過；colspan 列只記錄，版面沒有位移；凍結 hover alpha grid 0.9948、listbox 與 tree 0.9896（門檻 0.98）。
+- 回歸：component-theming 107/107、forced-colors 17/17、focus-scan 58 通過、hit-target 3/3。chromium 3 項（grid、listbox、tree gallery）和 tablet 2 項（grid、paging gallery）失敗，**全部 E**，沒有 D 或 U，兩輪的差異像素數相同。尚未重新產生 baseline，等你看確認頁核准。
+- **方法本身的問題（Verifier 回報，已接受）：** (1) #34「佈景 CSS diff 必須是空的」在同批改同一個檔時量不到，這一條取消，改由 Planner 看 diff 確認；(2) 回歸範圍要涵蓋所有含 grid 的預覽頁（`paging-tablet` 就是例子）；(3) 凍結 5 欄在原欄寬下分界線落在 viewport 外，N≥5 改用窄欄量，結果是沒有線也沒有畫錯欄。
+- 備註：Verifier 為了讓 8085 吃到新 CSS，重新 build 並重啟了 8085；順便結束了一個 2026-10-06 遺留、沒有 listen 的 appRun wrapper。
+
+### 第三批 baseline 重新產生（2026-10-07）
+
+使用者核准 D37（grid、listbox、tree、paging-tablet）與 D38-A（grid-tablet，既有的凍結表頭問題記成 follow-up 14）。分類報告：[gates/batch3-baseline.md](gates/batch3-baseline.md)；Generator 報告：[gates/batch3-baseline-regen.md](gates/batch3-baseline-regen.md)。
+
+- 用 `--update-snapshots=changed`，限定 chromium 的 grid、listbox、tree gallery 和 tablet 的 grid、paging gallery；沒有用 `=all`，沒有跑 forced-colors-gallery。
+- 結果：變動的 PNG 正好是這 5 張，沒有新增，沒有 `*-forced-colors.png`。重新產生後 chromium 130/130、tablet 55/55 全過。Planner 自己再看了一次 `git status`，結果相同。
+- 未 commit。

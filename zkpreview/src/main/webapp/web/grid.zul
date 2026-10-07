@@ -14,7 +14,7 @@ dsc = Comparators.dscRowDetailComparator;
         <div sclass="z-d-flex z-flex-wrap z-gap-6 z-items-start z-py-4 z-mb-2">
             <div sclass="z-d-flex z-flex-col z-items-center z-gap-2">
                 <div sclass="z-text-uppercase z-text-center"><label sclass="z-text-xs z-fw-semibold z-text-secondary" value="Row States"/></div>
-                <grid width="370px">
+                <grid>
                     <columns>
                         <column label="Name" width="180px"/>
                         <column label="Status" width="180px"/>
