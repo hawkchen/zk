@@ -1839,6 +1839,43 @@ test.describe('inputgroup', () => {
     await page.evaluate(() => document.fonts.ready.then(() => true));
   });
 
+  // ZK-6112: a grouped input and its addon share ONE 1px edge, whichever side the
+  // addon is on. Before the fix only a leading addon was merged, so a trailing addon
+  // showed a 2px seam (input border-right + addon border-left); the number boxes had
+  // no inputgroup rules at all. Checks every horizontal text addon <-> input pair.
+  test('addon and input share a single 1px edge (prefix and suffix, number boxes)', async ({ page }) => {
+    const info = await page.evaluate(() => {
+      const inputSel = '.z-textbox, .z-intbox, .z-longbox, .z-doublebox, .z-decimalbox, .z-combobox';
+      const px = (s: string) => parseFloat(s) || 0;
+      const seams: string[] = [];
+      let pairs = 0;
+      let numberBoxes = 0;
+      document.querySelectorAll('.z-inputgroup:not(.z-inputgroup-vertical)').forEach(g => {
+        const kids = [...g.children] as HTMLElement[];
+        kids.forEach((k, i) => {
+          if (k.matches('.z-intbox, .z-longbox, .z-doublebox, .z-decimalbox')) {
+            numberBoxes++;
+            const cs = getComputedStyle(k);
+            if (px(cs.borderTopWidth) !== 1 || cs.flexGrow !== '1' || cs.minWidth !== '0px')
+              seams.push(`number box not styled like textbox: ${k.className}`);
+          }
+          const next = kids[i + 1];
+          if (!next) return;
+          const addonFirst = k.matches('.z-inputgroup-text') && next.matches(inputSel);
+          const inputFirst = k.matches(inputSel) && next.matches('.z-inputgroup-text');
+          if (!addonFirst && !inputFirst) return;
+          pairs++;
+          const shared = px(getComputedStyle(k).borderRightWidth) + px(getComputedStyle(next).borderLeftWidth);
+          if (shared !== 1) seams.push(`${k.className} | ${next.className}: shared edge ${shared}px`);
+        });
+      });
+      return { pairs, numberBoxes, seams };
+    });
+    expect(info.pairs, 'preview must contain addon/input pairs').toBeGreaterThan(3);
+    expect(info.numberBoxes, 'preview must contain number boxes in an inputgroup').toBeGreaterThan(0);
+    expect(info.seams, info.seams.join('; ')).toEqual([]);
+  });
+
   // The single-input focus rule in input.css bumps a textbox's border 1px→2px
   // (Mechanism B). Inside a group that thickening leaks onto the child while its
   // addon/button neighbours stay 1px, so the focused segment puffs proud of them

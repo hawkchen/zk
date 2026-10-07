@@ -42,3 +42,12 @@ preview: ${PREVIEW_URL}/inputgroup.zul
       `border-top` is collapsed against the preceding addon. A textbox with
       `border-left-width: 0` in vertical mode is a fail (horizontal collapse
       rule leaking — see skill "Border-collapse is axis-aware").
+
+- [ ] **addon-edge (ZK-6112)**: an addon and its neighbouring input share ONE 1px edge on either side
+      (leading *or* trailing addon): `right border of the first + left border of the second == 1px` in
+      horizontal mode. Covers `.z-textbox`, `.z-combobox` and the number boxes (`.z-intbox`,
+      `.z-longbox`, `.z-doublebox`, `.z-decimalbox`). Before the fix only a leading addon was merged, so a
+      trailing addon showed a 2px seam.
+- [ ] **number-boxes**: inside a group the four number boxes get the textbox treatment: 1px group-border
+      colour, `flex: 1`, `min-width: 0`, `min-height: var(--zk-control-height)`, constant border/padding on
+      focus. Guarded by `screenshot.spec.ts › inputgroup › addon and input share a single 1px edge`.

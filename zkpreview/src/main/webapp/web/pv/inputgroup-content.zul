@@ -15,6 +15,13 @@
             <inputgroup>$<textbox/>.00</inputgroup>
         </div>
         <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
+            <div><label sclass="z-text-xs z-text-secondary" value="Number boxes with prefix and suffix"/></div>
+            <inputgroup>$<intbox value="72"/>.00</inputgroup>
+            <inputgroup><decimalbox value="72.5"/>kg</inputgroup>
+            <inputgroup><doublebox value="1.5"/>m</inputgroup>
+            <inputgroup>#<longbox value="1234567"/></inputgroup>
+        </div>
+        <div sclass="z-d-flex z-flex-col z-items-start z-gap-2">
             <div><label sclass="z-text-xs z-text-secondary" value="With multiline"/></div>
             <inputgroup>
                 With textarea
