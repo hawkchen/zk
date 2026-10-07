@@ -132,13 +132,16 @@ same compression, just less obvious with a bigger thumb. Don't chase it; verify 
 travel (HugeRow/HugeColumn) instead. A true small-data proportional thumb needs a JS shim
 over WScroll (rejected — keeps the theme CSS-only; the user accepted the default behavior).
 
-A minimal MD3 thin-overlay implementation: `position:relative` root + outer; transparent
-track of fixed thickness carrying a **faint always-visible groove** via `::before` (an 8px
-rounded lane at ~6% on-surface, painted behind the thumb — keeps the scroll region
-perceptible when the thumb is compressed into a corner by the scale=1 cap); a rounded
-translucent `-drag` thumb; arrow buttons `display:none`; `-endbar`
-`position:absolute; visibility:hidden` (kept boxed for the clamp math); `-pos`
-boxed-but-invisible. See `doc/contracts/biglistbox.md` for the theme-specific values.
+A minimal MD3 thin-overlay implementation: `position:relative` root + outer; the track
+divs (`-vertical`/`-horizontal`) are `visibility:hidden` (geometry stays CSS-only and JS
+never touches it; hit-testing passes through, no pixels drawn) while the `-drag` thumb is
+`visibility:visible` — a rounded 8px pill in `--zk-color-outline-variant` with **no
+groove** (`::before { content:none }`), matching the document scrollbar's resting look;
+do not shift the track down to clear the header, because WScroll positions the thumb
+relative to the track top (it would double-offset); arrow buttons `display:none`;
+`-endbar` `position:absolute; visibility:hidden` (kept boxed for the clamp math); `-pos`
+boxed-but-invisible and the same size as `-drag`. See `doc/contracts/biglistbox.md` for
+the theme-specific values.
 
 **Verification gotcha — the horizontal bar hides below the page fold.** The vertical bar
 runs the right edge *from the top*, so it shows as soon as the component's top is on screen.
