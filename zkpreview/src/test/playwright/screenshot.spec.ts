@@ -1971,6 +1971,28 @@ test.describe('rating', () => {
     await page.evaluate(() => document.fonts.ready.then(() => true));
   });
 
+  // ZK-6112: iconSclass picks the glyph. Marble draws the default z-icon-star itself
+  // (SVG mask, ::before off); any other iconSclass must keep its icon-font glyph, so no
+  // mask and a visible ::before. Before the fix every icon was masked as a star.
+  test('iconSclass picks the glyph; the star mask is only the default', async ({ page }) => {
+    const info = await page.evaluate(() => {
+      const probe = (el: Element | null) => el && ({
+        mask: getComputedStyle(el).maskImage,
+        before: getComputedStyle(el, '::before').content,
+      });
+      return {
+        star: probe(document.querySelector('.z-rating-icon.z-icon-star')),
+        custom: probe(document.querySelector('.z-rating-icon.z-icon-bolt')),
+      };
+    });
+    expect(info.star, 'default star icon must be present').toBeTruthy();
+    expect(info.custom, 'custom iconSclass icon must be present').toBeTruthy();
+    expect(info.star!.mask, 'default star keeps the SVG mask').not.toBe('none');
+    expect(info.star!.before, 'default star hides the font glyph').toBe('none');
+    expect(info.custom!.mask, 'custom icon must not be star-masked').toBe('none');
+    expect(info.custom!.before, 'custom icon must show its font glyph').not.toBe('none');
+  });
+
   test('hover', async ({ page }) => {
     // hover the 3rd star of the first rating; capture the whole control so the
     // highlight spread (stars 1–3 filled) is visible.
