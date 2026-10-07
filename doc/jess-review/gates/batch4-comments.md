@@ -22,6 +22,6 @@ Biglistbox draws its own scrollbar with `zul.WScroll`, which Marble had styled a
 
 # Solution
 
-The thumb now uses `--zk-color-outline-variant`, 8px wide, fully rounded, flush with the edge, and the groove is gone — measured identical to the documented scrollbar's resting state (colour difference 0, same width and edge distance, both axes). The colour follows the token (a `--zk-color-outline-variant` override recolours it). On hover the thumb darkens to `--zk-color-outline` as a drag affordance, matching the native scrollbar. Arrow buttons stay hidden because WScroll sizes its thumb from them.
+The thumb now uses `--zk-color-outline-variant`, 8px wide, fully rounded, flush with the edge, and the groove is gone — measured identical to the documented scrollbar's resting state (colour difference 0, same width and edge distance, both axes). The colour follows the token (a `--zk-color-outline-variant` override recolours it). On hover the thumb darkens to `--zk-color-on-surface-variant`, the same hover colour as the frozen-column and documented scrollbars. Arrow buttons stay hidden because WScroll sizes its thumb from them.
 
 Known gap, tracked separately: under forced-colors the thumb (here and in the documented scrollbar) is painted with a background colour, which the browser overrides, so it is not visible there.

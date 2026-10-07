@@ -29,7 +29,7 @@ not closed any of the 6 fixed issues yet.
 
 ## Status board
 
-**Last updated 2026-10-07.** 20 of 82 fixed (batch 4 verified, comments pending Hawk's review of the drafts; see table).
+**Last updated 2026-10-07.** 20 of 82 fixed and awaiting the designer to close (batches 1–4, see table).
 
 | State | Issues | Count |
 |---|---|---|
@@ -37,7 +37,7 @@ not closed any of the 6 fixed issues yet.
 | Fixed and verified in `zk` (batch 1), commented 2026-10-06, awaiting the designer to close | #41, #43, #52, #67, #65 (button part; drag cursor → ZK Jira, D11-B) — gates in [gates/](gates/) | 5 |
 | Fixed and verified in `zk` (batch 2, list-row selection → secondary-container, D10-A), commented 2026-10-06 | #23 (and the second half of #41) — [gates/batch2.md](gates/batch2.md) | 1 |
 | Fixed and verified in `zk` (batch 3, grid; Fable gate PASS), committed `2efcdc65c9` `c333a2912d` `8770af7a09` `0a8d008bda`, baselines regenerated, commented 2026-10-07, awaiting the designer to close | #34 (DEMO, Hawk edited `grid.zul`), #35, #36, #37 (CSS part; widget part → ZK Jira), #38, #39 — [gates/batch3-final-r2.md](gates/batch3-final-r2.md) | 6 |
-| Fixed and verified in `zk` (batch 4, biglistbox scrollbar; Fable gate PASS, pure CSS), **not yet committed**, comments drafted in [gates/batch4-comments.md](gates/batch4-comments.md) | #31, #78 — [gates/batch4-final.md](gates/batch4-final.md) | 2 |
+| Fixed and verified in `zk` (batch 4, biglistbox scrollbar; Fable gate PASS, pure CSS), committed `8b62f5a7d` (zkcml) `42fec29a7f` `0265f71509`, commented 2026-10-07 ([gates/batch4-comments.md](gates/batch4-comments.md)), awaiting the designer to close | #31, #78 — [gates/batch4-final.md](gates/batch4-final.md) | 2 |
 | Classified, in scope, not yet started | P1 (38) + DECIDE (4) | 42 |
 | Classified, deferred out of scope | see [jess-review-deferred.md](jess-review-deferred.md) | 26 |
 
