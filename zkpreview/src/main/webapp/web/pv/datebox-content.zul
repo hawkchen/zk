@@ -21,7 +21,7 @@
         </div>
         <div sclass="z-d-flex z-flex-col z-gap-2">
             <label sclass="z-text-xs z-text-secondary">Time in popup (yyyy/MM/dd HH:mm)</label>
-            <datebox format="yyyy/MM/dd HH:mm" value="${sampleDate}"/>
+            <datebox format="yyyy/MM/dd HH:mm" cols="16" value="${sampleDate}"/>
         </div>
         <div sclass="z-d-flex z-flex-col z-gap-2">
             <label sclass="z-text-xs z-text-secondary">Timezone selector</label>
