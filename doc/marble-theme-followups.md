@@ -358,3 +358,23 @@ In `grid-tablet.png` the "Col B" and "Col C" headers overlap at x=433, the heade
 None of the 5 gallery screenshots shows a sort icon (0 of 85 headers), so the Jess #35 change (arrow glyph) and the #39 icon position are not protected by the screenshot tests. Same kind of gap as the dropdown screenshots added for D22-B.
 
 - [ ] Add a screenshot of a grid header with one column sorted ascending and one descending (Basic grid, real clicks).
+
+## 16. Custom scrollbar thumbs are invisible under forced-colors
+
+Found while verifying Jess #78 (batch 4, 2026-10-07). Under `forced-colors: active` the biglistbox thumb and the `zul.Scrollbar` embed rail both render as the page background (centre pixel equals the background), because both are painted with `background-color`, which the browser forces to Canvas. Same family as item 12.
+
+- [ ] Give the thumbs a forced-colors rule (`ButtonBorder` / `CanvasText` fill or a border).
+
+## 17. The tablet baselines for slider and calendar are stale
+
+Found while classifying batch 4 (2026-10-07; user ruling D42-A: not part of the Jess batch). `slider-tablet.png` has not been regenerated since `64f1c07b9d` (vertical slider default height), and `calendar-tablet.png` since `778b5a809f` (datebox follows `cols`). The `tablet` project fails on both until someone regenerates them through the usual classify → confirmation page → approve flow.
+
+- [ ] Regenerate `slider-tablet.png` and `calendar-tablet.png` (by the work that owns those commits).
+- [ ] A commit that changes a component's CSS should run the `tablet` project, including pages that embed the component.
+
+## 18. Untested corners of the biglistbox scrollbar
+
+Batch 4 did not cover: the touch variant (`zkmax/css/tablet/_scrollbar.css`), `frozenCols` / `fixFrozenCols` combinations (the page's dropdowns need the composer to fill), and `doc/spec/DESIGN.md` has no biglistbox scrollbar paragraph (section 15 covers only the native and `zul.Scrollbar` bars).
+
+- [ ] Measure the touch variant and a `frozenCols` biglistbox against the batch 4 checks.
+- [ ] Decide whether DESIGN.md needs a biglistbox scrollbar note.

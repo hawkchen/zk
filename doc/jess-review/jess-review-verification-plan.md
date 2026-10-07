@@ -620,3 +620,135 @@ Verifier 提醒的小風險（在它的幾次測試裡都沒有發生）：
 - 用 `--update-snapshots=changed`，限定 chromium 的 grid、listbox、tree gallery 和 tablet 的 grid、paging gallery；沒有用 `=all`，沒有跑 forced-colors-gallery。
 - 結果：變動的 PNG 正好是這 5 張，沒有新增，沒有 `*-forced-colors.png`。重新產生後 chromium 130/130、tablet 55/55 全過。Planner 自己再看了一次 `git status`，結果相同。
 - 未 commit。
+
+---
+
+## 第四批：biglistbox 捲軸（#31、#78）
+
+狀態：**已核准**（2026-10-07，D39-A、D40-A 含退路，見下方「裁示」）。2026-10-07 由 Planner 起草；決策編號沿用本文件，從 D39 起。
+兩個 issue 都落在同一段 CSS：`../zkcml/zkmax/src/main/resources/web/js/zkmax/big/css/biglistbox.css:97-217`（`.z-biglistbox-wscroll-*`）。**根因各自獨立**：#31 是捲軸「軌道的位置與範圍」，#78 是捲軸「外觀」。驗證方法各自獨立，建議同一批做。
+Jess 的截圖已存在 [gates/batch4-red/ref/](gates/batch4-red/ref/)；現況量測腳本是 `gates/batch4-red/measure-current.js`。
+
+### 現況量測（2026-10-07，Planner，8085，viewport 1280×900，不是 RED run）
+
+| 項目 | 實測 | 意義 |
+|---|---|---|
+| 第一個 biglistbox（`#stripedBiglist`，5 列 × 5 欄，200px 高） | 垂直捲軸軌道 `top` = 188、高 200，表頭 188–227。**軌道從 widget 最上緣開始，蓋住 39px 的表頭**；`::before` 的 6% 灰色軌道槽畫在表頭範圍內（Jess #31 紅框處） | #31 的直接證據 |
+| 同一個 biglistbox 的水平捲軸 | 欄寬合計 650px < 內寬 1214px，水平**不能**捲，但軌道 `display:block`、14px 高，槽仍畫在底部（截圖可見灰帶）；水平 thumb `display:none` | #31「不能捲的地方不該有捲軸區」的第二個實例 |
+| 第二個 biglistbox（`#biglist`，500px 高） | 垂直軌道同樣從最上緣起，軌道槽同樣蓋住表頭；垂直 thumb `display:none` | 同上 |
+| thumb | 8px 寬、`on-surface` 38% 的圓角灰條，距右緣 3px；軌道槽 8px、`on-surface` 6%，一直都在 | #78 的「現況」 |
+| 文件裡的捲軸（`doc/contracts/scrollbar.md` s11，`zul.Scrollbar` 靜止狀態） | 靜止時只有一條 8px 圓角、`--zk-color-outline-variant` 的淺灰條，**沒有軌道槽**；thumb 6px、`outline`；hover 才出現軌道與箭頭 | #78 她要的樣子（`ref/i78-expected.png`：淺灰圓角條，無槽，垂直、水平各一條） |
+
+**這裡有一個互相衝突的既有規格：** `doc/contracts/biglistbox.md` 的 sc6 明文規定要有「一直顯示的 6% 軌道槽」（理由：thumb 在資料量小時擠在角落，要讓捲動區域看得出來）。#78 的期望圖沒有這條槽，所以 #78 要不要照做，等於要不要退掉 sc6 —— 見 D40。
+
+### 這一批要先裁示的事
+
+**D39 · #31 的範圍。** Jess 的原文：「如果這塊區域不能捲（例如 sticky 表頭），就不該有捲軸區」。
+- **A（建議）：** 兩件都修 —— 垂直軌道不得蓋住表頭；某個方向的內容放得下時，那個方向完全不畫軌道（含槽）。 ｜ 代價：多一個「放得下就隱藏」的判斷；若只能靠 JS 做，會動到 `Biglistbox.ts`（超出純 CSS，要回報 Planner）。
+- **B：** 只修表頭被蓋住這一件。 ｜ 代價：水平軌道在不能捲時仍畫一條灰帶，Jess 會再回報一次。
+
+**D40 · #78 的目標外觀。**
+- **A（建議）：** 照文件裡捲軸的靜止狀態：thumb 取 `--zk-color-outline-variant`、圓角，**不畫軌道槽**；寬度與距邊緣的距離，以「同一次量測裡 `scrollbar.zul` 量到的值」為準，不由我手寫。同時退掉 contract sc6（`doc/contracts/biglistbox.md`、`DESIGN.md` 一併改）。 ｜ 代價：資料量小時 thumb 縮在角落，沒有槽可以看出捲動範圍（sc6 當初要防的情況）；箭頭維持隱藏（WScroll 的 thumb 大小算法依賴，不動）。
+- **B：** 保留槽，只把 thumb 改成文件的顏色與寬度。 ｜ 代價：仍然不像文件的樣子（文件沒有槽），Jess 大概會再提。
+- **C：** 不改，在文件註明 biglistbox 的捲軸是另一種樣式（WScroll，非 `zul.Scrollbar`）。 ｜ 代價：等於婉拒 #78，要你同意並回覆 Jess。
+
+### 共用的量法（所有檢查都用，不限定修法）
+
+- **頁面：** `${PREVIEW_URL}/biglistbox.zul`，兩個現成 widget：`#stripedBiglist`（垂直可捲、水平不可捲）和 `#biglist`（兩個方向都可捲）。另外要一個**兩個方向都放得下**的 widget：2 列 × 3 欄、200px 高。預覽頁沒有，由 Verifier 在 `zkpreview/src/main/webapp/web/` 建暫時頁（`biglistbox-fits.zul`，沿用 `FakerMatrixModel(2, 3)`），**量完刪除，不進 repo**（比照第三批 #37）。
+- **只看像素與命中測試，不讀 CSS 屬性**，所以不管修法是改 `top`、改 `height`、改 `display` 還是改 `::before`。截圖 devicePixelRatio 用 2；顏色差用 CIE76 ΔE；量之前先注入 `*{transition:none!important;animation:none!important}`，並等 `document.fonts.ready`。
+- **基準色：** 空白處的底色取 widget 內、沒有任何 cell 的區域（`#stripedBiglist` 的 x 在欄寬合計右側）取中位數，不取 CSS 值。
+- **記號：** `H` = 該 widget 的 `.z-biglistbox-head-outer` bounding box；`B` = `.z-biglistbox-body-outer`；`R` = 內框右緣。
+
+### #31 — 捲軸不該蓋住表頭、不能捲時不該有捲軸區
+
+- **判定檢查：**
+  1. **表頭範圍內沒有捲軸（命中測試）：** 對 3 個 widget，在 `x = R − 7`、`y = H 垂直中心` 做 `elementFromPoint`，結果**不是**任何 class 含 `wscroll` 的元素或其後代。
+  2. **表頭範圍內沒有捲軸（像素）：** 只對 `#stripedBiglist` 和暫時頁（它們的表頭右側是空白，`#biglist` 的表頭右側有文字，不納入像素比對）：`x ∈ [R − 14, R − 1]`、`y ∈ [H.top + 2, H.bottom − 2]` 的每個像素，與「同一個 y 範圍、`x ∈ [R − 34, R − 21]`」的中位數色 ΔE **≤ 2**。
+  3. **（D39-A 才有）垂直放得下時，右側整條都沒有：** 暫時頁，`x ∈ [R − 14, R − 1]`、整個 widget 高度內，每個像素與底色 ΔE ≤ 2。
+  4. **（D39-A 才有）水平放得下時，底部整條都沒有：** `#stripedBiglist`（水平放得下）與暫時頁，`y ∈ [B.bottom − 14, B.bottom − 1]`、`x ∈ 該 widget 內「所有欄之外」的空白區`，每個像素與底色 ΔE ≤ 2。
+- **今天的 RED（預測，RED run 要確認）：** 1 失敗（`elementFromPoint` 命中 `.z-biglistbox-wscroll-vertical`）；2 失敗（6% 灰槽 ≈ ΔE 5）；3、4 失敗（槽仍畫著）。
+- **保護項（今天就會通過）：**
+  - **該有的軌道還在：** `#stripedBiglist` 的垂直 thumb，與底色 ΔE ≥ 10 的像素存在，而且 thumb 的最上緣 ≥ `B.top`；`#biglist` 的水平 thumb 同理，最左緣 ≥ `B.left`。
+  - **還能捲：** 在 `#biglist` 上滾輪往下，第一列文字從 `y = 0` 變成其他列，thumb 往下移動；捲到底後 thumb 的下緣 ≤ `B.bottom`、上緣 ≥ `B.top`（對應 contract sc5，水平方向同樣檢查）。
+  - **拖得動：** 從 thumb 中心按下，往下拖 40px 後放開，列有跟著捲動。
+  - **表頭不動：** 捲動前後，`H` 的 bounding box 完全相同。
+  - **表頭可以點：** 點 `#biglist` 最右一欄表頭靠右緣的位置（`x = R − 20`），排序圖示的狀態有變。（命中測試過關之後，這一條防止修法把表頭的事件擋掉。）
+- **也必須成立：**
+  - 把 widget 切成 `vflex="min"`（頁面上的 Change V/Hflex → `min`）再重量判定 1、2：軌道仍然不蓋住表頭。（軌道高度若由 JS 在 resize 時重算，這一條抓得到。）
+  - `forcedColors: 'active'` 下，判定 1 同樣成立。
+- **不涵蓋：** `frozenCols`／`fixFrozenCols` 組合（頁面上的下拉清單要 composer 才有內容，這一批不處理，記進看板）；touch 版（`zkmax/css/tablet/_scrollbar.css`）只靠回歸範圍的 `tablet` 專案看。
+- **回歸範圍：** `chromium` 截圖（biglistbox 相關 baseline 預期會變：槽不再蓋住表頭）、`tablet`、`forced-colors`、`component-theming`（若有測試寫死 wscroll 的值）。
+
+### #78 — 捲軸外觀要和文件裡的捲軸一致
+
+- **前提：** D40。以下依 D40-A 寫；B 的差別已標出，C 不需要驗證（只需要看板與回覆）。
+- **量法（參照式）：** 同一次量測裡，先在 `${PREVIEW_URL}/scrollbar.zul` 量出「文件裡的捲軸」的靜止狀態，當作期望值，再量 biglistbox，兩者比較。期望值由 Verifier 在 RED 階段量出並存檔（`gates/batch4-red/doc-scrollbar.json`），**不由 Planner 寫死**，避免我抄錯。
+  - 文件捲軸的量法：取 `scrollbar.zul` 上一個垂直捲軸的靜止狀態（滑鼠不在其上），像素掃描 thumb：顏色、寬度、與所屬容器內框右緣的距離、圓角（thumb 最上一列兩端像素 ≠ thumb 色，中心 = thumb 色）。
+  - biglistbox 的量法：`#stripedBiglist` 的垂直 thumb（滑鼠不在其上），同一組量。
+- **判定檢查（D40-A）：**
+  1. thumb 顏色與文件捲軸 thumb 的顏色 ΔE **≤ 3**（探針取 `--zk-color-outline-variant` 的計算值當第二個依據，兩者都要符合）。
+  2. thumb 寬度與文件捲軸的差 **≤ 1px**。
+  3. thumb 距容器內框右緣的距離與文件捲軸的差 **≤ 1px**。
+  4. thumb 是圓角：最上一列兩端的像素不是 thumb 色，中心是 thumb 色（同文件捲軸）。
+  5. **沒有軌道槽：** 軌道範圍內、thumb 以外的像素（thumb 上方、下方各取 8px 以上），與底色 ΔE ≤ 2。（D40-B 時這一項不檢查，改成：槽的顏色維持現狀。）
+  6. **水平方向同樣成立：** `#biglist` 的水平 thumb 做 1–5（高度取代寬度、距下緣取代距右緣）。
+- **今天的 RED（預測）：** 1 失敗（`on-surface` 38% 約 rgb(165,165,165)，對 `outline-variant` 的淺灰）；5 失敗（6% 槽）；2、3 要看文件捲軸量到的值，今天 thumb 8px、距右 3px，可能其中一項已經相符 —— **相符的那項就是保護項，RED run 要如實標出，不算方法錯。**
+- **保護項（今天就會通過）：**
+  - 滾輪、拖曳、thumb 位置範圍（同 #31 的保護項，兩批共用同一組腳本）。
+  - 水平放得下的 widget，thumb 數量為 0（沒有半隱半現的 thumb）。
+  - thumb 會跟著 token 換色（**今天不會通過，不是保護項，是判定**）：在 `:root` 注入 `--zk-color-outline-variant: rgb(255, 0, 0)`，thumb 中心像素變成紅色（ΔE ≤ 3）。這項證明沒有寫死顏色。
+  - **品牌色：** `<html data-brand="copper">` 後，thumb 色等於該品牌下 `--zk-color-outline-variant` 的計算值。
+- **只記錄、不判定（比照 D33 的做法）：**
+  - `forcedColors: 'active'` 下 thumb 是否看得見：瀏覽器會把背景色強制成 Canvas，thumb 可能消失。RED 與最終都量一次，把結果寫進看板；如果消失，記為 follow-up，不擋本批。
+  - 滑鼠移到 thumb 上的顏色（文件捲軸的 hover 是整條軌道與箭頭，biglistbox 沒有對應的狀態，本批不要求一致）。
+- **也必須成立：** `component-theming` 與 `forced-colors` 測試沒有因為這個改動而新失敗；contract 與規範文件（`doc/contracts/biglistbox.md` sc1/sc2/sc6、`DESIGN.md` 的 biglistbox 捲軸段）已跟著修正，且與實際量到的值一致。**這一項由 Planner 檢查 diff，不由 Verifier 判定。**
+- **回歸範圍：** 同 #31（兩者共用一輪截圖與回歸）。
+
+### 共同注意事項
+
+- RED run 的 Verifier 先把 `doc-scrollbar.json` 與兩個 widget 的現況存進 `gates/batch4-red/`，格式照 batch3-red。**#31 的判定 1–4、#78 的判定 1、5、6 與 token 換色，必須全部失敗；保護項必須通過**；有任何一項判定今天就通過，代表方法量錯了，退回 Planner 重寫。
+- 最終判定的模型沿用 D35（Fable）；Generator 為 Sonnet。
+- 這兩個 issue 的 Generator brief 要先寫明：**軌道高度由 `WScroll` 的 JS 在 resize／載入時重算，還是純 CSS**，這會決定「軌道從表頭下緣開始」能不能純 CSS 做到。表頭高度不固定（實測 39px，隨字級／density 改變），純 CSS 要找到不依賴固定數字的做法；若做不到，修法會碰到 `Biglistbox.ts`（EE，`../zkcml/`），照 #35 的規矩先回報 Planner，不自己決定。
+- `doc/screenshots/` 的變動只能是上面預期的 biglistbox baseline，其餘依「前置工作」那一節的流程（分類、確認頁、使用者核准）處理。
+
+### 裁示（2026-10-07，議題頁：https://claude.ai/artifact/8MZiA3iBE8N1GLmaEV8B6x）
+
+- **D39-A：** #31 兩件都修（軌道不蓋表頭，放得下的方向完全不畫軌道）。純 CSS 做不到、要動 `Biglistbox.ts` 時，先回報 Planner 再決定。
+- **D40-A，附退路（使用者）：** #78 先照文件靜止狀態做；**因為底層 JS 不同（`WScroll` 對 `zul.Scrollbar`），如果做不到一樣的效果，就改成 C**（不改，在文件註明差異，回覆 Jess）。
+  - **「做不到」的判準（Planner 訂，事先寫明，不在修完後調整）：** 判定檢查 1–4（thumb 顏色、寬度、距邊緣、圓角）與判定 5（沒有槽）任一項，經 Generator 最多 3 輪仍無法在容許範圍內相符，**而且**原因出在 `WScroll` 的幾何算法（thumb 大小、`_gap`、`endbar` 位置夾制）而不是單純沒做好，就算做不到。轉 C 時：還原 #78 的 CSS 改動、sc6 保留、在 `doc/contracts/biglistbox.md` 註明差異、看板記錄、回覆 Jess 的文字交給你過目後才貼。
+  - 動到 `Biglistbox.ts` 或 `WScroll.ts` 來湊外觀，不算「做得到」：那是改行為，不是改外觀，須另行核准。
+
+### 第四批 RED run 結果（2026-10-07，Fable Verifier）
+
+報告：[gates/batch4-red.md](gates/batch4-red.md)；腳本與原始輸出：`gates/batch4-red/`。暫時頁已刪除，沒有改任何來源檔。結論 `RED4: METHOD-DEFECTS`。
+
+- **RED-correct：** #31 判定 1（三個 widget 都命中 `.z-biglistbox-wscroll-vertical`；`vflex=min`、forced-colors 下同樣失敗）；#78 判定 1（ΔE 22.56）、3（距右 3 對 0）、5（槽 ΔE 4.51）、6、token 換色。保護項全部通過。
+- **文件捲軸期望值**（`doc-scrollbar.json`）：量 `scrollbar.zul` 第 2 個 grid（`data-embedscrollbar="true"`，embedded 模式才有靜止狀態）的 `.z-scrollbar-vertical-embed`：顏色 rgb(224,224,224)（`--zk-color-outline-variant` 疊白底）、寬 8px、距容器內框右緣 0、圓角。
+
+**方法修正（Planner 裁定，動工之前；以下取代上文對應的措辭）：**
+
+1. **#31 判定 2、3、4 的像素帶**：原本的帶含 widget 自己的 1px 邊框與圓角（224），會讓修好後也過不了。改為：取 widget 的 border-box 內縮 1px、**排除四角各 10px**；判定 4 的 y 範圍改為 `[box.bottom − 15, box.bottom − 2]`。今天用修正後的帶仍失敗（4.51 / 9.06 / 4.51），符合 RED。
+2. **「`#biglist` 兩個方向都可捲」不成立**（預設模型 100×10，垂直放得下）：垂直方向的保護項（滾輪、拖曳、夾制）一律用 `#stripedBiglist`；`#biglist` 只做水平方向，另外切到 `MultipleRow` 重做垂直一次。
+3. **#78 的品牌色項**：`data-brand` 不改 `outline-variant`，且今天就失敗，等同判定 1 → **刪除該項**，不當保護項也不另立判定。token 換色那一項保留為判定。
+4. **#78 判定 6 的「距下緣」**：以「看得見的內框下緣」（`box.bottom − 1`）為基準，容許 ±1px。原因：`.z-biglistbox-outer` 溢出 1px，`B.bottom = box.bottom + 1`。
+5. 文件捲軸只在 embedded 模式有靜止狀態，量法要指明 `data-embedscrollbar="true"`；判定 5 取 thumb 下方（上方區不存在）；「表頭不動」以 widget 為基準；#78 判定 4（圓角）今天就相符，改列保護項。
+
+**可行性（給 Generator brief，Verifier 在頁內注入 CSS 實測，未寫入 repo）：**
+
+- 軌道 div 的幾何**完全是純 CSS**，JS 從不碰；thumb 的位置由 JS 算（`top = head.offsetHeight + scale × step`，相對軌道頂），所以**軌道不能用 CSS 往下移**（會雙重位移）。內容放得下時 JS 只對 `-drag`／`-endbar` 做 `display:none`，軌道本身仍是 block。
+- **純 CSS 可達 D39-A + D40-A：** 軌道 `visibility:hidden` + `-drag{visibility:visible}`、`::before{content:none}`、`-drag{background:var(--zk-color-outline-variant)}`，垂直 `left:6px`、水平 `top:4px`。命中測試跳過軌道、不畫像素、不依賴表頭高度、不需要 `:has()`；resize 後 JS 的顯示／隱藏仍相容。striped 與 fits 的 #31 判定全 0，#78 判定 1–5 全過，滾輪、夾制、拖曳正常。
+- 限制：forced-colors 下 thumb 與文件的 embed rail 都看不見（兩者都靠 `background-color`，記為 follow-up，不擋本批）；touch 版（`tablet/_scrollbar.css`）未量。
+- **對 D40 退路的意義：** 純 CSS 已實測可達，所以預期不會觸發「轉 C」。
+
+### 第四批 RED run 第二輪（2026-10-07，Fable）
+
+報告：[gates/batch4-red-r2.md](gates/batch4-red-r2.md)；`RED4-R2: RED-correct`。修正後的量法下，#31 判定 1–4、#78 判定 1、3、5、6、token 換色今天全部失敗；所有保護項通過；文件捲軸期望值與第一輪完全相同。
+- **記錄（Planner 確認）：** #78 判定 6 的子項「水平距下緣」依修正 4 的定義今天就相符（差 1px），**列為保護項**；判定 6 整體仍因垂直子項失敗，所以判定 6 保留。
+- 方法定稿，之後不再修改；修完只拿這一版判定。
+
+### 第四批最終判定（2026-10-07，Fable）與裁示
+
+- [gates/batch4-final.md](gates/batch4-final.md)：**`GATE4-FINAL: PASS`**。#31 判定 1–4 最差 ΔE 0（RED 時 4.51 / 9.06 / 4.51）；#78 thumb 顏色對文件 ΔE 0、寬 8、距右 0、圓角、無槽；水平方向同樣通過；token 換色通過。**D40 退路沒有觸發**，#78 照 A 完成。
+- 回歸：component-theming 107/107、forced-colors 17/17、hit-target 3/3、chromium 130/130、focus-scan 57 通過、tablet 52/55。3 項失敗：`biglistbox-tablet` E；`slider-tablet`、`calendar-tablet` U（來源是 `64f1c07b9d`、`778b5a809f`，與本批無關）。
+- 議題頁：https://claude.ai/artifact/MHmozeSCPGHFAvkUDL9bs6。使用者裁示（2026-10-07）：**D41-A**（重生 `biglistbox-tablet.png`）、**D42-A**（slider、calendar 的 tablet baseline 不在本批處理，記進 follow-up）、**D43-A**（thumb hover 保留比靜止深一階，`--zk-color-outline`）。
+- 備註：8085 是共用資源，回歸中途被另一個 session 停掉一次；方法層的建議是回歸前先在看板宣告使用中。
