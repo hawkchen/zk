@@ -861,3 +861,117 @@ Jess 的截圖已存在 [gates/batch4-red/ref/](gates/batch4-red/ref/)；現況�
 - 做法：純 CSS，唯讀輸入框的 `::selection` 背景與文字色設成透明／繼承。
 - 保護項不變（非唯讀仍可選取與輸入、唯讀仍可開下拉挑選、Tab 聚焦與焦點環還在）。另加一項：**非唯讀 combobox 的反白仍然看得到**（防止修法把所有 combobox 的反白都關掉）。
 - 回覆 Jess 時說明：唯讀欄位的文字仍可複製，但不再出現會被誤認為可編輯的反白。
+
+---
+
+## 第六批：combobutton／slider 系列／rating／inputgroup（#18 #19 #22 #24 #25 #26 #27）
+
+> 狀態：**方法定稿前草案（2026-10-08），依 [jess-review-decision-principles.md](jess-review-decision-principles.md) 第四節直接進行，不另開議題頁。** 本節沒有新的 D 編號；若 RED run 之後出現第五節的例外，才會開議題。
+> 工作樹檢查（2026-10-08）：`combobutton.css`、`slider.css`、`rating.css`、`inputgroup.css`、`multislider.css`、`rangeslider.css` 皆無未提交修改，無別的 session 重疊。
+
+### #22、#27 是否已被已提交的修正涵蓋
+
+- **#22（inputgroup 邊框寬度不同）：** 疑似已被 `29b6d0629e`（後綴接縫 2px → 1px、數字框同 textbox）涵蓋。**不假設，RED run 實測**：若所有接縫已是 1px 且同色 → 標記「已涵蓋」、不改程式碼、只更新看板並留言；若仍有不一致 → 轉為本批的修正項。
+- **#27（rating 唯讀／停用游標）：** `b2aa291a03` 只處理 `iconSclass`，**沒有**碰游標。原始碼：`.z-rating-disabled`／`.z-rating-readonly` 在每顆 `<i>` 上設 `cursor: default; pointer-events: none`，所以滑鼠實際落在外層 `.z-rating`，而它是 `cursor: pointer`（`rating.css:22`）。預測為 THEME 缺陷，列入本批。
+
+### 共用量法
+
+- **頁面：** `${PREVIEW_URL}/{combobutton,slider,multislider,rangeslider,rating,inputgroup}.zul`；viewport 1280×900；量之前注入 `*{transition:none!important;animation:none!important}` 並等 `document.fonts.ready`；各狀態之間重新載入頁面（避免上一個焦點狀態殘留）。
+- **游標：** 沿用共用規則（`elementFromPoint` 的 computed `cursor`）。
+- **狀態色塊（hover／active／focus）：** 只看像素。對指定矩形取平均色，與「靜止」狀態同矩形比較 ΔE（CIE76 以上皆可，需在報告註明）；ΔE ≥ 2 視為「有變化」，≤ 1 視為「沒變化」。**不讀 CSS**，不依賴 `::before` 或 `:has()` 等寫法。
+- **預覽頁缺實例時：** 若某個判定需要的實例（停用的 combobutton、readonly／disabled rating、有 `slidingtext` 的 slider）預覽頁沒有，Verifier **停下回報缺哪一個**，由 Planner 補預覽頁後再跑；不自行在頁內注入。
+- Verifier 不看 CSS diff；Generator 為 Sonnet；最終判定為 Fable（D35）。
+
+### #18 — combobutton：hover 要落在游標底下的那一半
+
+DOM：`.z-combobutton-content`（標籤，含 `::before` 狀態層）內有 `.z-combobutton-button`（箭頭，絕對定位靠右、32px 寬、不透明底）。矩形定義：**箭頭矩形** = `.z-combobutton-button` 的 bounding rect；**標籤矩形** = `.z-combobutton-content` 的 bounding rect 去掉箭頭矩形後左邊的部分。
+
+- **判定 J18-1（今天必須失敗）：** 預設（filled）combobutton，滑鼠停在箭頭中心：箭頭矩形（排除圖示字形，取矩形內側 3px 以內的邊緣環帶）相對靜止 ΔE ≥ 2，**且**標籤矩形 ΔE ≤ 1。
+- **判定 J18-2（今天必須失敗）：** 同上，toolbar mold（`.z-combobutton-toolbar`）也成立。
+- **判定 J18-3（今天必須失敗）：** 滑鼠在箭頭上按下不放（`:active`，未放開）：箭頭矩形 ΔE ≥ 2 且標籤矩形 ΔE ≤ 1。
+- **保護項（今天必須通過）：** (a) 滑鼠停在標籤中心：標籤矩形 ΔE ≥ 2 且箭頭矩形 ΔE ≤ 1。(b) 在標籤上按下不放：標籤矩形有變化、箭頭沒有。(c) Tab 聚焦：整顆（標籤矩形）有焦點色塊（ΔE ≥ 2），焦點行為不變。(d) 開啟狀態（`z-combobutton-open`）的外觀與今天相同（標籤矩形與箭頭矩形的平均色各 ΔE ≤ 1）。(e) 停用的 combobutton 滑過沒有變化（兩個矩形 ΔE ≤ 1）。(f) 兩段高度、寬度、分隔線位置不變（±0px）。
+- **範圍（R6）：** 只處理 hover 與 active；focus 與 open 狀態不動。
+
+### #19 — combobutton：停用狀態的箭頭底色要與標籤相同
+
+- **判定 J19-1（今天預期失敗）：** 停用的 filled combobutton，箭頭矩形與標籤矩形各取「角落 3×3px（避開字形與分隔線）」的平均色：ΔE ≤ 1。**RED 要確認今天確實失敗**（Jess 的截圖箭頭較深）；若今天已通過，代表她看到的不是這個狀態，退回 Planner。
+- **判定 J19-2：** 停用的 toolbar mold 同理（兩段都透明或同色）：ΔE ≤ 1。
+- **保護項：** 啟用的 filled 與 toolbar combobutton 兩段底色相同（今天通過，不得變）；停用文字與圖示色不變（前景像素色 ΔE ≤ 2）；停用文字對比不低於今天。
+- **預測（RED 要驗）：** `--zk-color-disabled-container` 若為半透明，箭頭疊在標籤之上會雙重上色而變深。若真是如此，修法是讓箭頭在停用時不重複上底色；Generator brief 只寫判定，不寫修法。
+
+### #22 — inputgroup（只量，通過則標記已涵蓋）
+
+- **量法：** `inputgroup.zul` 上每一個水平 inputgroup（前綴、後綴、前後、數字框）：沿控制項垂直中線取像素，找出相鄰兩個控制項之間「邊框色」連續像素的寬度。
+- **判定 J22-1：** 所有接縫的邊框寬度 = 1px，且與外框同色（ΔE ≤ 2）。
+- **判定 J22-2：** 同一頁所有 inputgroup 的外框寬度一致（上下左右各 1px，聚焦時的 2px 不計）。
+- **今天的預期：** 通過（已涵蓋）。通過 → 不改程式碼；任何一項失敗 → 回報位置與數字，由 Planner 決定轉為修正項。
+
+### #24 — multislider／rangeslider：游標只在有功能的地方，hover 只亮游標底下的那顆
+
+- **量法（游標以「點了會不會動」為準，不寫死哪一塊該是 pointer）：** 在 `multislider.zul`（水平 3 組、垂直 2 組）與 `rangeslider.zul` 的每個 widget 外框內，以 8px 為間距取格點，另外加上軌道上與軌道上下方 padding 區的點。對每個點：記錄 `elementFromPoint` 的 computed `cursor`；再在**重新載入的頁面**於該點點一下，看任何一顆 thumb 的位置是否改變。分類：
+  - **thumb 上**（點落在某 thumb 的 bounding rect 內）：游標必須是 `grab`（今天已是）。
+  - **會動的點**（點了有 thumb 移動）：游標可以是 `pointer`。
+  - **不會動的點**（既不在 thumb 上，點了也沒有 thumb 移動）：游標必須是 `default` 或 `auto`。
+- **判定 J24-1（今天必須失敗）：** 全部「不會動的點」游標為 `default`／`auto`。今天整個 widget 外框都是 `pointer`。**RED 若發現沒有任何「不會動的點」（整個外框都會動），J24-1 今天就通過 → 方法量錯，退回 Planner。**
+- **判定 J24-2（今天必須失敗）：** 3 組的水平 multislider，滑鼠停在 thumb A 上：thumb A 周圍的 hover 環（以 thumb 中心為圓心、半徑 10–18px 的環帶）相對靜止 ΔE ≥ 2；其餘每一顆 thumb 的環帶 ΔE ≤ 1。滑鼠停在軌道上（不在任何 thumb 上）：所有 thumb 的環帶 ΔE ≤ 1。
+- **判定 J24-3（今天必須失敗）：** rangeslider 同 J24-2。
+- **保護項：** (a) thumb 上游標 `grab`、按下不放為 `grabbing`（今天通過）。(b) 重疊 thumb 的命中：每顆 thumb 中心的 `elementFromPoint` 就是那顆 thumb（`z-index` 修正不得退化）。(c) 拖曳 thumb 後 thumb 位置與填色區隨之更新（行為不變）。(d) 停用的 multislider／rangeslider 游標與今天相同（RED 記錄，最終比對）。(e) **plain slider（`slider.zul`）：** `Slider.ts` 的 `doClick_` 綁在 widget 根元素上，整個外框點了都會動，所以其游標 `pointer` 與 thumb 的 hover 範圍（今天是單顆）都應維持原樣；RED 用同一個「點了會不會動」量法記錄，不列判定。
+- **範圍（R6、R9）：** Jess 寫的是 multislider 與 rangeslider；plain slider 若 RED 證實整個外框可點，就不改。**focus-within 目前也是「一個聚焦、全部亮環」，與 hover 同類，但 Jess 沒寫，記進 follow-up、不在本批。**
+
+### #25 — slider 提示（slidetip）對齊
+
+- **量法：** `slider.zul`：在 thumb 中心按下、水平（或垂直）移動 10px 後**不放開**，`#zul_slidetip`（class `z-slider-popup`）此時存在。量：提示框 bounding rect、thumb bounding rect、提示文字的字形 ink 範圍（`Range.getBoundingClientRect()` 或像素）。
+- **判定 J25-1（今天預期失敗）：** 水平 slider（含 sphere mold）：提示框水平中心與 thumb 水平中心差 ≤ 1px。
+- **判定 J25-2（今天預期失敗）：** 垂直 slider：提示框垂直中心與 thumb 垂直中心差 ≤ 1px。
+- **判定 J25-3：** 文字在提示框內置中：ink 水平中心與框水平中心差 ≤ 1px、ink 垂直中心與框垂直中心差 ≤ 1px（水平與垂直兩種 slider 各量）。
+- **保護項：** 提示框與 thumb 不重疊（框與 thumb 的 bounding rect 沒有交集）；提示框仍在 viewport 內；拖曳中隨 thumb 跟隨；提示文字顏色／字級不變；放開後提示消失（`#zul_slidetip` 不存在）。
+- **注意：** 位置由 JS 的 `zk(...).position(btn, 'before_start'|'end_before')` 設定，CSS 無法改基準，只能在 CSS 內補偏移。若 RED 發現偏移量取決於提示寬度（所以固定 px 補不了），先確認純 CSS 能否做到（例如以百分比位移）；做不到就停下回報（例外第 3 項）。**預設只量到中心對齊；Jess 說的 "check both horizontal & vertical" 解讀為水平與垂直兩種方向的 slider 各自對齊，並含文字在框內置中（R6 取最小解讀，留言時說明）。**
+
+### #26 — slider knob mold：數字輸入框改 inline 樣式
+
+- **解讀（R6，取最小）：** 比照框架的 inplace 輸入框（`input.css:201-210`：靜止時底色與邊框透明；ZK 在 focus 時移除 inplace class，回到一般輸入框外觀）。靜止時：無底色、無邊框、文字樣式不變；聚焦時：出現一般輸入框的聚焦外觀，讓使用者知道在編輯。
+- **判定 J26-1（今天必須失敗）：** `slider.zul` 的 knob（`.z-slider-input`），靜止（未聚焦）時：輸入框矩形內部取樣（避開文字）與其外側緊鄰的背景色 ΔE ≤ 2；輸入框外緣一圈（1px）與外側背景 ΔE ≤ 2（沒有可見邊框）。
+- **判定 J26-2：** 聚焦時：輸入框出現可見的聚焦指示，其顏色與一般 textbox 聚焦環的顏色一致（ΔE ≤ 3，比較 `z-textbox` 在同頁或相鄰預覽頁上聚焦時的環色），且與緊鄰背景對比 ≥ 3:1。**今天這項若已通過，記為保護項；若今天沒有聚焦指示，記錄後把「聚焦時回到一般輸入框外觀」列入修法。**
+- **保護項：** 文字樣式不變（`color`、`font-weight`、`font-size`、`text-align`、`font-family` 計算值相同）；輸入框的位置與大小不變（±0px）；輸入數字後 Enter，knob 弧線與值更新（行為不變，用 curpos 或弧線像素判斷）；forced-colors 下輸入框仍可辨認（既有 forced-colors 套件通過）。
+
+### #27 — rating：停用或唯讀時游標為 default
+
+- **判定 J27-1（今天必須失敗）：** `rating.zul` 上每個 `readonly` 與每個 `disabled` 的 rating（水平與垂直都含）：星星中心、星星之間的間隙、外層 `.z-rating` 的任一內部點，`elementFromPoint` 的 computed `cursor` 皆為 `default`（或 `auto`）。
+- **保護項：** (a) 可互動 rating 的星星中心游標 `pointer`（今天通過）。(b) 可互動 rating hover 時星星仍放大（`transform` scale）且已選星著色；readonly／disabled 不放大、不變色（`pointer-events: none` 行為不變）。(c) 點擊可互動 rating 仍會改變選取（行為不變）。(d) 星星間隙游標在可互動 rating 上**只記錄、不判定**（4px 熱區，Jess 沒有要求）。
+- **範圍：** 只動游標；不碰 `iconSclass` 相關規則（`b2aa291a03` 已處理）。
+
+### 回歸範圍
+
+- Playwright 回歸套件：component-theming、forced-colors、chromium、tablet、hit-target、focus-scan。**已知既有失敗** `slider-tablet`、`calendar-tablet`（D42-A）不處理，仍須與今天相同的原因失敗。
+- baseline 預期變動：`combobutton-gallery`、`slider-gallery`（knob、提示若在 gallery 內）、`rating-gallery`（游標不影響像素，預期**不變**）；`multislider`／`rangeslider` gallery 在靜止狀態預期不變。**任何預期之外的 baseline 變動都要歸因。**
+- 8085 是共用資源：回歸前在證據報告首行宣告使用中。
+
+### 第六批 RED run 結果與方法定稿（2026-10-08）
+
+報告：[gates/batch6-red.md](gates/batch6-red.md)；證據 `gates/batch6-red/`。結論 `RED6: METHOD-DEFECTS`，下列修正由 Planner 裁定，**定稿後不再改**（取代上文對應措辭）。
+
+**今天的實測（判定今天失敗＝RED-correct）：** #18 J18-1/2/3 失敗（hover 箭頭時亮的是標籤，filled 標籤 ΔE 6.88、箭頭 0；按住時標籤 10.37）；#19 失敗（箭頭 196 vs 標籤 224，ΔE 10.02，原因：`--zk-color-disabled-container` = `#0000001f` 半透明，content 與 button 各塗一層，button 疊在 content 上）；#24 J24-1/2/3 失敗（不會動的點 73–99% 全是 `pointer`；hover 單顆時所有 thumb 的環帶都亮 ΔE 5.0–5.5）；#26 J26-1 失敗；#27 J27-1 失敗（11 顆 rating 中 4 顆 readonly／disabled 全部 `pointer`，命中的是外層 `.z-rating`）。plain slider 整框 198/198 點都會動、hover 只亮單顆 → 不改。
+
+**方法修正：**
+1. **#18：** 保護項 (a)(b) 限定 filled。**新增判定 J18-4（今天必須失敗）：** toolbar mold，滑鼠停在標籤（及在標籤上按住）時，箭頭環帶 ΔE ≤ 1（今天 3.99／5.98）；J18-2 維持。
+2. **#19：** J19-2 改為保護項（停用 toolbar 兩段仍同色，今天 ΔE 0，不得變）。判定只剩 J19-1。
+3. **#22：** 寬度判定（J22-1 寬度、J22-2）今天全數通過 → **已涵蓋，不改程式碼**。顏色門檻改 ≤ 3（半透明邊框疊在不同底色上，ΔE 2.16／2.45 是必然）。停用 textbox 邊框較淡（ΔE 14）不在 Jess 截圖內，也不是「寬度」問題 → 記進 follow-up，不在本批。
+4. **#24：** 「thumb 上」定義為距 thumb 中心 ≤ 10px（圓形，不用 rect）；格點區域 = root ∪ track；另加每個 mark label 與 mark dot 的中心（會動的點，游標可 `pointer`）。**新增保護項：** 今天「會動」的點（`z-sliderbuttons-area`、track、mark 元素）修正後游標仍是 `pointer`；停用 widget 的游標代理值維持 `auto`（元素是外層 div）。範圍說明：本批只調整 CSS 游標與 hover 環的範圍，**不把裸軌道變成可點**（那是 widget JS 的行為）。
+5. **#25：** J25-3 改為保護項（今天文字已置中）。J25-1／J25-2 的做法見下一點。**結構性發現：** 提示框是 `body` 下的 `#zul_slidetip.z-slider-popup`，只有這個 class（加上使用者 sclass），**沒有方向 class**，所以 CSS 分不出水平或垂直 slider；水平需要 `translateX(calc(-50% + 10px))`，垂直需要 `translateY(-4px)`，同一條規則會讓另一個方向更歪。純 CSS 做不到 → 例外第 3 項（要動 `Slider.ts`），**本批 #25 暫停，不交 Generator，其餘照常**；選項在批末議題頁。
+6. **#26：** J26-2 定為判定（今天失敗）：聚焦時輸入框外框 = 一般 textbox 聚焦環（`2px solid --zk-color-primary`，ΔE ≤ 3），不得使用瀏覽器預設 outline；且輸入框矩形與文字位置在 rest／focus 之間不位移（±0px）。J26-1 維持。
+7. **#27：** 維持原判定。可互動星星間隙的游標記錄為 `pointer`（今天），修正後可以是 `default`，不判定。
+
+### 第六批最終判定後的方法更正（2026-10-08，Planner 的錯誤，已揭露）
+
+[gates/batch6-final.md](gates/batch6-final.md)：`GATE6-FINAL` 以字面值判為 FAIL，唯一未過的是 **J18-3 與 J18-4 的「按住」部分**（按住箭頭時標籤 10.37；按住標籤時 toolbar 箭頭 5.98）。這兩個數字在按住中 `blur()` 後變成 0，來源是 `:focus-within` 狀態層（滑鼠按下就取得焦點），不是 `:active`。
+- **錯在方法：** RED run 時修正前 `:active` 與 focus 兩層都是 10.37，無法分辨，我誤寫成「來自 `:active`、修後可達成 ≤ 1」。而焦點狀態是 R6 明寫「不動」、保護項 (c) 要求維持的，所以純 CSS 下字面值不可能達到。不是 Generator 沒做到。
+- **更正：** J18-3 與 J18-4 的按住部分，以**排除焦點層（按住中 blur 探針）**的值判定。依 Verifier 的數據：按住箭頭 → 箭頭 9.74／標籤 0；按住標籤 → toolbar 箭頭 0，皆符合。**這是定稿後的改動，原因是原方法對 `:focus-within` 的推論有誤，不是為了配合修法調整門檻；修法與判定值都沒變。**
+- **未處理（follow-up）：** 按住時焦點層會讓整個標籤亮（hover 的同類現象，Jess 沒寫），若要消除需改焦點規則（例如只在 `:focus-visible` 顯示）。
+
+### #25 更正與定稿（2026-10-08，使用者指出可由 slider 根元素的方向 class 判定）
+
+**更正：** 上文「提示框沒有方向 class、純 CSS 做不到、列為例外第 3 項」不成立。提示框雖在 `body` 下，拖曳時按住的 thumb 是 `:active`，其祖先 slider 帶 `z-slider-horizontal`／`z-slider-vertical`，所以 `body:has(.z-slider-horizontal .z-slider-button:active)` 能判定方向。實測（8085，真實拖曳）：水平拖曳時 horizontal 條件成立、vertical 不成立，垂直相反，提示框都存在。**不需要改 `Slider.ts`，議題 D50 的議題頁作廢。**
+**範圍：** 只改 `slider.css` 的 `.z-slider-popup`（提示框定位偏移）。plain slider 的 thumb、軌道不動。
+**判定（沿用上文 J25-1／J25-2，RED 已量過今天失敗）：** J25-1 水平提示框中心與 thumb 中心水平差 ≤ 1px（文字「5」「50」「100」各量，default／sphere／scale 三種 mold）；J25-2 垂直提示框中心與 thumb 中心垂直差 ≤ 1px（default／sphere）。
+**保護項：** 文字在框內置中（J25-3，今天通過）；提示框與 thumb 不重疊；仍在 viewport 內；隨 thumb 跟隨；放開後 `#zul_slidetip` 不存在；顏色／字級不變；plain slider 以外的 widget 的 `.z-slider-popup` 沒有被誤套（頁面上沒有拖曳時不受影響）。
+**RED：** 不重跑。#25 的 RED 數字（批次 6 RED 報告）在 `.z-slider-popup` 規則未動的情況下仍有效；#26 對 `slider.css` 的修改只涉及 `.z-slider-input`。

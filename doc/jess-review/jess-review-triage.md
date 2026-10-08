@@ -29,7 +29,7 @@ not closed any of the 6 fixed issues yet.
 
 ## Status board
 
-**Last updated 2026-10-07.** 25 of 82 fixed and awaiting the designer to close (batches 1–5, see table).
+**Last updated 2026-10-08.** 32 of 82 fixed and awaiting the designer to close (batches 1–6, see table).
 
 | State | Issues | Count |
 |---|---|---|
@@ -39,7 +39,8 @@ not closed any of the 6 fixed issues yet.
 | Fixed and verified in `zk` (batch 3, grid; Fable gate PASS), committed `2efcdc65c9` `c333a2912d` `8770af7a09` `0a8d008bda`, baselines regenerated, commented 2026-10-07, awaiting the designer to close | #34 (DEMO, Hawk edited `grid.zul`), #35, #36, #37 (CSS part; widget part → ZK Jira), #38, #39 — [gates/batch3-final-r2.md](gates/batch3-final-r2.md) | 6 |
 | Fixed and verified in `zk` (batch 4, biglistbox scrollbar; Fable gate PASS, pure CSS), committed `8b62f5a7d` (zkcml) `42fec29a7f` `0265f71509`, commented 2026-10-07 ([gates/batch4-comments.md](gates/batch4-comments.md)), awaiting the designer to close | #31, #78 — [gates/batch4-final.md](gates/batch4-final.md) | 2 |
 | Fixed and verified in `zk` (batch 5, cascader/chosenbox/combobox; Fable gate PASS, pure CSS), committed 2026-10-07, commented 2026-10-07 with after-fix screenshots | #8 (single column), #12, #13, #16, #17 (selection highlight only, D48-A; text stays copyable) — [gates/batch5-final.md](gates/batch5-final.md) | 5 |
-| Classified, in scope, not yet started | P1 (33) + DECIDE (4) | 37 |
+| Fixed and verified in `zk` (batch 6, combobutton/slider family/rating; Fable gate, pure CSS), committed 2026-10-08 (`47012fa5b` zkcml; `a5c6584873` zk), commented 2026-10-08 with after-fix screenshots ([gates/batch6-comments.md](gates/batch6-comments.md)), awaiting the designer to close | #18, #19, #24 (multislider + rangeslider), #25 (committed `3f9cc1484f`, tooltip centred via `:has()` on the pressed thumb, gate 6B PASS), #26, #27; **#22 already covered by `29b6d0629e`** (re-measured, no code change) — [gates/batch6-final.md](gates/batch6-final.md). Gate note: the pressed-state part of J18-3/J18-4 was judged with the focus layer excluded (Planner method error, disclosed in the verification plan) | 7 |
+| Classified, in scope, not yet started | P1 (26) + DECIDE (4) | 30 |
 | Classified, deferred out of scope | see [jess-review-deferred.md](jess-review-deferred.md) | 26 |
 
 **Resume here:** the verified P1 quick wins (#41 #43 #52 #65 #67) — all located to an exact
