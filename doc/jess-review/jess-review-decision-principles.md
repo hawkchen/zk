@@ -117,6 +117,13 @@
 | D44-A–D47-A | 第 5 批範圍與做法 | 5 |
 | D48-A | 唯讀 combobox 只要沒有選取反白 | 5 |
 | D49-A | 重生 chosenbox 三張 baseline、逐路徑提交 | 5 |
+| D50（撤回） | #25 一度判為「純 CSS 做不到」；使用者指出可由 slider 根元素的方向 class 判定，改用 `body:has(.z-slider-horizontal .z-slider-button:active)`，純 CSS 完成 | 6 |
+
+### 第六批學到的做法
+
+- 宣稱「純 CSS 做不到」之前，先查祖先或兄弟元素有沒有可判定的 class／狀態，並試 `:has()` 搭配 `:active`、`:hover`、`:focus-within`。
+- RED run 要能分辨同時作用的狀態層（例如 `:active` 與 `:focus-within`），否則判定值會被混在一起；量按住狀態時加一次 blur 探針。
+- 提示框、彈出層若掛在 `body` 下，用拖曳或開啟中的來源元素狀態反推方向。
 
 ## 八、尚未驗證的事
 
