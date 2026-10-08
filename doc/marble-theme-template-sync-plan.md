@@ -107,3 +107,41 @@ Job。
   跟這次同步計畫無關，執行時只會動到 `marble` 這一支。
 - 如果之後 `marble` 的開發改成直接在 `zkoss/zk` 進行（或透過 PR 合併進去），`ZKTHEMETEMPLATE_DEPLOY_KEY`
   這組 Secret 需要跟著搬到 `zkoss/zk`，並考慮要不要把現在掛在 `hawkchen/zk` 上的那把 Deploy Key 收回。
+
+## 附錄：zkcml（EE）CSS 同步（2026-10-08）
+
+### 決議
+- **D1（已決：選項 B）：** 以 zkcml 為準直接覆蓋 `zkThemeTemplate` 內的 zkmax / zkex CSS，不逐檔分類差異來源。
+- **D2（已決：選項 A）：** 在 zkcml 新增獨立的 `.github/workflows/sync-marble-theme.yml`，與 zk 那份對稱。
+
+### 範圍
+| zkcml repo | zkThemeTemplate repo |
+|---|---|
+| `zkmax/src/main/resources/web/js/zkmax/*/css/**` | `src/main/resources/web/js/zkmax/*/css/**` |
+| `zkmax/src/main/resources/web/zkmax/css/**`（tablet） | `src/main/resources/web/zkmax/css/**` |
+| `zkex/src/main/resources/web/js/zkex/*/css/**` | `src/main/resources/web/js/zkex/*/css/**` |
+
+### 圖片與字型（2026-10-08 追加，兩個 repo 都要同步）
+| 來源 | zkThemeTemplate |
+|---|---|
+| zk `zul/src/main/resources/web/zul/img/marble/**`（27 個 svg） | `src/main/resources/web/zul/img/marble/**` |
+| zkcml `zkmax/.../web/zkmax/img/marble/**`（9 個） | `src/main/resources/web/zkmax/img/marble/**` |
+| zkcml `zkex/.../web/zkex/img/marble/**`（5 個） | `src/main/resources/web/zkex/img/marble/**` |
+
+字型（Inter woff2）不在 git，是 `scripts/build-css.js` 在 build 時從 npm 複製的產物，決議（2026-10-08）不同步。
+同時修正舊 workflow 的一個缺陷：原本用 `git diff --quiet` 判斷有無變動，看不到「新增」的檔案，改成先 `git add -A` 再比 `--cached`。
+zk 的 workflow 也補上 push 前 `pull --rebase` 重試。
+
+### 首次同步會改動的檔案（rsync dry-run，共 12 個）
+zkmax：`grid`、`cascader`、`chosenbox`、`searchbox`、`biglistbox`、`signature`、`splitlayout`、`goldenlayout`、`daterangebox`，另新增 `scrollview.css`；
+zkex：`colorbox.css`，另新增 `wgt/css/skeleton.css`。tablet 目錄已一致。
+
+### 實作狀態
+- [x] `zkcml/.github/workflows/sync-marble-theme.yml` 已寫好（YAML 語法已驗證，尚未實際執行、尚未 commit）。
+- [ ] 一次性 baseline：把上述 12 個檔案同步到 template `marble`（需 template 寫入權限）。
+- [ ] 建立 deploy key（`zk/scripts/setup-zkcml-deploy-key.sh`，由有 zkThemeTemplate admin 權限的人執行），並存為 `hawkchen/zkcml`（zkcml 目前 remote 是 `hawkchen`）的 Secret `ZKTHEMETEMPLATE_DEPLOY_KEY`。
+      GitHub 不允許同一把 key 掛在多個 repo，所以必須是新的 key pair，不能沿用 zk 那把。
+- [ ] 驗證：在 zkcml `marble` push 一個 CSS 變動，確認 template 收到對應 commit。
+
+### 風險
+- zk 與 zkcml 兩個 workflow 會推同一個分支，路徑互不重疊；workflow 的 push 步驟已加 `pull --rebase` 重試（最多 3 次）。
