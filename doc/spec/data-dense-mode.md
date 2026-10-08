@@ -66,18 +66,23 @@ MarbleDensity.apply(myGridPanel, MarbleDensity.Density.COMPACT);   // one region
 **One region** — set it on any container; it nests and a closer descendant can override
 it back to `comfortable`:
 
-```html
-<vlayout data-density="compact"> … a dense grid … </vlayout>
+```xml
+<zk xmlns:ca="client/attribute">
+    <vlayout ca:data-density="compact"> … a dense grid … </vlayout>
+</zk>
 ```
+
+In ZUL the attribute must go through the `client/attribute` namespace (`ca:`). A plain
+`data-density="compact"` on a component fails with `PropertyNotFoundException`, because it is
+not a component property.
 
 For a fixed whole-app *default*, prefer the library property (or the attribute in your
 page template) over the Java call — the latter runs after first paint and can briefly
 flash. See the FOUC note in MarbleDensity's Javadoc.
 
 **Tuning the values** — the shipped compact values (below) are a balanced starting point.
-To change them, copy `marble-compact.css` (a retired example file) — it targets
-`html[data-density="compact"]`, one notch more specific than the shipped rule, so it wins
-regardless of load order — and edit any value.
+To change them, write your own `html[data-density="compact"]` rule — one notch more specific
+than the shipped rule, so it wins regardless of load order — and set any token from the table below.
 
 ## The full knob set
 
@@ -177,7 +182,7 @@ headers, FAB) stayed frozen.
 
 1. **Override on the element that declares the alias** — i.e. `:root` / `<html>` itself.
    Rung override and alias declaration share an element, so the alias re-substitutes.
-   This is why `marble-compact.css` (a retired example file) (a `:root`/`html` rule) works,
+   This is why a `:root`/`html` rule works,
    and why the demo only behaved once the class moved to `document.documentElement`.
    **Limit: whole-app only — it cannot scope to a region.**
 
