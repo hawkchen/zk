@@ -488,3 +488,7 @@ unless you say otherwise.
 #1–#75, #78, #82 minus the five above. The earlier attempt to triage all 82 in
 parallel background agents was lost when the agents were interrupted mid-flight;
 triage now runs in the foreground, in batches, so conversation does not destroy it.
+
+---
+
+**Decision principles and per-batch process (2026-10-08):** [jess-review-decision-principles.md](jess-review-decision-principles.md). Remaining P1 batches are run end to end under it; the user is asked only for the exceptions listed in its section 5.
