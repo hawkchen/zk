@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
 
@@ -62,6 +64,46 @@ public class B110_ZK_6112Test extends WebDriverTestCase {
 		} finally {
 			Library.setProperty(BROWSER_DEFAULT, null);
 		}
+	}
+
+	@Test
+	public void testFontFaceWithoutDsp() {
+		connect();
+		waitResponse();
+		String wcs = getEval("(function () { var x = new XMLHttpRequest();"
+				+ " x.open('GET', document.querySelector('head > link[href*=\"/zul/css/zk.wcs\"]').href, false);"
+				+ " x.send(); return x.responseText; })()");
+		assertFalse(wcs.contains("${"), "zk.wcs carries no DSP expression");
+		assertFalse(wcs.contains("~./"), "every ~./ url is encoded");
+		Matcher m = Pattern.compile("@font-face\\{[^}]*src:url\\(\"([^\"]*/zul/font/inter-latin-variable\\.woff2)\"\\)")
+				.matcher(wcs);
+		assertTrue(m.find(), "zk.wcs declares the Inter @font-face with an encoded url");
+		String status = getEval("(function () { var x = new XMLHttpRequest(); x.open('GET', '" + m.group(1)
+				+ "', false); x.send(); return String(x.status); })()");
+		assertTrue("200".equals(status), "the encoded font url is served: " + m.group(1) + " -> " + status);
+		assertNoAnyError();
+	}
+
+	@Test
+	public void testImagesServedByUrl() {
+		connect();
+		waitResponse();
+		String wcs = getEval("(function () { var x = new XMLHttpRequest();"
+				+ " x.open('GET', document.querySelector('head > link[href*=\"/zul/css/zk.wcs\"]').href, false);"
+				+ " x.send(); return x.responseText; })()");
+		assertFalse(wcs.contains("data:image"), "no image is inlined as a data URI");
+		assertFalse(wcs.contains("~./"), "every ~./ url is encoded");
+		// one image each of zul, the Lucide icon set, zkex and zkmax: every url(~./...) of the plain CSS is encoded
+		for (String file : new String[] { "zul/img/marble/checkmark.svg", "zul/img/icons/check.svg",
+				"zkex/img/marble/colorbox-icon.svg", "zkmax/img/marble/gl-x.svg" }) {
+			String pattern = "url\\(\"([^\"]*/" + Pattern.quote(file) + ")\"\\)";
+			Matcher m = Pattern.compile(pattern).matcher(wcs);
+			assertTrue(m.find(), "zk.wcs holds an encoded url for " + pattern);
+			String status = getEval("(function () { var x = new XMLHttpRequest(); x.open('GET', '" + m.group(1)
+					+ "', false); x.send(); return String(x.status); })()");
+			assertTrue("200".equals(status), "the image is served: " + m.group(1) + " -> " + status);
+		}
+		assertNoAnyError();
 	}
 
 	private static List<String> stylesheetHrefs() {

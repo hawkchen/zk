@@ -65,9 +65,6 @@ function belongsToModule(relPath, mod) {
     return relPath.startsWith(`js/${mod}/`) || relPath.startsWith(`${mod}/`);
 }
 
-// DSP taglib directive enabling ${c:encodeURL(...)} in a .css.dsp (the `c` prefix).
-// Required by norm.css.dsp's self-hosted-font @font-face; mirrors ZK's font DSPs.
-const DSP_CORE_TAGLIB = '<%@ taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" %>';
 
 // Dev builds (watch / build:css:dev) stay unminified so hot-swapped CSS is
 // readable in DevTools; the packaged build (build:css) is minified.
@@ -90,13 +87,6 @@ const emitDocs = process.argv.includes('--emit-docs');
 // No `targets` is set on purpose: this theme is modern-browsers-only, so nothing should be
 // downlevelled. Adding targets would start rewriting output and is a separate decision.
 
-// DSP EL (`${c:encodeURL("~./marble/font/x.woff2")}`) is not valid CSS. CleanCSS merely
-// tolerated it; Lightning CSS's parser rejects the file outright ("Unexpected end of
-// input"). Mask each expression with an inert identifier before parsing and restore it
-// afterwards. Two sites today, both inside url() in tokens/_fonts.css.
-const DSP_EL_RE = /\$\{[^}]*\}/g;
-const DSP_EL_MASK_RE = /ZKDSPEL(\d+)ZZ/g;
-
 // A number carrying 7+ significant digits is silently ROUNDED TO 6 when it sits inside a
 // custom property. Real properties are parsed as typed values and keep full precision
 // (`z-index:9999999` survives); a custom property is an untyped token stream, and Lightning
@@ -108,7 +98,7 @@ const DSP_EL_MASK_RE = /ZKDSPEL(\d+)ZZ/g;
 // copied from ZK core's own theme CSS — see doc/zindex-audit.md), which shipped as
 // 10000000 and broke the zindex project's computed-style assertion.
 // Mask those tokens with an inert identifier — legal anywhere in a custom property's token
-// stream — and restore them verbatim afterwards, exactly as the DSP EL above is handled.
+// stream — and restore them verbatim afterwards.
 const CUSTOM_PROP_DECL_RE = /(--[\w-]+\s*:)([^;}]*)/g;
 const NUM_TOKEN_RE = /\d*\.?\d+(?:[eE][+-]?\d+)?/g;
 const LONG_NUM_MASK_RE = /ZKNUM(\d+)ZZ/g;
@@ -125,12 +115,8 @@ function maskLongNumbers(css, store) {
 
 function minifyCss(css) {
     if (isDev || !css) return css;
-    const els = [];
     const nums = [];
-    const masked = maskLongNumbers(
-        css.replace(DSP_EL_RE, (m) => `ZKDSPEL${els.push(m) - 1}ZZ`),
-        nums,
-    );
+    const masked = maskLongNumbers(css, nums);
     let code;
     try {
         const res = lightningTransform({
@@ -150,8 +136,7 @@ function minifyCss(css) {
         return css;
     }
     return code
-        .replace(LONG_NUM_MASK_RE, (_, i) => nums[Number(i)])
-        .replace(DSP_EL_MASK_RE, (_, i) => els[Number(i)]);
+        .replace(LONG_NUM_MASK_RE, (_, i) => nums[Number(i)]);
 }
 
 // Guard: component/base CSS self-declares its cascade layer IN SOURCE (readability +
@@ -499,25 +484,34 @@ const CUSTOM_ICONS = {
     'exclamation': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="6" y2="12"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>',
 };
 
+// Each icon is written as its own .svg file under zul/img/icons/ and referenced by a ~./ URL, so a
+// page downloads only the icons it uses. WcsExtendlet encodes every url(~./...) in the zk.wcs
+// response, so the rules stay plain CSS.
+function writeIconFile(name, svg) {
+    const fullPath = path.join(themeDir, 'zul/img/icons', name + '.svg');
+    fs.mkdirSync(path.dirname(fullPath), { recursive: true });
+    fs.writeFileSync(fullPath, svg + '\n');
+    return `url(~./zul/img/icons/${name}.svg)`;
+}
+
 function generateLucideIconsCSS(iconNames) {
     const iconsDir = path.join(ZK_ROOT, 'node_modules/lucide-static/icons');
-    const iconMap = {};
+    const iconUrl = {};
     let css = '/* Lucide icon classes — auto-generated from lucide-static; class name = z-icon-{lucide-name} */\n';
     for (const name of iconNames) {
         const svg = fs.readFileSync(path.join(iconsDir, name + '.svg'), 'utf8');
-        const encoded = encodeSvgForCss(minifySvg(svg));
-        iconMap[name] = encoded;
-        css += `.z-icon-${name}{--_icon:url("data:image/svg+xml,${encoded}")}\n`;
+        iconUrl[name] = writeIconFile(name, minifySvg(svg));
+        css += `.z-icon-${name}{--_icon:${iconUrl[name]}}\n`;
     }
     css += '/* FA → Lucide aliases: ZK widget JS emits FA class names; redirect to Lucide SVG */\n';
     for (const [fa, lucide] of Object.entries(FA_TO_LUCIDE)) {
-        if (iconMap[lucide]) {
-            css += `.z-icon-${fa}{--_icon:url("data:image/svg+xml,${iconMap[lucide]}")}\n`;
+        if (iconUrl[lucide]) {
+            css += `.z-icon-${fa}{--_icon:${iconUrl[lucide]}}\n`;
         }
     }
     css += '/* Custom glyphs: bare FA class names ZK emits that Lucide has no equivalent for */\n';
     for (const [name, svg] of Object.entries(CUSTOM_ICONS)) {
-        css += `.z-icon-${name}{--_icon:url("data:image/svg+xml,${encodeSvgForCss(minifySvg(svg))}")}\n`;
+        css += `.z-icon-${name}{--_icon:${writeIconFile(name, minifySvg(svg))}}\n`;
     }
     // Generated, so this code emits its own layer block: these .z-icon-* rules belong in zk-base
     // alongside _icons.css (components override them).
@@ -606,7 +600,7 @@ function writeDsp(relativePath, content) {
 
 // Write content verbatim (no minify pass). Used for CSS the build has already minified and
 // then wrapped in an at-rule, or that carries a non-CSS DSP directive — see toEmbedReset
-// and the norm.css.dsp taglib prepend.
+// and the norm.css.dsp layer-order prepend.
 function writeRaw(relativePath, content) {
     const fullPath = path.join(themeDir, relativePath);
     fs.mkdirSync(path.dirname(fullPath), { recursive: true });
@@ -745,13 +739,8 @@ function build() {
         }
         // Lucide icon CSS is generated, so the generator emits its own @layer zk-base block.
         normCSS += generateLucideIconsCSS(lucideIcons);
-        // norm.css.dsp uses ${c:encodeURL(...)} in _fonts.css's @font-face (self-hosted
-        // Inter). The DSP `c` taglib must be declared at the top of the file or the parser
-        // throws "Function 'c:encodeURL' not found" and drops the rule — same directive ZK's
-        // own font-awesome.css.dsp carries. Prepend it AFTER minify so the minifier never sees
-        // the non-CSS <%@ ... %> directive. Written raw for the same reason.
-        writeRaw('zul/css/norm.css.dsp', DSP_CORE_TAGLIB + minifyCss(normCSS));
-        console.log(`  zul/css/norm.css.dsp (${lucideIcons.length} Lucide icons)`);
+        writeRaw('zul/css/norm.css.dsp', minifyCss(normCSS));
+        console.log(`  zul/css/norm.css.dsp + zul/img/icons/ (${lucideIcons.length} Lucide icons, one .svg each)`);
 
         // 1a. Build the two reset variants (served separately, ahead of norm — see getThemeURIs)
         buildResetVariants();
