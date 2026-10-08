@@ -16,7 +16,7 @@
 | 線 | 批次 | issue | 預計動到的檔案（開工前由該線 Planner 核對後填入第五節） |
 |---|---|---|---|
 | **A** | 7 | #29 selectbox、#3 bandbox | `zul/.../inp/css/` 的 selectbox、bandbox |
-| **A** | 8 | #48 #49 menubar、#51 navbar | `zkcml` 的 menubar、navbar（待確認路徑） |
+| **A** | 8 | #48 #49 menubar、#51 navbar | menubar 在 `zul/.../menu/css/menu.css`，navbar 在 `zkcml/zkmax/.../nav/css/nav.css` |
 | **B** | 9 | #72 #73 #74 messagebox、#66 runtime-error、#71 loading、#1 errorbox | `zul/.../wgt/css/` 與 `zul/.../utl/css/` 附近 |
 | **B** | 10 | #4 button、#6 calendar、#40 label、#47 fisheyebar、#61 portallayout | 各自的元件 CSS；#47、#61 在 `zkcml` |
 | 之後 | 11+ | C 類容器（#53 #54 #55 #57）、F 類 DECIDE（#30 #10 #68 #11） | 兩條線有空檔再分；F 類每個都要使用者裁示 |
@@ -63,8 +63,8 @@
 
 | 線 | 批次 | 檔案（開工時填） |
 |---|---|---|
-| A | 7 | （待填） |
-| A | 8 | （待填） |
+| A | 7 | `zul/.../wgt/css/selectbox.css`、`zul/.../sel/css/listbox.css`（D53-A）、`zkpreview/doc/screenshots/selectbox-{gallery,hover,focus}.png`（已完成並提交） |
+| A | 8 | `zul/.../menu/css/menu.css`（menubar 在 zul，不在 zkcml）、`zkcml/zkmax/.../nav/css/nav.css`（已完成並提交） |
 | B | 9 | （待填） |
 | B | 10 | （待填） |
 

@@ -29,7 +29,7 @@ not closed any of the 6 fixed issues yet.
 
 ## Status board
 
-**Last updated 2026-10-08.** 32 of 82 fixed and awaiting the designer to close (batches 1–6, see table).
+**Last updated 2026-10-08 (A-line merge).** 37 of 82 fixed on `marble` and awaiting the designer to close (batches 1–8, see table). **Line B (`jess/line-b`, batches 9–10) is not merged yet:** #1, #73 and #74 already carry a `# Root cause` comment in the tracker (posted before the merge, contrary to parallel-lines §7 step 5) but their commits are still on the branch, so they are not counted here. The tracker lists 40 commented issues = 37 + those 3.
 
 | State | Issues | Count |
 |---|---|---|
@@ -40,7 +40,9 @@ not closed any of the 6 fixed issues yet.
 | Fixed and verified in `zk` (batch 4, biglistbox scrollbar; Fable gate PASS, pure CSS), committed `8b62f5a7d` (zkcml) `42fec29a7f` `0265f71509`, commented 2026-10-07 ([gates/batch4-comments.md](gates/batch4-comments.md)), awaiting the designer to close | #31, #78 — [gates/batch4-final.md](gates/batch4-final.md) | 2 |
 | Fixed and verified in `zk` (batch 5, cascader/chosenbox/combobox; Fable gate PASS, pure CSS), committed 2026-10-07, commented 2026-10-07 with after-fix screenshots | #8 (single column), #12, #13, #16, #17 (selection highlight only, D48-A; text stays copyable) — [gates/batch5-final.md](gates/batch5-final.md) | 5 |
 | Fixed and verified in `zk` (batch 6, combobutton/slider family/rating; Fable gate, pure CSS), committed 2026-10-08 (`47012fa5b` zkcml; `a5c6584873` zk), commented 2026-10-08 with after-fix screenshots ([gates/batch6-comments.md](gates/batch6-comments.md)), awaiting the designer to close | #18, #19, #24 (multislider + rangeslider), #25 (committed `3f9cc1484f`, tooltip centred via `:has()` on the pressed thumb, gate 6B PASS), #26, #27; **#22 already covered by `29b6d0629e`** (re-measured, no code change) — [gates/batch6-final.md](gates/batch6-final.md). Gate note: the pressed-state part of J18-3/J18-4 was judged with the focus layer excluded (Planner method error, disclosed in the verification plan) | 7 |
-| Classified, in scope, not yet started | P1 (26) + DECIDE (4) | 30 |
+| Fixed and verified in `zk` (batch 7, selectbox/bandbox-listbox; Fable gate PASS after one forced-colors fix round, pure CSS), committed 2026-10-08 (`c86505884b`), commented 2026-10-08 with after-fix screenshots ([gates/batch7-comments.md](gates/batch7-comments.md)), awaiting the designer to close | #29 (chevron 8×5, D52-A), #3 (`th.z-listhead-bar` now matches the header in every listbox, D53-A) — [gates/batch7-final-r2.md](gates/batch7-final-r2.md) | 2 |
+| Fixed and verified in `zk` (batch 8, menubar/navbar; Fable gate PASS, pure CSS), committed 2026-10-08 (`ae9e58ace` zkcml; `c86505884b` zk), commented 2026-10-08 ([gates/batch8-comments.md](gates/batch8-comments.md)), awaiting the designer to close | #48, #51; **#49 answered without a code change (D54-A: the reserved check column is deliberate, label shift 0px)** — [gates/batch8-final.md](gates/batch8-final.md) | 3 |
+| Classified, in scope, not yet started (line B has some of these in flight on `jess/line-b`: #1 #66 #71 #73 #74 and batch 10 (#4 #6 #40 …)) | P1 (21) + DECIDE (4) | 25 |
 | Classified, deferred out of scope | see [jess-review-deferred.md](jess-review-deferred.md) | 26 |
 
 **Resume here:** the verified P1 quick wins (#41 #43 #52 #65 #67) — all located to an exact

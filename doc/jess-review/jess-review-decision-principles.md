@@ -38,6 +38,9 @@
 | 通知、toast | 不要左側色條；圖示用 `on-*-container` | 第 1 批 |
 | hover 底色 | 同一元件內每一列相同，不受奇偶條紋影響 | #38 |
 | 不可點的地方 | 預設游標，不用 pointer／move | #36、#65、#67 |
+| 下拉箭頭（selectbox、combobox、bandbox） | 同一個 chevron-down 遮罩，ink 約 8×5，右緣距約 12px；forced-colors 下用 `CanvasText` | D52-A（#29） |
+| 巢狀導覽（navbar）縮排 | 每層 +26px，縮排放在內容元素的 `padding-left`，hover 狀態層仍滿寬 | #51 |
+| 清單／表頭的捲軸欄位 | 與表頭同色，不另上色 | D53-A（#3） |
 
 新處理一個元件時，把它的結論補進這張表。
 
@@ -118,12 +121,26 @@
 | D48-A | 唯讀 combobox 只要沒有選取反白 | 5 |
 | D49-A | 重生 chosenbox 三張 baseline、逐路徑提交 | 5 |
 | D50（撤回） | #25 一度判為「純 CSS 做不到」；使用者指出可由 slider 根元素的方向 class 判定，改用 `body:has(.z-slider-horizontal .z-slider-button:active)`，純 CSS 完成 | 6 |
+| D51 | 允許並行使用不同 port，條件是第二台預覽站從自己的 worktree 啟動 | 平行線（7） |
+| D52-A | #29 selectbox 箭頭改為同族 chevron 8×5，不用實心三角 | 7 |
+| D53-A | #3 修 `listbox.css`，所有 listbox 的捲軸欄位格與表頭同色 | 7 |
+| D54-A | #49 保留預留勾選欄，不改 CSS，留言說明並附前後截圖 | 8 |
+| D55-B | 重生 baseline 的 playwright 指令被權限檢查擋下，由使用者加權限規則後執行 | 7 |
 
 ### 第六批學到的做法
 
 - 宣稱「純 CSS 做不到」之前，先查祖先或兄弟元素有沒有可判定的 class／狀態，並試 `:has()` 搭配 `:active`、`:hover`、`:focus-within`。
 - RED run 要能分辨同時作用的狀態層（例如 `:active` 與 `:focus-within`），否則判定值會被混在一起；量按住狀態時加一次 blur 探針。
 - 提示框、彈出層若掛在 `body` 下，用拖曳或開啟中的來源元素狀態反推方向。
+
+### 第七、八批學到的做法
+
+- **RED run 的環境要像使用者的環境。** Playwright 預設 `--hide-scrollbars`，捲軸欄位寬度為 0，#3 的藍條畫不出來，gallery baseline 也看不到。量與捲軸有關的版面時要 `ignoreDefaultArgs:['--hide-scrollbars']`；這類缺陷目前沒有測試守著。
+- **改圖形時，順手檢查 forced-colors。** 用 `mask-image` 加 `background-color` 畫的圖示，在 forced-colors 下 background 會被強制成 Canvas 而消失；要補 `CanvasText`。第 7 批因此多跑一輪（`GATE7-FINAL` FAIL → R2 PASS）。
+- **尺寸比外框，不比 ink 面積。** 實心三角與空心 chevron 的面積不可比；判定改用 ink 外框的寬與高各 ±25%。圖示左緣受字形側邊距影響，對齊判定改量 ink 中心。
+- **「預留空間」不是缺陷。** #49 的空白是為了避免勾選時文字位移而刻意預留；先量「切換前後位移」，再決定要不要當缺陷處理。婉拒設計師的回報要使用者同意（D54-A）。
+- **巢狀結構本身就能判定層級。** #51 看板原本寫「需要 ZK 的深度 class」，實際用 `.z-nav > ul > .z-nav > ul` 的祖先選擇器即可，不必改 widget（延續第六批「先查祖先或兄弟」的教訓）。被搬到 `body` 的 popup 拿不到原本的 reset，要注意瀏覽器預設的 `list-style` 與 `padding`。
+- **實作者與量測者共用預覽站時，build 要排隊。** Generator 只改原始碼、不 build；等 Verifier 量完再 build 並重啟，否則量測中途換版。
 
 ## 八、尚未驗證的事
 
