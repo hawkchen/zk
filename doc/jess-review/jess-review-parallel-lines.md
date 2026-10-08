@@ -115,8 +115,18 @@
 
 ## 十、尚未驗證的事
 
-- worktree 結構下的 `npm ci`、CSS build（`node scripts/build-css.js`）與 `zkpreview` composite build 能否一次通過。
-- 8105 與 8085 同時跑時的記憶體與 gradle daemon 競爭（兩個 `appRun` 加兩個 Verifier）。
+- ~~worktree 結構下的 `npm ci`、CSS build（`node scripts/build-css.js`）與 `zkpreview` composite build 能否一次通過。~~ **B 線實測（2026-10-08）：能起來，但不是一次通過，要多兩步，已排除：**
+  - `npm ci`：`jess-b/zk`（8 秒）、`jess-b/zk/zkpreview`（1 秒）、`jess-b/zkcml`（5 秒）都通過。
+  - CSS build：`node scripts/build-css.js --module zul` 通過（0.9 秒）；zkmax、zkex 在 `jess-b/zkcml` 目錄下以 `node ../zk/scripts/build-css.js --module <m>` 通過。
+  - **坑 1：`zkpreview/gradlew` 在 git 裡是 `100644`，worktree 檢出後不可執行**（主目錄是手動 chmod 過的）。啟動指令改用 `bash ./gradlew`，不要 chmod（會讓 git 狀態變髒）。
+  - **坑 2：只編譯、沒打包 jar，`appRun` 會失敗。** 首次啟動 4 分 16 秒後，Jetty 起來了但 webapp 找不到 `jess-b/zk/zkplus/build/libs/zkplus-11.0.0-SNAPSHOT.jar`，所有頁面 404，gradle 回報 `appRun FAILED`。主目錄有這些 jar 是因為以前跑過完整 build。**第一次建立 worktree 後必須先打包：**
+    ```bash
+    cd ZK10/jess-b/zk    && withjdk.sh 17 bash ./gradlew jar -x test --console=plain   # 3 分 32 秒
+    cd ZK10/jess-b/zkcml && withjdk.sh 17 bash ./gradlew :zkex:jar :zkmax:jar :zuti:jar :za11y:jar -x test --console=plain   # 39 秒
+    ```
+  - 打包後啟動：`cd ZK10/jess-b/zk/zkpreview && tail -f /dev/null | withjdk.sh 17 bash ./gradlew appRun -PhttpPort=8105 --console=plain`，**31 秒**後 `/web/button.zul` 回 200。以 `lsof` 確認該 java 行程載入的是 `jess-b/zk/zul/build/libs/zul-…jar`（不是主目錄）。
+  - **每次改 CSS 的重建流程（B 線第 9 批實測）：** 在 `jess-b/zk` 跑 `node scripts/build-css.js --module zul`，再 `withjdk.sh 17 bash ./gradlew :zul:jar -x test --console=plain`（43 秒），然後重啟 8105（約 30 秒）。重啟後取 `zk.wcs` 內容確認含新規則（例：新增的 `order:1`）。zkcml 的 CSS 同理，改用 `:zkmax:jar`／`:zkex:jar`。**只重啟 8105，8085 不受影響**（重啟時兩台都仍回 200）。
+- 8105 與 8085 同時跑：兩台同時回 200（`messagebox.zul`、`fisheyebar.zul`）。當時機器 load average 約 100（許多 gradle／node 行程在跑），首次編譯因此較慢；穩態的記憶體與兩個 Verifier 同時量測的競爭**仍未驗證**。
 - `lines/` 結構合併時的人工作業量是否合理，若太高改回「兩線輪流追加、合併時解衝突」。
 
 ## 十一、開工用的起始指令（貼給各線 session）
