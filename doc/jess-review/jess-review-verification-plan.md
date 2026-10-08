@@ -1107,3 +1107,145 @@ baseline 預期變動：`selectbox-gallery`（箭頭）；`bandbox-gallery` 若�
 | 2026-10-08 | 第 7 批最終判定 `GATE7-FINAL: FAIL`（只差 #29 保護項 (f)：forced-colors 下新箭頭消失，原因是 mask 以 background-color 上色，forced-colors 會把它變成 Canvas）。修正：在 `selectbox.css` 內加 `@media (forced-colors: active)` 把 `::picker-icon` 設 `CanvasText`（與 combobox 的 `_forced-colors.css` (2e) 同法）。**未動共用檔 `tokens/_forced-colors.css`；合併時可考慮把這一條移進去（follow-up）。** 同時 build 第 8 批 CSS，重啟 8085，重跑第 7 批 forced-colors 項與第 8 批最終判定。 | gates/batch7-final.md |
 | 2026-10-08 | 第 7、8 批複驗通過（`GATE7-FINAL-R2: PASS`、`GATE8-FINAL: PASS`）；D55-B 後重生 selectbox 三張 baseline；提交 zkcml `ae9e58ace`、zk `c86505884b`、證據 `be097ba277`；五則 Jess 留言已貼（#29 #3 #48 #49 #51），截圖在追蹤 repo `screenshots/batch7/`、`batch8/` | gates/batch7-comments.md、gates/batch8-comments.md |
 
+## 第十一批：C 類容器（#53 tabbox accordion、#54 panel、#55 window、#57 borderlayout）
+
+建立日期：2026-10-08。決策編號從 **D56** 起（尚未使用）。議題頁標題加 `[A]`。證據 `gates/batch11-*`，截圖 `screenshots/batch11/`。
+
+### 環境與所有權（開工前核對，2026-10-08）
+
+- 工作樹：`zk` 有**不屬於本批**的未提交修改 `zul/.../sel/css/tree.css`（treecell align）與 `zul/.../wgt/css/button.css`（outlined／text 色彩變體的 `box-shadow`，看似 B 線 #4 的內容）；`zkcml` 有 `.gitignore`、`lib/spel2js/package-lock.json`、`zk85themebuilder/`。**都不在本批檔案內，不碰、不暫存**（逐路徑暫存）。B 線 worktree `ZK10/jess-b/zk` 在 `jess/line-b`，本批四個 issue 的檔案與 B 線批次 9、10 的清單（messagebox、runtime-error、loading、errorbox、button、calendar、label、fisheyebar、portallayout）沒有重疊。
+- 8085：java pid 77212 在聽；本 session 沒有 Verifier 在量，RED 前不需重啟（RED 先比對 `.css.dsp`／`zk.wcs` 確認伺服的是現行 build）。
+
+| 線 | 批次 | issue | 預計動到的檔案 |
+|---|---|---|---|
+| A | 11 | #53 tabbox accordion | `zul/src/main/resources/web/js/zul/tab/css/tabbox.css`（只動 `.z-tabbox-accordion` 區段） |
+| A | 11 | #54 panel | `zul/.../wnd/css/panel.css` |
+| A | 11 | #55 window | `zul/.../wnd/css/window.css`（`.z-window-move-ghost`） |
+| A | 11 | #57 borderlayout | **預覽頁** `zkpreview/src/main/webapp/web/borderlayout.zul`（見下：預測為 DEMO，不改 `borderlayout.css`） |
+
+四個都在 `zul`，**本批沒有 zkcml 檔案**。預覽頁屬於本線：`tabbox.zul`、`panel.zul`、`window.zul`、`borderlayout.zul`。共用檔案一律不動。
+
+### 已掌握的事實（開工前讀原始碼與 issue 原圖，RED 驗，不照單全收）
+
+- **#53：** 原圖（accordion 的 Tab1 標題）。`tabbox.css:576-590` accordion 的 `.z-tab` 用 `body-large` 字級＋`title-small` 字重、**沒設 line-height**；水平 mold 的 `.z-tab`（`:89-91`）用 `label-large` 的字級、字重、行高。Jess 的標題是「text & icon style looks very different from others」，內文只寫「Font-size & font-weight, etc.」。chevron 是用 `border-right/bottom` 畫的旋轉方塊（`:666-676`），不是同族的 chevron 遮罩（D52-A）。
+- **#54：** 原圖是同一頁並排 `border="rounded"`（紅框，無外框）與 `border="normal"`（有框）。**根因（原始碼）：** `Panel.ts:1026` `_bordered()` 對 `rounded` 回 false → `domClass_` 加 `z-panel-noborder`（`:1299`）；`panel.css:159-162` `.z-panel-noborder { border:none; box-shadow:none }`。`rounded` 同時沒有 `z-panel-noframe`（`:1307` 只在非 rounded 時加），所以 `.z-panel-noborder:not(.z-panel-noframe)` 剛好只選到 `rounded`／`rounded+`，與 `border="none"`（noborder＋noframe）分得開。看板「`panel.css:17` 其實有設 border」是對的，但被 `:159` 蓋掉（同為 class 選擇器，後寫者勝）。
+- **#55：** 原圖是 GIF（70 幀）。拖曳中 `Window.ts:50-77` 建 `#zk_wndghost.z-window-move-ghost`（內容只有空的 `<dl>` 與複製來的標題列），原視窗 `visibility:hidden`。`window.css:205-209` 對整個 ghost 設 `opacity:0.5`＋focus-ring outline，所以**複製的標題列也被淡成一半**，ghost 本身沒有底色，後面的頁面內容直接透出來。
+- **#57：** 原圖紅框是 North／South 的裸文字，藍框是 West／East／Center 有 padding。**預覽頁 `borderlayout.zul` 的 West／East／Center 內容都包了 `<div sclass="z-p-4">`，North／South 沒有**；`borderlayout.css` 的 `.z-north-body`／`.z-west-body` 都沒有 padding，頁首註解也寫明「ZK layout primitives have NO default padding by design」。預測屬 **DEMO（R5）**，不改 theme。預覽頁中 North／South 沒有任何貼邊 toolbar 的例子。
+
+### 共用量法
+
+- 頁面 `${PREVIEW_URL}/{tabbox,panel,window,borderlayout}.zul`，`PREVIEW_URL=http://localhost:8085`；viewport 1280×900；量之前注入 `*{transition:none!important;animation:none!important}` 並等 `document.fonts.ready`；每個狀態重新載入頁面。
+- 色塊與像素比較沿用慣例（平均色、ΔE ≥ 2 有變化、≤ 1 沒變）；位置用 ink 或 `getBoundingClientRect()`，computed style 只用來**讀字級、字重、行高、opacity 這類沒有像素替代的值**，不依賴特定 CSS 寫法。
+- 證據報告首行宣告「使用 8085」；量測前比對 `.css.dsp`／`zk.wcs`。Verifier 不看 CSS diff，最終判定用 Fable（D35）。Playwright 量版面時一律 `ignoreDefaultArgs:['--hide-scrollbars']`（本批沒有捲軸題，但環境要像使用者的）。
+
+### #53 — accordion 標題的字型與圖示（R6 最小解讀：標題字型與水平 mold 的 tab 一致）
+
+- **量法：** `tabbox.zul` 的 accordion 區（第 438、457 行兩個 `mold="accordion"`）與同頁的水平 tabbox。取：水平 tab 的文字（未選取、已選取）、accordion 標題的文字（未選取、已選取、disabled）的 `font-size`、`font-weight`、`line-height`（computed）；再用像素量文字 ink 高度（x-height 或大寫字高）當交叉驗證。另量 accordion 右側 chevron 的 ink 外框（寬、高、右緣距標題右內緣）與同族 combobox chevron（`combobox.zul`，基準 8×5、右緣距約 12px，D52-A）；水平 tabbox 若有圖示也記錄尺寸。**RED 全部記錄，並重現 Jess 的畫面（Tab1 已選取＋展開）。**
+- **判定 J53-1（今天預期失敗）：** accordion 標題文字的 font-size、font-weight、line-height 與水平 tab 同狀態的值**完全相同**（computed 字串相等），像素 ink 高度差 ≤ 1px。**RED 若發現今天已相等，代表她看到的不是字型（或值在別處被蓋掉），退回 Planner。**
+- **圖示的事先判準（RED 後套用，不事後再挑）：** 量 accordion chevron ink 的寬與高。若各與同族 8×5 基準相差 ≤ 25% → 圖示視為與同族一致，**不改**，留言只講字型；若任一邊超過 25% → 圖示列入本批：改用與 D52-A 相同的 chevron 遮罩（8×5），並補 `@media (forced-colors: active)` 的 `CanvasText`（決策原則第七節）；此時 J53-2 = 「chevron ink 外框的寬、高各與 8×5 差 ≤ 25%，垂直中心與標題中心差 ≤ 1px」。改圖示會改變 accordion 的預設外觀範圍（原則第五節第 4 項），**若 RED 顯示需要改圖示，先開議題頁問（D56）再交 Generator。**
+- **保護項（今天必須通過）：** (a) accordion 各標題列高（含展開／收合、disabled）不變（±0px）；若字型改變使行高改變，記錄差值，容許 ≤ 2px 並在報告標出（`min-height: --zk-tab-height` 通常吸收）；(b) 標題文字左緣、chevron 右緣位置不變（±0px，字寬變小不算）；(c) 已選取／hover／disabled 的底色與文字色、狀態層不變（ΔE ≤ 1）；(d) 展開內容（`-cave`）的字型、padding 不變；(e) 水平、垂直 mold 的 tab 完全不變（像素比對）；(f) 展開、收合動畫仍能完成（`jq.slideDown` 不卡在 0 高，見 `tabbox.css:540-545` 註解）。
+- **範圍（R9）：** 只動 `.z-tabbox-accordion .z-tab`（字型）；不改顏色、padding、間距、動畫。
+
+### #54 — `border="rounded"` panel 沒有外框（R6 最小解讀：外框 1px 回來，其他不動）
+
+- **量法：** `panel.zul` 中所有 `border="rounded"` 的 panel（第 12、24、66、90、125 行附近，含無標題、collapsed 的版本）與同頁 `border="normal"`、`border="none"` 各一個。每個 panel 取外框 4 邊（外緣內 0.5px 的線）、4 個圓角像素、陰影帶（底邊外 1–6px 的平均色）與頁面背景的 ΔE；量外框尺寸、head 與 body 的位置與分隔線。**RED 先確認 `rounded` 的 root class 含 `z-panel-noborder` 且不含 `z-panel-noframe`（對照 `border="none"` 兩者皆有），記入報告。**
+- **判定 J54-1（今天預期失敗）：** `border="rounded"` 的 panel，4 邊外緣線與頁面背景的 ΔE ≥ 6，且與同頁 `border="normal"` panel 的外框色 ΔE ≤ 3。
+- **判定 J54-2（今天預期通過，修後不得退步）：** `rounded` 的圓角仍在（左上角外緣的角落像素與頁面背景相同、與 `normal` 的方角不同）。
+- **記錄、不判定（R6、R9）：** `rounded` 的陰影與 head 分隔線今天都沒有；`normal` 有。最小解讀只還外框；陰影與 head 分隔線**只記數字，不修**。ZK 語意上 `rounded` 是「圓角外框、沒有內框」，head 分隔線屬於內框，所以不回；陰影屬 Jess 沒提，列 follow-up。
+- **保護項：** (a) `border="normal"` 與 `border="none"` 的外框、陰影、尺寸像素不變（ΔE ≤ 1、±0px）；(b) `rounded` 的 panel 外框盒子尺寸（含邊框）不變（`box-sizing:border-box`，±0px）；內容區因邊框內縮 1px 屬預期，記錄；(c) 標題、icons、toolbar、body 的文字與 icon ink 位置移動 ≤ 1px；(d) collapsed 的 `rounded` panel 仍收合、有外框；(e) 無標題的 `rounded` panel（`noheader`）也有外框；(f) forced-colors：外框用 `border`，不依賴 background，確認 forced-colors 下 `rounded` panel 外框可見；(g) 拖曳／縮放的 ghost 外觀不變。
+- **範圍：** 只改 `panel.css`。`.z-window-noborder` 是否有同樣問題（Window 的 `border` 只有 none／normal）只查不改。
+
+### #55 — window 拖曳 ghost 的透明度（R6 最小解讀：ghost 的標題列不被淡化；其餘不動）
+
+- **量法：** `window.zul` 的 overlapped 視窗（`position="right, top"` 的 Overlapped，Jess 的 GIF 那一個）。用 Playwright `mouse.down` 在標題列、`mouse.move` 80px 並**按住不放**，此時 `#zk_wndghost` 存在。取：(a) ghost 內標題列文字 ink 最暗像素的顏色，與同一視窗閒置時標題文字 ink 最暗像素比較 ΔE；(b) ghost 及其子孫節點的 computed `opacity`；(c) ghost 的 outline 色與寬度、尺寸、位置；(d) ghost 內部（標題列以下）的像素：透出多少背後頁面。**同時對 `panel.zul` 的可拖曳 panel（`border` 有 `rounded` 者、`draggable`）做同一個拖曳，記錄 panel 的 ghost 是否同樣淡化（`.z-panel-move-ghost`，`panel.css:179-183`）。**RED 要重現 Jess 的畫面（標題列淡、後面內容透出）。
+- **判定 J55-1（今天預期失敗）：** 拖曳中 ghost 標題文字 ink 最暗像素與閒置標題文字 ink 的 ΔE ≤ 3（即文字沒有被淡成一半）。
+- **判定 J55-2（今天預期失敗）：** ghost 及其所有子孫的 computed `opacity` 皆為 1。
+- **保護項：** (a) ghost 的 focus-ring outline 仍可見（outline 色與寬度不變，ΔE ≤ 1）；(b) ghost 的尺寸、位置、`z-index` 不變（±0px）；(c) 拖曳結束後視窗落在 ghost 的位置（位移 ±1px）；(d) 閒置、最大化、`mode="modal"`／`highlighted` 的視窗外觀不變；(e) sizable 的縮放（`#zk_ddghost.z-window-resize-faker`）不變；(f) forced-colors 下 ghost 的外框仍可見。
+- **範圍（R9）：** 只動 `.z-window-move-ghost`。ghost 內部是否要有底色（今天透出背景）是 Jess 沒寫的設計選擇，**RED 只記錄；若最小解讀（標題不淡化）重現後仍不能解決她看到的「內容變透明」，列為例外第 6 項（D56）**。panel 的 ghost 若同樣淡化，列 follow-up，不在本批改（`panel.css` 本批只為 #54 動，R9）。
+
+### #57 — North／South 內容缺少 padding（預測 DEMO，R5）
+
+- **量法：** `borderlayout.zul` 全頁（目前 North／South 有裸文字的例子在第 23–27、38–39、51–52、80–101 行附近；RED 以頁面實測為準，逐一列出每個 borderlayout 的 N／S／W／E／C 內容）。每個區域取「內容文字 ink 左緣距該區域 body 左內緣」。同時用 `elementsFromPoint` 確認 West／East／Center 的 padding 來自哪個元素（預期：預覽頁的 `div.z-p-4`，不是 theme 的 `.z-west-body`）。再搜尋預覽站其他頁面（`*.zul`）有無 `north`／`south` 內放貼邊 toolbar 的用法，作為「若改 theme 會被弄壞」的證據。
+- **判定 J57-1（今天預期失敗）：** 同一個 borderlayout 內，North／South 內容文字的左緣偏移與 West／East 內容一致（容差 ±1px），涵蓋頁面上所有 N／S 有文字的 borderlayout。
+- **判定 J57-2（今天預期通過，修後不得退步）：** 修後 `borderlayout.css` 未被修改；`.z-north-body`／`.z-south-body` 的 computed padding 仍為 0（證明沒有把樣式加進 theme）。
+- **保護項：** (a) 各區域外框、splitter、標題列位置不變（±0px，N／S 高度由 size 決定，內容改變不得撐高）；(b) West／East／Center 不變；(c) `border="none"` 例子與 Auto Scroll 例子的捲動行為不變；(d) 其他頁面不受影響（本批只改 `borderlayout.zul`）。
+- **為什麼不改 theme：** 若在 `.z-north-body`／`.z-south-body` 加 padding，所有使用者的 North／South 都會多出 padding，貼邊的 toolbar、menubar 會離開邊緣（改變預設外觀範圍，原則第五節第 4 項）；West／East／Center 本來就沒有 padding，是預覽頁自己包了 `z-p-4`，所以兩邊不一致只是 demo 的不一致。留言要老實說明，並附前後截圖。
+
+### 回歸範圍（第 11 批）
+
+component-theming、hit-target、focus-scan（tabbox、panel、window、borderlayout 的 gallery 與互動）；forced-colors（#54 動到邊框、#55 動到 ghost 時跑；#53 若改圖示一定要跑）。gallery：`tabbox`、`panel`、`window`、`borderlayout`。chromium、tablet 全項只在合併後於 `marble` 跑一次。已知失敗 `calendar-tablet`、`slider-tablet`、`grid-header-gallery` 不計。
+baseline 預期變動：`tabbox-gallery`（accordion 字型）、`panel-gallery`（rounded 外框）、`borderlayout-gallery`（預覽頁 padding）；`window-gallery` 預期**不變**（ghost 只在拖曳中）。任何預期外的變動都要歸因。baseline 只用 `--update-snapshots=changed`（可能被權限擋下，D55-B：需要時告訴使用者，不繞過）。
+
+### 狀態紀錄（第 11 批）
+
+| 日期 | 事項 | 結果 |
+|---|---|---|
+| 2026-10-08 | 開工：讀四份規則文件、四個 issue 原文與原圖（含 #55 GIF 抽幀）、四個 CSS／預覽頁；寫方法草案 | 本節 |
+
+### 第 11 批 RED run 結果與方法定稿（2026-10-08）
+
+報告 [../gates/batch11-red.md](../gates/batch11-red.md)，證據 `gates/batch11-red/`，結論 `RED11: METHOD-DEFECTS`。8085 伺服的是現行 build（md5 相同），未重啟。五個判定今天都失敗、兩個預期通過的都通過。
+
+**今天的實測：**
+
+- **#53：** 水平 tab `.z-tab-text` 14px／500／20px；accordion 16px／500／20px（三個狀態相同）。**字重、行高今天已相同，只有 font-size 不同**；同字 "Tab1" ink 高 11（14px）vs 12.5（accordion）。chevron ink 11×7，同族 8×5 → 寬 +37.5%、高 +40%，**兩邊都超過 25%，依事先判準觸發 D56**。
+- **#54：** 六個 rounded（含 noheader、collapsed）root class 為 `z-panel z-panel-noborder`、無 `noframe`（與預測相符）；4 邊外緣全白（ΔE 0），normal 為 (224)（ΔE 10.82）。圓角、陰影、head 分隔線今天都沒有。forced-colors 下所有 panel（含 `none`）本來就有 1px `CanvasText` 框（`_forced-colors.css:27-39`）。
+- **#55：** ghost 標題最深 (143) vs 閒置 (33)，ΔE 46.66；ghost opacity 0.5，子孫 1；ghost 內部（標題以下）100% 透出背景。**panel 根本沒有 move ghost**（`Panel._initMove` 無 `ghosting`），`.z-panel-move-ghost` 是死規則。
+- **#57：** BL0／BL1 的 N/S 文字左緣偏移 0／0.5，W／E／C 為 16／17／16.5；BL3–5 今天就一致。W／E／C 的 padding 全來自預覽頁 `div.z-p-4`；`.z-north-body`／`.z-south-body` computed padding 0。預覽站沒有 north/south 放貼邊 toolbar 的例子。**BL0／BL1 的 N/S body 只有 19px**（60px 扣 40px header），20px 文字今天就溢出有捲軸。
+
+**方法修正（定稿後不再改）：**
+
+1. **J55-1 落點：** 一律在**空白區**拖曳（Overlapped 往 jess −80/+120、normal −80/−200），不蓋在其他內容上，避免量到透出的字。
+2. **#55 保護項 (a)：** outline 今天是 50% 合成色 (154,182,231)。改為「outline 2px 可見，色為 focus ring 色 (55,111,208) 或其 50% 合成」，不要求與今天相同；baseline 預期變動。
+3. **#55 panel 項刪除**（不適用）；`.z-panel-move-ghost` 死規則列 follow-up，不動。
+4. **J53-1 只比 font-size**（字重、行高今天已相等，仍列保護項）；ink 交叉驗證用同字（垂直 mold Tab1–3 vs accordion Tab1–3）。
+5. **J54-2 加強：** 修後 rounded 邊線中段 ΔE ≥ 6，且線從角落 2–4px 起（今天「整個外緣都白」是空泛通過）；與 normal 比較時，panel 1 的 footer toolbar 下框線會被誤量，**底邊改量兩端各 8px**。J54 forced-colors (f) 只當回歸（今天就成立）。
+6. **J57-1 範圍：** 修 BL0–BL2 的 N/S（W/E/C 一致即可），BL3–5 今天就過，保護項要守住。**BL0／BL1 的 N/S 高度要一併調整**：內容改包 `z-p-4`（與 W/E/C 同一個包裝），N/S 的 size 調到能容納 52px（BL0 `25%`、BL1 `35%`）；判定加 **J57-3：N/S 內容無捲軸、文字不被切**（`scrollHeight ≤ clientHeight`）。保護項 (a) 的「N/S 高度不變」改為「除 BL0／BL1 的 N/S size 外，其餘區域外框與 splitter 位置不變」。
+7. **「弄壞貼邊 toolbar」** 只能引文件與程式碼論述（預覽站無此例），留言中如實說明。
+8. **#53 chevron 中心**今天隨方向偏 ±2px；若改遮罩，J53-2 的中心判定改為「展開／收合兩個方向中心差 ≤ 1px」。
+9. 新發現（記入 follow-up，不修）：forced-colors 下 `border="none"` panel 也畫 1px 黑框；window ghost 修後 outline 會變深。
+
+**等待裁示（議題頁，標 `[A]`）：** D56（#53 chevron 是否改為同族遮罩）。裁示前 #53 只做 font-size；#54 #55 #57 直接交 Generator。
+
+### 第 11 批最終判定第一輪（2026-10-08）
+
+報告 [../gates/batch11-final.md](../gates/batch11-final.md)，`GATE11-FINAL: FAIL`（第一輪）。J53-1、J54-1/2、J55-1/2、J57-1/2/3 全部 PASS；core 回歸 184 passed／0 failed；gallery 差異逐列歸因皆為預期。失敗兩項：
+
+1. **#57 保護項 (b)：** BL1 的 N/S 35% 使中間只剩 50px，放不下 52px 的 `z-p-4` 內容，W/E/C 出現 6px 捲軸。我的算術錯誤（沒有扣 40px header）。**修正：BL1 N/S 改 32%**（N/S body 56、中間 body 68，皆 ≥ 52）。
+2. **#54 保護項 (b) 口徑（Planner 裁定，非 D 編號）：** 還原 1px 外框時，內容撐高（auto height）的 rounded panel 外框盒必然 +2px（與 `border="normal"` 同理），固定高度的 panel ±0。保護項 (b) 改為「固定高度 ±0px；auto 高度 +2px（= 上下各 1px 外框）」；panel gallery 頁高 +4px 屬此連帶。**這是修好 issue 的直接結果，不是越界。**
+3. **口徑確認：** #57 BL0／BL1 的 W/E/C 與 south 因 N/S size 改變而下移（40px／依 BL1 調整後重量），屬預期連帶。
+
+事故記錄：`forced-colors-gallery` 專案會直接覆寫 `zkpreview/doc/screenshots/*-forced-colors.png`，Verifier 已還原到 HEAD；**之後回歸一律排除 `forced-colors-gallery` 專案**。`gallery` 專案的 1% 容差對 borderlayout 這類淡色底變動不敏感，baseline 預期變動不會以失敗呈現，需另以像素量。
+
+**待裁示（併入同一頁）：** D57（#55 ghost 標題以下仍 100% 透出背景，是否加底色）。
+
+### 第 11 批裁示與第二輪（2026-10-08）
+
+R2 結論 `GATE11-FINAL-R2: PASS`（#54、#57、#53 字型、#55 最小解讀）。使用者裁示（議題頁 https://claude.ai/artifact/GA1iLWCjFetrvSFr62mssM）：
+
+- **D56-A：** #53 accordion 箭頭換成與 D52-A 相同的 chevron 遮罩（8×5），補 forced-colors。
+- **D57-B：** #55 ghost 內部加 surface 底色（不再透出背景）。**這會改變所有 Window 拖曳的外觀，使用者已知悉。**
+
+**第二輪判定（只新增，第一輪項目要全部維持通過）：**
+
+- **J53-2（今天預期失敗）：** accordion chevron ink 外框寬、高各與 8×5 差 ≤ 25%；展開與收合兩個方向的垂直中心與標題中心差 ≤ 1px（今天 ±2px）；右緣距標題右內緣與 combobox 的 12px 差 ≤ 2px。
+- **J53-3（保護）：** forced-colors 下 chevron 可見（ink 非空）；展開時 chevron 旋轉 180°（ink 外框鏡像，容差外框 ±0.5px、中心 ±1px）；選取狀態 chevron 色仍為 `on-primary-container`、未選取為 `on-surface-variant`（取樣 ΔE ≤ 3）；hover／disabled 外觀、列高 48／pitch 49 不變；展開動畫仍完成。
+- **J55-3（今天預期失敗）：** 拖曳 ghost 標題以下的區域（空白區落點）取樣色與 `--zk-color-surface` 的頁面色 ΔE ≤ 2，且不受背後內容影響（把 ghost 蓋在有文字的內容上，取樣色相同）。
+- **J55-4（保護）：** 第一輪 J55-1/2 仍通過；outline（focus ring 色 2px）可見；ghost 尺寸、位置、z-index 不變；放開後落點位移 0；forced-colors 下 ghost 可見（outline 可見且內部不為全透明疊字）。
+- **回歸：** 同第一輪；**排除 `forced-colors-gallery` 專案**；forced-colors 全量要跑。
+
+### 第 11 批第三輪（2026-10-08）
+
+`GATE11-FINAL-R3: FAIL`，只有一條：J53-2 右緣距（chevron ink 右緣距 tab 右緣 15，combobox 12.08，差 2.92 > 2）。其餘（J53-1、J53-3、J55-1～4、#54、#57、回歸 core 184／0 failed）全部 PASS。原因：accordion 標題左右 padding 16px，selectbox 的 `margin-right:-4px` 是針對 12px 內距算的。**修正：`margin-right` 改 `-7px`（不放寬判準）**，只量 J53-2 右緣距與中心不退步。
+
+### 第 11 批最終判定與看板列（2026-10-08）
+
+`GATE11-FINAL-R4: PASS`（[../gates/batch11-final.md](../gates/batch11-final.md)）。D56-A、D57-B 已實作並驗證。#53 chevron 8×5、右緣距 12（combobox 12.08）、兩方向中心差 0；#55 ghost 標題 ΔE 46.66 → 0、內部底色 = `--zk-color-surface`；#54 rounded 外框 ΔE 0 → 10.82；#57 預覽頁 N/S 與 W/E 一致，BL1 無捲軸。core 回歸 184 passed／0 failed。
+
+| State | Issues | Count |
+|---|---|---|
+| Fixed and verified in `zk` (batch 11, tabbox accordion / panel / window / borderlayout demo; Fable gate PASS after four rounds, pure CSS plus one preview-page fix), committed 2026-10-09 (`3c4c4f066a`), commented 2026-10-09 ([gates/batch11-comments.md](../gates/batch11-comments.md)), awaiting the designer to close | #53 (accordion title 14px + family chevron 8×5, D56-A), #54 (`border="rounded"` outline restored), #55 (drag ghost opaque title and surface fill, D57-B), **#57 fixed in the preview page, not the theme (R5)** — [gates/batch11-final.md](../gates/batch11-final.md) | 4 |
+
+Follow-ups：`.z-panel-move-ghost` 是死規則（panel 不建 ghost）；forced-colors 下 `border="none"` 的 panel 也畫 1px 黑框（`_forced-colors.css` 沒排除 `z-panel-noborder`）；`gallery` 專案的 1% 容差對淡色底變動不敏感；`forced-colors-gallery` 專案會覆寫 repo PNG，回歸一律排除；accordion 的 disabled 列 ink 左緣 −0.5px（字形側邊距）。
+
+| 2026-10-09 | 第 11 批 baseline 重生（使用者同意 Bash 權限；tabbox、tabbox-misc、panel 用 `changed`，borderlayout 與 tabbox-misc 因在 gallery 容差內用 `=all` 只針對該元件）；提交 zk `3c4c4f066a`（無 zkcml 變更）、證據 `5314332b7e`；四則 Jess 留言已貼（#53 #54 #55 #57），截圖在追蹤 repo `screenshots/batch11/`。D56-A、D57-B 已實作。 | gates/batch11-comments.md |

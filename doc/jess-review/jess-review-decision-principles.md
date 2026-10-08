@@ -38,7 +38,9 @@
 | 通知、toast | 不要左側色條；圖示用 `on-*-container` | 第 1 批 |
 | hover 底色 | 同一元件內每一列相同，不受奇偶條紋影響 | #38 |
 | 不可點的地方 | 預設游標，不用 pointer／move | #36、#65、#67 |
-| 下拉箭頭（selectbox、combobox、bandbox） | 同一個 chevron-down 遮罩，ink 約 8×5，右緣距約 12px；forced-colors 下用 `CanvasText` | D52-A（#29） |
+| 下拉箭頭（selectbox、combobox、bandbox、accordion 展開箭頭） | 同一個 chevron-down 遮罩，ink 約 8×5，右緣距約 12px；forced-colors 下用 `CanvasText`。accordion 標題內距是 16px，遮罩盒要用 `margin-right:-7px`（selectbox 是 -4px），以量到的右緣距為準 | D52-A（#29）、D56-A（#53） |
+| 拖曳 ghost（window） | 不淡化（opacity 1）、內部用 `--zk-color-surface` 不透出背景；outline 為 focus ring 原色 | D57-B（#55） |
+| 圓角外框變體（panel `border="rounded"`） | 外框與 `border="normal"` 同色同寬，保留圓角；陰影與 head 分隔線不加 | #54 |
 | 巢狀導覽（navbar）縮排 | 每層 +26px，縮排放在內容元素的 `padding-left`，hover 狀態層仍滿寬 | #51 |
 | 清單／表頭的捲軸欄位 | 與表頭同色，不另上色 | D53-A（#3） |
 
@@ -126,6 +128,8 @@
 | D53-A | #3 修 `listbox.css`，所有 listbox 的捲軸欄位格與表頭同色 | 7 |
 | D54-A | #49 保留預留勾選欄，不改 CSS，留言說明並附前後截圖 | 8 |
 | D55-B | 重生 baseline 的 playwright 指令被權限檢查擋下，由使用者加權限規則後執行 | 7 |
+| D56-A | #53 accordion 展開箭頭換成同族 chevron 遮罩（8×5，右緣距 12px），補 forced-colors | 11 |
+| D57-B | #55 window 拖曳 ghost 內部加 `--zk-color-surface` 底色（改變所有 Window 拖曳外觀，使用者已知悉） | 11 |
 
 ### 第六批學到的做法
 
@@ -141,6 +145,18 @@
 - **「預留空間」不是缺陷。** #49 的空白是為了避免勾選時文字位移而刻意預留；先量「切換前後位移」，再決定要不要當缺陷處理。婉拒設計師的回報要使用者同意（D54-A）。
 - **巢狀結構本身就能判定層級。** #51 看板原本寫「需要 ZK 的深度 class」，實際用 `.z-nav > ul > .z-nav > ul` 的祖先選擇器即可，不必改 widget（延續第六批「先查祖先或兄弟」的教訓）。被搬到 `body` 的 popup 拿不到原本的 reset，要注意瀏覽器預設的 `list-style` 與 `padding`。
 - **實作者與量測者共用預覽站時，build 要排隊。** Generator 只改原始碼、不 build；等 Verifier 量完再 build 並重啟，否則量測中途換版。
+
+### 第十一批學到的做法
+
+- **先查 ZK 為某個屬性值加了哪些 class，再判斷選擇器。** #54 的 `border="rounded"` 被判成 noborder 但不是 noframe；用 `.z-panel-noborder:not(.z-panel-noframe)` 就能只選到 rounded，不碰 `border="none"`。看板上「CSS 其實有設 border」的線索是對的，是被後面的規則蓋掉。
+- **demo 的不一致不等於 theme 缺陷。** #57 的 West／East／Center 有 padding，是預覽頁自己包了 `z-p-4`；borderlayout 的區域本來就沒有 padding，加到 theme 會把貼邊的 toolbar 推離邊緣。歸 DEMO（R5），留言說明並提供「要不要改 theme」的選項。
+- **改 demo 的尺寸要把 header 算進去。** 區域高度 = size 扣掉 40px 的標題列；填入 52px 的內容時，BL1 的 35% 讓中間區只剩 50px 而出現捲軸。兩邊的內容高度都要驗。只改有裸文字且四區原本一致的例子時，不要只改 N/S，否則反而讓它們與 E/W 不一致。
+- **還原邊框會讓內容撐高的盒子多 2px。** 保護項要寫成「固定高度 ±0；auto 高度 +2px」，並說明這是修好 issue 的結果。
+- **遮罩圖示的位置要以量到的右緣距為準，不要照抄別的元件的 margin。** 容器內距不同，同樣的遮罩盒需要不同的 `margin-right`。
+- **回歸跑法排除 `forced-colors-gallery` 專案。** 它不比對，直接覆寫 repo 內的 `*-forced-colors.png`。
+- **`gallery` 專案的 1% 容差對淡色底變動不敏感**（borderlayout 差 9% 像素仍通過）。baseline 預期變動不會以失敗呈現，要另用像素量；該元件的 gallery 在通過但像素有變時用 `--update-snapshots=all`（只針對該元件）。
+- **8085 的 jar 可能在執行中被重建**（頁面回 500、`NoClassDefFoundError`）。重啟後等 jar 的 mtime 穩定、四個頁面回 200 再交給 Verifier；Verifier 遇到 500 停下回報，不重啟。
+- **拖曳 ghost 是 ZK 建立的外框，不含視窗內容。** 「內容變透明」有兩層：標題列被 opacity 淡化（最小解讀）與內部透出背景（D57-B）。要讓 ghost 顯示真實內容需改 widget，不是 theme。
 
 ## 八、尚未驗證的事
 
