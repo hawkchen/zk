@@ -130,6 +130,12 @@
 | D55-B | 重生 baseline 的 playwright 指令被權限檢查擋下，由使用者加權限規則後執行 | 7 |
 | D56-A | #53 accordion 展開箭頭換成同族 chevron 遮罩（8×5，右緣距 12px），補 forced-colors | 11 |
 | D57-B | #55 window 拖曳 ghost 內部加 `--zk-color-surface` 底色（改變所有 Window 拖曳外觀，使用者已知悉） | 11 |
+| D80-B | #72 所有 Window 的 X 鈕 hover 改中性（不限 messagebox）；MD3 與框架一致性衝突時選一致且符合 MD3 | 9 |
+| D81-A | #73、#74 歸 ZK-CORE：ZK 的 messagebox 沒有 per-button class，主題 CSS 做不到；開 ZK-6187，不改 CSS | 9 |
+| D82-A | #1 三角脫離是 ZK `Errorbox._fixarrow` 的問題（`style.top = undefined` 無效）：歸 ZK-CORE，開 ZK-6188 | 9 |
+| D83-A | #47 兩個方向一起修（CSS 分不出方向），水平方向的預設外觀因此改變 | 10 |
+| D84-A | D80-B 的落地：保留公開 token `--zk-window-close-hover-bg`，只改預設值（動共用 `_component-theme.css` 一行與 spec 一列），不改規則了事讓旋鈕失效 | 9 |
+| D85-A | #4 與 `marble` 上別人的提交 `1c739948643` 重疊：丟掉 B 線重複的五行，保留 marble 的 | 平行線（10） |
 
 ### 第六批學到的做法
 
@@ -157,6 +163,18 @@
 - **`gallery` 專案的 1% 容差對淡色底變動不敏感**（borderlayout 差 9% 像素仍通過）。baseline 預期變動不會以失敗呈現，要另用像素量；該元件的 gallery 在通過但像素有變時用 `--update-snapshots=all`（只針對該元件）。
 - **8085 的 jar 可能在執行中被重建**（頁面回 500、`NoClassDefFoundError`）。重啟後等 jar 的 mtime 穩定、四個頁面回 200 再交給 Verifier；Verifier 遇到 500 停下回報，不重啟。
 - **拖曳 ghost 是 ZK 建立的外框，不含視窗內容。** 「內容變透明」有兩層：標題列被 opacity 淡化（最小解讀）與內部透出背景（D57-B）。要讓 ghost 顯示真實內容需改 widget，不是 theme。
+
+### 第九、十批（B 線）學到的做法
+
+- **判定量渲染後的像素，不要只量 computed 值。** #61 的 20 顆圖示 computed 顏色全相同，但 Fullscreen 的填色與描邊重疊，半透明色疊了兩層，最深像素差 ΔE 26。解法是不透明色加 svg 層級的 `opacity` 一次合成。
+- **改共用子元件的樣式，回歸要涵蓋所有用到它的頁面。** #40 改 radio 文字，`tree`、`grid-paging` 頁內嵌的 radio 也變了，到合併後的完整回歸才發現。只用元件名稱做 `-g` 過濾會漏；合併前至少跑完整的 chromium 與 gallery。
+- **gallery 的 1% 容差會吸收預期的視覺變化。** baseline 要主動針對元件用 `--update-snapshots=all` 重生，並逐張看差異遮罩；重生會連同舊漂移（例如 typography sweep 之前的標題位置）一併更新，要在紀錄中揭露。
+- **公開 token 的語意要留著。** 要改預設外觀時，保留旋鈕、只改預設值（D84-A），並用「注入該 token 後仍生效」當保護項；只改規則會讓文件記載的旋鈕默默失效。
+- **widget 的根因要先用 inline 狀態證明。** #1 看似樣式問題，實際是 `style.top = undefined` 對 `CSSStyleDeclaration` 是無動作；開 ZK Jira 前先在預覽頁重現，並實測 Workaround，再寫進 Jira。
+- **兩條線可能改到同一個檔案，合併前先查交集。** `git diff --name-only A...B` 取交集加 `git merge-tree --write-tree` 試算；重疊時停下問（D85-A）。這次 `button.css`（使用者的提交）與 `window.css`（A 線批次 11）都重疊過。
+- **jar 與預覽站的流程。** worktree 第一次要先打包 jar；打任何 jar 之前先停預覽站；`zkpreview/gradlew` 在 git 裡不可執行，用 `bash ./gradlew`。
+- **方法歧義由 Planner 裁定，並說明是看到結果之後裁的。** P71-d（框位置）與 tbeditor 的 hover 都這樣處理，理由與可能的反面讀法都寫進計畫。
+- **GitHub API 檢查檔案是否存在，要看 HTTP 狀態碼。** `gh api … --jq .sha` 在 404 時輸出 `null`，不是空字串，會讓「已存在」的判斷全部誤判。
 
 ## 八、尚未驗證的事
 

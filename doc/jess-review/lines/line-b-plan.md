@@ -95,7 +95,7 @@
 |---|---|---|
 | D80 | #72 X 鈕 hover 範圍（messagebox 限定／Window 全體／不改） | **已決：B（所有 Window 改中性），2026-10-08，使用者**。實作細節待 D84 |
 | D81 | #73、#74 歸 DEMO 還是 ZK-CORE | **已決：A（ZK-CORE）**；已開 [ZK-6187](https://zkoss.atlassian.net/browse/ZK-6187)（2026-10-08），連結已貼在 #73、#74 的 comment |
-| D82 | #1 errorbox 三角脫離：ZK-CORE 並開 ZK Jira | **已決：A，2026-10-08，使用者**。已開 [ZK-6188](https://zkoss.atlassian.net/browse/ZK-6188)，連結已貼 #1 的 comment。**備註：Jira 內文的最小重現（window＋textbox＋拖曳）與 Workaround（覆寫 `_fixarrow`）是 Planner 依 Verifier 的觀察寫的，尚未實際執行驗證**，待驗證後補記 |
+| D82 | #1 errorbox 三角脫離：ZK-CORE 並開 ZK Jira | **已決：A，2026-10-08，使用者**。已開 [ZK-6188](https://zkoss.atlassian.net/browse/ZK-6188)，連結已貼 #1 的 comment。**備註：已驗證（2026-10-08，[gates/zk-6188-verify](../gates/zk-6188-verify/README.md)）：** 在預覽頁 `errorbox.zul` 拖曳換向可重現（殘留 `top`，三角在箱子內）；Jira 的 Workaround 注入後三角位置正確。**限制：** 沒有逐字用 Jira 內文的 `<window>＋<textbox>` 片段（需新增頁面）；「反方向換位時三角留在箱子外」一句來自 GIF 與機制推論，未另外實測 |
 | D83 | #47 fisheyebar 兩個方向一起修（水平預設外觀會變） | **已決：A，2026-10-08，使用者**。Generator 改 `zkex/.../fisheye.css` 中 |
 | D84 | D80-B 的實作：`--zk-window-close-hover-bg` 是文件記載的公開 token（`doc/spec/component-theme-variables.md:231`，預設 `error-container`）。只改規則會讓這個旋鈕失效；改 token 預設值要動共用的 `tokens/_component-theme.css`（平行線文件第九節 1）與 spec 表格 | 待使用者 |
 
@@ -332,6 +332,14 @@ glyph 像素 (31,32,32) vs RED (127,0,10)；形狀未變（156 px，與 RED 相�
 **B 線的疏漏（揭露）：** #40 把 radio 文字由 14px 改為 13px，也讓 `tree › gallery`（內嵌 radio）與 `gallery › grid-paging` 的 baseline 失敗。我在批次 10 的回歸只用元件名稱過濾（button、calendar、checkbox、radio、label…），沒涵蓋含 radio 的其他頁面，所以到合併後才發現。已在 `marble` 的建置上重生這兩張（`--update-snapshots=all`）：`tree-gallery.png` 差異約 2,878 px，全在 radio 分頁位置那一段（沒有舊漂移）；`grid-paging-gallery.png` 高度 1376→1336（radio 由兩行變一行），並帶有舊 baseline 的漂移（批次 2–4 的變化原本靠 1% 容差通過）。
 
 **`calendar-tablet`（已知失敗，不重切）：** 失敗區域比批次 6 多了 y 2200–2404 一段，是 #6 的 disabled 週末變灰。依 D42-A 不處理，下次有人重切時要含。
+
+### Jess 留言（2026-10-09）
+
+合併與完整回歸（MERGE1 PASS）之後，對 #66、#71、#72、#4、#6、#40、#47、#61 各貼一則留言（`# Root cause / # Solution / # Result`，附修改後截圖，截圖在 tracker repo 的 `screenshots/batch9/`、`batch10/`，在合併後的 `marble` build（8085）上拍），內容與連結見 [gates/batch9-10-comments.md](../gates/batch9-10-comments.md)。#73、#74、#1 的 ZK Jira 連結留言已於 2026-10-08 貼出。
+
+**揭露：** 上傳截圖時，我的「檔案是否已存在」檢查一度誤判（GitHub 404 時 `--jq .sha` 輸出 `null`，不是空字串），全部被略過、**沒有上傳**；我用資料夾列表確認後改用 HTTP 狀態碼判斷，重新上傳，之後列表確認 9 張都在。這個誤判沒有造成覆寫或錯誤上傳。
+
+**尚未做、由你決定：** 推送、關閉 issue。**目前 `marble` 的合併與提交都只在本機，未推送**；留言裡的截圖在 tracker repo，連結可用，但設計師看不到本機的程式碼狀態。
 
 ## 看板列草稿（合併負責人併入看板用；2026-10-08，B 線）
 
