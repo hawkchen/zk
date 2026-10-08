@@ -144,9 +144,23 @@
 - P1-d 欄位仍被指到：三角尖端落在目標欄位邊緣 ≤ 8px 內（與 RED 相同或更近）。
 - P1-e #67 已修的游標：靜態範例 `default`、真實 errorbox `move`。
 
-### J72 messagebox X 鈕 hover（D80 未定，不在第一輪）
+### J72 X 鈕 hover（D80-B：所有 Window 一起改中性；D84-A：保留 `--zk-window-close-hover-bg` 旋鈕，改預設值）
 
-RED 只做重現：量 `.z-messagebox-window .z-window-close:hover` 的 `background-color` 與 `color`（今天為 error 色調），以及一般 `z-window` 的同一個量；判定依 D80 的裁示再定稿。
+RED（已量，`gates/batch9-red/report.md`）：messagebox 與一般 window（embedded、overlapped）的 X 鈕 hover 值相同：背景 `oklch(0.89 0.056 26.4)`（像素 254,205,199）、圖示色 `oklch(0.375 0.154 26.4)`（127,0,10）。
+
+| 編號 | 判定（今天必須失敗） |
+|---|---|
+| J72-1 | messagebox、embedded window、overlapped window 的 X 鈕 hover：背景像素與同一視窗中**非 close 的圖示鈕**（maximize 或 minimize；沒有就用 `.z-window-icon` 的 hover 值）hover 背景同色（ΔE ≤ 3，CIE76）；computed `color` 與該鈕相同 |
+| J72-2 | hover 背景與 RED 的 (254,205,199) 距離 ΔE ≥ 10（不再是 error 色族） |
+
+保護項（今天必須通過）：
+- P72-a 靜止狀態（背景透明、圖示色 `rgba(0,0,0,.6)`）與 RED 相同；hover 的**尺寸、圓角、位置**不變（rect 與 RED 相同）。
+- P72-b 其他圖示鈕（maximize、minimize）hover 值與 RED 相同。
+- P72-c **旋鈕仍有效：** 在頁面上注入 `:root { --zk-window-close-hover-bg: #ffcc00 }`（Verifier 在頁面內用 `addStyleTag`），close 鈕 hover 背景像素變成該色（ΔE ≤ 3）；移除注入後回到中性。
+- P72-d 點 X 鈕仍能關閉 window／messagebox（行為不變）；鍵盤聚焦時的 focus ring 不變。
+- P72-e forced-colors 回歸不得出現新失敗。
+
+D84-A 同時改動：`zul/.../zul/css/tokens/_component-theme.css:64` 的預設值（`var(--zk-color-error-container)` → `var(--zk-window-icon-hover-bg)`）、`window.css:133-136` 的 `.z-window-close:hover` 文字色（`on-error-container` → 與 `.z-window-icon:hover` 相同的 `on-surface`）、`doc/spec/component-theme-variables.md:231` 的預設值欄。token 不新增、不改名、不刪除。
 
 ## 七之二、批次 10 驗證方法（2026-10-08，RED run 前定稿）
 

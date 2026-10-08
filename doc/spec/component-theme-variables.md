@@ -228,7 +228,7 @@ not a knob. The header shares the window surface fill.
 | `--zk-window-radius` | `var(--zk-shape-corner-extra-small)` |
 | `--zk-window-header-fg` | `var(--zk-color-on-surface)` |
 | `--zk-window-icon-hover-bg` | `var(--zk-color-surface-container)` |
-| `--zk-window-close-hover-bg` | `var(--zk-color-error-container)` |
+| `--zk-window-close-hover-bg` | `var(--zk-window-icon-hover-bg)` |
 | `--zk-window-header-height` (size — in `_sizing.css`) | `56px` |
 
 ### Grid — shipped
