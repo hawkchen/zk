@@ -93,8 +93,11 @@
 
 | 編號 | 議題 | 狀態 |
 |---|---|---|
-| D80 | #72 X 鈕 hover 範圍（messagebox 限定／Window 全體／不改） | 待 RED run 後提出 |
+| D80 | #72 X 鈕 hover 範圍（messagebox 限定／Window 全體／不改） | **已決：B（所有 Window 改中性），2026-10-08，使用者**。實作細節待 D84 |
 | D81 | #73、#74 歸 DEMO 還是 ZK-CORE | **已決：A（ZK-CORE）**；已開 [ZK-6187](https://zkoss.atlassian.net/browse/ZK-6187)（2026-10-08），連結已貼在 #73、#74 的 comment |
+| D82 | #1 errorbox 三角脫離：ZK-CORE 並開 ZK Jira | **已決：A，2026-10-08，使用者**。已開 [ZK-6188](https://zkoss.atlassian.net/browse/ZK-6188)，連結已貼 #1 的 comment。**備註：Jira 內文的最小重現（window＋textbox＋拖曳）與 Workaround（覆寫 `_fixarrow`）是 Planner 依 Verifier 的觀察寫的，尚未實際執行驗證**，待驗證後補記 |
+| D83 | #47 fisheyebar 兩個方向一起修（水平預設外觀會變） | **已決：A，2026-10-08，使用者**。Generator 改 `zkex/.../fisheye.css` 中 |
+| D84 | D80-B 的實作：`--zk-window-close-hover-bg` 是文件記載的公開 token（`doc/spec/component-theme-variables.md:231`，預設 `error-container`）。只改規則會讓這個旋鈕失效；改 token 預設值要動共用的 `tokens/_component-theme.css`（平行線文件第九節 1）與 spec 表格 | 待使用者 |
 
 ## 七、批次 9 驗證方法（2026-10-08，RED run 前定稿；RED 之後只允許 Planner 依 RED 結果修方法，之後不再改）
 
@@ -144,6 +147,189 @@
 ### J72 messagebox X 鈕 hover（D80 未定，不在第一輪）
 
 RED 只做重現：量 `.z-messagebox-window .z-window-close:hover` 的 `background-color` 與 `color`（今天為 error 色調），以及一般 `z-window` 的同一個量；判定依 D80 的裁示再定稿。
+
+## 七之二、批次 10 驗證方法（2026-10-08，RED run 前定稿）
+
+通則同第七節。`PREVIEW_URL=http://127.0.0.1:8105`。
+
+### J4 button：text 變體不該有 box-shadow（頁面 `button.zul`）
+根因（原始碼）：`.z-button-text-{secondary,success,warning,error,info}.z-button`（`button.css:226-230`）沒有重設 `box-shadow`，吃到 `.z-button` 的 `--zk-button-elevation`；`.z-button-text.z-button`（:218）有重設。
+- **J4-1（今天必須失敗）：** `z-button-text`、`-secondary`、`-success`、`-warning`、`-error`、`-info` 六種，靜止、hover、聚焦、按住四個狀態，computed `box-shadow` 皆為 `none`，且按鈕外圍 4px 內的像素與頁面背景一致（ΔE ≤ 1，CIE76；無陰影暈）。
+- **保護項：** P4-a filled／outlined／icon／fab 各變體的靜止與 hover `box-shadow` 與 RED 完全相同（filled 靜止 resting、hover elevation-2 保留）；P4-b disabled 全變體 `none`；P4-c text 變體文字色、hover 狀態層（`::before` opacity）、`cursor` 不變；P4-d 按鈕尺寸 rect 不變。
+
+### J6 calendar：disabled 日期同色（頁面 `calendar.zul` 的 constraint="no past" 範例）
+根因（原始碼）：`.z-calendar-body tbody td.z-calendar-weekend`（0,2,2）蓋過 `.z-calendar-cell.z-calendar-disabled`（0,2,0）。
+- **J6-1（今天必須失敗）：** 該範例當月所有 disabled 日期（含週六、週日）的 computed `color` 相同，且文字像素最深色 ΔE ≤ 1。
+- **J6-2：** 同頁 disabled 日期仍全部有刪除線（`text-decoration-line: line-through`）、`cursor: not-allowed`、`pointer-events: none`。
+- **保護項：** P6-a 同月可選週末日的色 = 可選平日的色（`--zk-calendar-fg`），與 RED 相同；P6-b 選取日（含週末選取日）文字色 = `on-primary`，圓盤顏色不變；P6-c 月外日 opacity 0.38 不變；P6-d 週末表頭色不變；P6-e hover 圓盤只出現在可選日；P6-f 其他 constraint 範例（`no future`、`before/after`）同樣 disabled 同色。
+
+### J40 label：checkbox 與 radio 文字同字級（頁面 `label.zul`，同頁也有 `checkbox.zul`、`radio.zul` 可交叉量）
+根因（原始碼）：`.z-radio-content`（`checkbox.css:306`）用 `--zk-typescale-label-large-size`（14px）；`.z-checkbox`、`.z-checkbox-content`、`.z-radio`、`.z-label`、input 都是 `--zk-typescale-body-medium-size`（13px）。依原則二（框架一致）取 13px。
+- **J40-1（今天必須失敗）：** 同一頁上 checkbox 文字與 radio 文字的 computed `font-size`、`font-weight`、`line-height` 全部相同。
+- **保護項：** P40-a checkbox 文字 13px 不變；P40-b radio 圓圈（外圈、內點）尺寸、radio 控制高度（`min-height`）、文字與圓圈垂直中心差（RED 值 ≤ 現值 + 0）不變；P40-c radio disabled／checked／focus 狀態外觀不變；P40-d `label.zul` 上 `z-flex` 居中範例的文字垂直置中不變（量文字中心與圓圈中心差，修改後 ≤ RED + 1px）。
+
+### J47 fisheyebar（RED 探索：先重現再定判定）
+頁面 `fisheyebar.zul`，勾選「Vertical orient」。設計師量到：容器變 80×480，每個圖示寬縮成 1px（高 64px），圖示 y≈729 跑出容器（容器 y 321–801）。Fisheye 項目由 JS 以 inline `left`／`top` 絕對定位（`Fisheyebar.ts syncAttr`），而主題 CSS 把 `.z-fisheyebar` 設為 `display:flex; flex-direction:row`、`.z-fisheye-image` 設為 `width/height:100%`，可能與 JS 版面衝突。
+- **RED 要回報：** 水平與垂直兩個方向下，容器 rect、每個 `.z-fisheye` 的 rect／`position`／inline left／top／width／height、`.z-fisheye-image` rect，以及哪條 CSS 規則造成 1px 寬（用 computed style 與逐條關閉規則的量測判斷，**不得改檔案**，用 `page.addStyleTag` 在頁面內試驗）。
+- **預定判定（RED 後依實測定稿）：** J47-1 垂直方向時每個項目的 rect 完整落在容器內、寬度 ≥ `itemWidth`（頁面設定值）；J47-2 水平方向與 RED 相同（保護）；J47-3 magnify（滑鼠移動）後放大的項目仍在容器內。
+
+### J61 tbeditor（RED 探索：先重現再定判定）
+頁面 `portallayout.zul` 的 Editor 區（`<tbeditor/>`）。設計師：圖示「又大又粗」，與 `utility/icons`（`/web/utility/icons.zul` 或同名頁）不一致。
+- **RED 要回報：** tbeditor 工具列每顆按鈕圖示的繪製方式（font glyph／mask／img／svg）、實際渲染尺寸、筆畫粗細（以像素或 mask 來源判斷）、顏色；`utility/icons` 頁的標準圖示尺寸、筆畫、顏色（同一量法）；兩者差異表。再量工具列按鈕尺寸與分隔線。**不得改檔案。**
+- **預定判定（RED 後依實測定稿，採最小解讀 R6）：** J61-1 圖示渲染尺寸 = `utility/icons` 的標準尺寸（±1px）；J61-2 圖示色 = `on-surface-variant` 一類的 token 色；保護項：按鈕命中尺寸（hit-target 不縮小）、hover／active／disabled 狀態層、工具列換行位置不變。
+
+### 批次 10 RED 結果與方法定稿（2026-10-08，Fable，8105；[gates/batch10-red/report.md](../gates/batch10-red/report.md)）
+
+| 判定 | RED | 數值 |
+|---|---|---|
+| J4-1 | 失敗（符合） | `z-button-text` 四狀態 none；`-secondary／-success／-warning／-error／-info` 靜止／hover／按住皆有 resting 陰影，4px 環最差 ΔE 2.79 |
+| J6-1 | 失敗（符合） | disabled 平日 `rgba(0,0,0,.38)` vs disabled 週末 `rgba(0,0,0,.87)`，ΔE 40.46 |
+| J40-1 | 失敗（符合） | checkbox 文字 13px、radio 文字 14px（行高、字重相同） |
+| J47 | 已重現 | 垂直：容器 80×480，六項寬 1.33px；水平今天也錯（寬 68、上移 8px）。根因：`.z-fisheye` 是 `position: static`，JS inline left/top 被忽略 |
+| J61 | 已重現 | tbeditor 的 `<svg>` 沒有尺寸 → 35×150，筆畫 3–4.5px；框架 toolbarbutton 的 Lucide 為 14×14、筆畫 1.5 |
+
+保護項基線全數通過。J6-2 今天已通過（刪除線、not-allowed 原本就在，列為保護項）。
+
+**方法定稿修正（Planner，RED 之後只此一次）：**
+1. **J4-1：** 聚焦狀態只量 computed `box-shadow`（focus outline 2px 本來就畫在 4px 環內，像素環不可能通過）；像素環只量靜止、hover、按住，且以左、右、上三側為準（最後一列的底緣被容器裁掉）。
+2. **#4 範圍：** `z-button-outlined-{secondary…info}` 也帶 resting 陰影，但 issue 只說 text 按鈕，依 R9 **不併入**，記為 follow-up。
+3. **J6：** 判定文字改為「導航到當月（Oct 2026 的 no past）」，並排除被 ZK 標為選取的日期；「最深像素」只用於 disabled 群內比較，不與可選日比差值。P6-f（no future 等）今天同根因失敗，納入 J6-1 的涵蓋。
+4. **P40-b：** 改為「文字墨水中心與圓圈中心差的絕對值 ≤ 0.5px」（今天 0.0／−0.5）。
+5. **J47（待 D83）：** J47-1 垂直方向六個 `.z-fisheye` rect = 容器原點 + inline left/top，寬高 = inline width/height，±1px；J47-2 改為水平方向同式 rect = inline（不再做「與 RED 相同」的保護，因為今天水平就是錯的）；J47-3 magnify 指到第 3 項後六項 rect 仍 = inline（不寫「仍在容器內」，itemMax 160 > 容器 80 是 ZK 設計）；保護項：`.z-fisheye-image` 為項目的 10%/10%/80%/80%、cursor pointer、切回水平恢復。`aria-orientation` 切成垂直後仍是 `horizontal` 是 ZK widget 問題，記為 follow-up。
+6. **J61（採最小解讀 R6）：** 標準尺寸取 **14px**（框架 toolbarbutton 的 Lucide 盒，依原則二）；J61-1 每顆 svg rect 寬 = 高 = 14±1 且在按鈕內；J61-2 筆畫 run 中位 ≤ 2px；J61-3 20 顆字形墨水兩兩 ΔE ≤ 2，目標色取 `--zk-color-on-surface-variant`（目前多數圖示 `rgba(0,0,0,.6)` ≈ (96,98,100)，只把走 `currentColor` 純黑的 `view-html`、`fullscreen` 拉齊；不把顏色改成 toolbarbutton 的 primary）；保護項：按鈕 35×35、分隔線 `::before` 1×35、兩列換行位置、tbeditor.zul 單列 pane 高 36；hover／active 狀態層若在 portallayout 內量不到，改到 `tbeditor.zul` 量。
+
+**D83（新，待使用者，議題頁同 D80／D82）：** #47 的修法兩個方向一起改（CSS 分不出方向），會改變水平方向的預設外觀（每項 68→80 寬、位置回到 JS 值）。原則第五節第 4 項。建議 A（兩個方向一起修）。
+
+### 批次 10a（#4 #6 #40 #61）GATE10-FINAL 第 1 輪：FAIL（2026-10-08，Fable，8105；[gates/batch10-final/report.md](../gates/batch10-final/report.md)）
+
+| 判定 | RED | 現在 | 結果 |
+|---|---|---|---|
+| J4-1 | 五個彩色 text 變體三狀態有 resting 陰影，環 ΔE 2.79 | 24 個（變體、狀態）`box-shadow: none`，環 ΔE 0 | 通過 |
+| J6-1 | 平日 .38 vs 週末 .87，ΔE 40.46 | 全部 .38，ΔE 0（Oct 2026 no past、Mar 2020、no future 皆同） | 通過 |
+| J40-1 | radio 14px | checkbox 與 radio 皆 13px／400／20px | 通過 |
+| J61-1 | svg 35×150 | 20 顆全 14×14，在按鈕內 | 通過 |
+| J61-2 | 筆畫 3–4.5px | align-left／undo／strong 2／1.5／1.5 | 通過 |
+| **J61-3** | view-html、fullscreen 純黑，ΔE≈40 | computed 顏色 20 顆全為 `rgba(0,0,0,.6)`，**但 Fullscreen 最深像素 (38,39,40) vs 其餘 19 顆 (96,98,100)，ΔE 25.88** | **失敗** |
+| 保護項 | — | 全部通過（含 selected+disabled 不同時出現、按鈕 35×35、分隔線、換行） | 通過 |
+| 回歸 | — | component-theming／hit-target／focus-scan／forced-colors 184 passed、0 failed；chromium 相關 gallery 25＋6 passed | 通過 |
+
+**J61-3 失敗的機制（Verifier）：** Fullscreen 符號的填色與描邊重疊，半透明的 `on-surface-variant`（`rgba(0,0,0,.6)`）疊兩層 → 約 84% 黑。換 token 拉不齊，要讓顏色在整個圖示層級合成一次。這在 RED 時被「computed 顏色相同」的量法遮住了，是 Planner 的方法缺陷：J61-3 應量渲染後的像素，不是 computed 值。
+
+**方法修正（Planner，第 1 輪之後只此一次）：**
+1. J61-3 改為：20 顆圖示**最深像素**兩兩 ΔE ≤ 3（反鋸齒容差）；不用墨水中位（14px 細線圖示被反鋸齒主導）。
+2. J61-2 採「RED 指名的三顆（align-left、undo、strong）筆畫 run 中位 ≤ 2px」；Formatting ¶、Fullscreen 是實心碗或重疊形狀，不是筆畫，不納入。
+3. P61 hover：RED 沒有量 hover，無法比對。改為：hover 底色為 primary 8%；18 顆圖示 fill 變 primary（不變）；`view-html`、`fullscreen` 的 hover 不要求變 primary（本批刻意不動，記為 follow-up：這兩顆 hover 不跟其他圖示一起變藍，屬既有不一致）。
+4. P40-b 的中心差 +0.5 剛好在 0.5 門檻，視為通過。
+5. 回歸容差（chromium threshold 0.05、gallery maxDiffPixelRatio 0.01）吸收了本批的預期視覺變化，baseline 清單為空；依平行線文件第七節，通過後只針對本批元件的 gallery 用 `--update-snapshots=all`（不設 `UPDATE_FONT_BASELINE`）重生並逐張確認。
+
+**下一步：** Generator 第 2 輪，只修 #61 的 J61-3（其餘 #4、#6、#40 已通過，不重修）。
+
+### 批次 10a 第 2 輪：GATE10-FINAL2 PASS（2026-10-08，Fable，8105；[gates/batch10-final2/report.md](../gates/batch10-final2/report.md)）
+
+Generator 第 2 輪只改 `zkmax/.../tbeditor/css/tbeditor.css`：圖示色改為「不透明的 token 色（`rgb(from var(--zk-color-on-surface-variant) r g b / 1)`）＋ svg 層級 `opacity: .6`」一次合成，hover／active 時 `opacity: 1`。`_colors.css` 沒有合適的不透明 token（`on-surface`、`on-surface-variant`、`outline` 都是半透明；不透明的 `--zk-color-dark`、`--zk-color-on-light` 語意不符），所以用相對色，不新增 token、不寫死色值。**備註：`opacity: .6` 是寫死的數字，須與 token 的 alpha 0.6 手動對齊（`nav.css:179` 有先例）。**
+
+| 判定 | 第 1 輪 | 第 2 輪 |
+|---|---|---|
+| J61-1 | 20 顆 14×14 | 20 顆 14×14，全在 35×35 內 |
+| J61-2 | 2／1.5／1.5 | 2／1.5／1.5 |
+| **J61-3** | Fullscreen (38,39,40) vs 其餘 (96,98,100)，ΔE 25.88 | 190 對最差 ΔE **0.41**，> 3 的 0 對（Fullscreen (95,97,99)） |
+| hover | — | 18 顆 fill → primary，opacity .6→1，最深像素 (55,111,208)，不變淡 |
+| 回歸 | 184／25／6 passed | 184 passed、0 failed；chromium 25；gallery 6 |
+
+**Verifier 的方法缺口與 Planner 裁定：**
+1. `view-html`、`fullscreen` hover／active 為純黑 (0,0,0)：與 RED 的原始行為相同（這兩顆原本走 `currentColor` 純黑）。第 1 輪的灰色 hover 才是偏離原始。**維持現狀，不視為退步**；它們不跟其他圖示變藍是既有不一致，記為 follow-up。
+2. disabled 保護項：tbeditor 沒有任何可達的 disabled 狀態（無屬性、無 class、無 `setDisabled`），**無法量，不宣稱已驗證**。Generator 的推理（svg 的 .6 乘按鈕的 .38）未經實測。
+3. 回歸容差吸收了本批全部視覺變化，baseline 清單為空；baseline 於最後統一重生。
+
+**follow-up（不在本批）：** `z-button-outlined-{secondary…info}` 帶 resting 陰影；fisheye 垂直後 `aria-orientation` 未更新（ZK widget）；tbeditor 的 view-html／fullscreen hover 不變藍；`.z-tbeditor-dropdown button svg` 仍是半透明 token 色。
+
+### #47 fisheyebar：GATE47-FINAL PASS（2026-10-08，Fable，8105；[gates/batch47-final/report.md](../gates/batch47-final/report.md)）
+
+D83-A（使用者裁示）：兩個方向一起修。Generator 只在 `zkex/.../menu/css/fisheye.css` 加兩行：`.z-fisheyebar { position: relative }`、`.z-fisheye { position: absolute }`（ZK 的 JS 以 inline left／top／寬／高絕對定位項目，主題 CSS 原本讓 `.z-fisheye` 是 static，位置被忽略、寬度被 flex 壓縮）。
+
+| 判定 | RED | 現在 |
+|---|---|---|
+| J47-1 垂直 | 六項寬 1.33px，全擠在 y=713（Δw −78.7） | 六項 80×80，l=32、t=321+80k，Δ 全為 0 |
+| J47-2 水平 | 寬 68、上移 8px（Δw −12、Δt −8） | 六項 80×80，l=32+80k、t=321，Δ 全為 0 |
+| J47-3 magnify（停穩 600ms） | 水平 51/76.5/102…；垂直 1/1.5/2… | 80/120/160/120/80/80，Δ 全為 0 |
+| 保護項 | — | 圖片比例、cursor、標籤、切回水平、容器尺寸全通過 |
+| 回歸 | — | 184 passed、0 failed |
+
+**揭露：** (1) magnify 有 transition 拖尾：滑鼠移動後立即量，寬高落後 20–80px，600ms 後為 0（left／top 立即到位）。這是既有的 `transition: width/height`，不是這次造成，不處理。(2) 放大項目超出容器（水平 magnify 第 1 項 l=−48、第 6 項 r=592）是 ZK 演算法的設計。(3) 定稿的 P47-a 寫「top 10%」，RED 實際是 20%，採「與 RED 相同比例」分支。(4) 垂直後 `aria-orientation` 仍是 horizontal，是 ZK widget 問題（follow-up）。
+
+### baseline 重生（2026-10-08，Planner）
+
+只針對本批元件、`--update-snapshots=all`、不設 `UPDATE_FONT_BASELINE`、不跑 `forced-colors-gallery`（人工檢視用擷取）、tablet 不動。範圍 8 個測試：chromium 的 button／checkbox gallery；gallery project 的 calendar、fisheyebar、label、portallayout、radiogroup、tbeditor。結果：7 張檔案內容有變，`checkbox-gallery.png` 像素不變。
+
+| 檔案 | 新舊差異（亮度差 > 12 的像素） | 含本批預期變化 |
+|---|---|---|
+| button-gallery | 0 px（檔案位元組有變，亮度差都在門檻下；#4 的陰影極淡） | #4 |
+| calendar-gallery | 11,343 px（0.59%） | #6：disabled 週六日（1、7、8、14、15、21、22、28、29、4）變淡 |
+| fisheyebar-gallery | 17,446 px（2.91%） | #47：項目列 |
+| label-gallery | 4,318 px（0.55%） | #40 |
+| portallayout-gallery | 17,936 px（0.80%） | #61：tbeditor 圖示 |
+| radiogroup-gallery | 11,801 px（1.88%） | #40 |
+| tbeditor-gallery | 7,718 px（1.15%） | #61 |
+
+**揭露：差異遮罩顯示這些 baseline 同時帶有與本批無關的舊漂移**（標題、小標文字的位置，radio 圓圈的雙影），因為它們停在 typography sweep 之前，原本靠容差通過。重生會把這些舊漂移一併更新，所以「像素差」不全是本批造成的。Verifier 量到的 radio 圓圈幾何與 RED 相同（P40-b），因此圓圈雙影是舊漂移。
+
+### #72：GATE72-FINAL PASS（2026-10-08，Fable，8105；[gates/batch72-final/report.md](../gates/batch72-final/report.md)）
+
+D80-B（所有 Window 一起改中性）＋D84-A（保留旋鈕、改預設值）。Generator 改三處：`window.css` 的 `.z-window-close:hover` 文字色 `on-error-container` → `on-surface`；`tokens/_component-theme.css:64` 的 `--zk-window-close-hover-bg` 預設 `var(--zk-color-error-container)` → `var(--zk-window-icon-hover-bg)`（共用檔，使用者以 D84-A 授權這一行）；`doc/spec/component-theme-variables.md:231` 的預設值欄。token 不新增、不改名、不刪除。
+
+| 判定 | RED | 現在 |
+|---|---|---|
+| J72-1 close hover 背景 vs 同視窗參考鈕 | (254,205,199) | (240,244,250)＝參考鈕，ΔE 0.00；computed color `rgba(0,0,0,.87)`＝參考鈕 |
+| J72-2 vs RED 的 error 色 | 0 | ΔE 23.13 |
+| P72-c 旋鈕 | — | 注入 `#ffcc00` 後像素 ΔE 0.00，移除後回中性（四個視窗皆同） |
+| P72-a／d／e | — | 靜止值與 rect 逐值相同；點 X 能關閉；focus ring 與參考鈕相同；forced-colors 17 passed |
+| 回歸 | — | 184 passed、0 failed；window／messagebox／panel／caption 相關 7 passed |
+
+glyph 像素 (31,32,32) vs RED (127,0,10)；形狀未變（156 px，與 RED 相同）。**baseline：無需重生**（hover 不在任何快照；清單為空）。**限制：** messagebox 沒有 maximize／minimize，參考鈕是把 close 節點複製成 `z-window-icon` 的合成節點；P72-b、focus ring 在 RED 沒有對照值，只記錄現值並證明與參考鈕一致。
+
+### D85-A 與 rebase（2026-10-09，使用者裁示 D85-A）
+
+**起因：** 合併前發現 `marble` 上提交 `1c739948643`（hawkchen，「reset button elevation on colour variants and honour treecol align in Marble」）已在 `button.css` 加了等效的 `box-shadow: none`（五個彩色 `text-*` 變體、五個彩色 `outlined-*` 變體、icon 按鈕），與 B 線 #4 的五行改動重疊。試算合併無衝突，但依平行線文件第七節停下回報；使用者裁示 D85-A：丟掉 B 線的五行、保留 `marble` 的那份。
+
+**做法：** 兩個 repo 先建 `backup/line-b-pre-rebase-d85`；`git rebase marble`（zkcml 先、zk 後，無衝突）；在 rebase 後的樹上移除 B 線 `button.css` 的五行，`button.css` 與 `marble` 逐位元相同；重建 CSS 與全部 jar；8105 重啟並確認 served CSS。
+
+**GATE-REBASE：PASS**（Fable，8105；[gates/rebase-d85/report.md](../gates/rebase-d85/report.md)）：J4 與 GATE10-FINAL 完全相同（24 個（變體、狀態）`none`，環 ΔE 0）；`outlined-*` 五變體由 resting 變 none 是 `marble` 提交的預期效果；#66、#71、#6、#40、#61、#47、#72 的 gate 腳本原樣重跑，數值相同（差異僅旋轉圖示瞬時值、翻到的日期、build hash）；回歸 184 passed、27 chromium、8 gallery，0 failed。
+
+**button-gallery baseline：** rebase 前重生的版本帶有 outlined 彩色變體的 resting 陰影，rebase 後畫面已不同（容差吸收）。在 rebase 後的樹上重生，新舊差異約 375 px（亮度差 > 3），即 outlined 彩色變體失去陰影。
+
+**揭露：** `button.zul` 量不到「icon 按鈕」重設：頁上唯一的 icon-only 按鈕 class 只有 `z-button`，與 `marble` 提交處理的 `z-button-icon` 不同；與 B 線無關。
+
+### 合併與合併後完整回歸（2026-10-09）
+
+兩個 repo 的 `marble` 皆 `git merge --ff-only jess/line-b`（zkcml 先、zk 後），未推送。8085 在 `marble` 上重建並重啟後跑完整回歸（[gates/merge-1.md](../gates/merge-1.md)）：**MERGE1: PASS**，443 passed／10 failed／47 skipped（focus-scan 既有 skip），**無法歸因 0**。
+
+| project | passed | failed |
+|---|---|---|
+| chromium | 131 | 1 |
+| gallery | 79 | 3 |
+| component-theming | 107 | 0 |
+| forced-colors | 17 | 0 |
+| tablet | 49 | 6 |
+| hit-target | 3 | 0 |
+| focus-scan | 57 | 0 |
+
+**歸因：** B 線 2 個（#40，見下）；A 線 5 個（`component-theming` gallery 與 `tablet-panel` 為 #54、`tablet-selectbox` 與 `tablet-biglistbox` 為 #29、`tablet-toolbar` 為批次 11；皆為預期效果，baseline 屬 A 線）；已知失敗 3 個（`calendar-tablet`、`slider-tablet`、`grid-header-gallery`）。使用者提交 `1c739948643`：無失敗。
+
+**B 線的疏漏（揭露）：** #40 把 radio 文字由 14px 改為 13px，也讓 `tree › gallery`（內嵌 radio）與 `gallery › grid-paging` 的 baseline 失敗。我在批次 10 的回歸只用元件名稱過濾（button、calendar、checkbox、radio、label…），沒涵蓋含 radio 的其他頁面，所以到合併後才發現。已在 `marble` 的建置上重生這兩張（`--update-snapshots=all`）：`tree-gallery.png` 差異約 2,878 px，全在 radio 分頁位置那一段（沒有舊漂移）；`grid-paging-gallery.png` 高度 1376→1336（radio 由兩行變一行），並帶有舊 baseline 的漂移（批次 2–4 的變化原本靠 1% 容差通過）。
+
+**`calendar-tablet`（已知失敗，不重切）：** 失敗區域比批次 6 多了 y 2200–2404 一段，是 #6 的 disabled 週末變灰。依 D42-A 不處理，下次有人重切時要含。
+
+## 看板列草稿（合併負責人併入看板用；2026-10-08，B 線）
+
+| State | Issues |
+|---|---|
+| Fixed and verified in `zk`, committed on `jess/line-b` (batch 9a), awaiting merge then comment | #66、#71 — gates [batch9-final](../gates/batch9-final/report.md) |
+| Fixed and verified in `zk`/`zkcml`, committed on `jess/line-b` (batch 10a), awaiting merge then comment | #4、#6、#40、#61 — [batch10-final2](../gates/batch10-final2/report.md)（#61 第 2 輪才過） |
+| Fixed and verified (#47; D83-A, both orientations), committed | #47 — [batch47-final](../gates/batch47-final/report.md) |
+| Fixed and verified (#72; D80-B all windows, D84-A knob kept), committed | #72 — [batch72-final](../gates/batch72-final/report.md) |
+| ZK-CORE, ZK Jira filed, comment with link posted 2026-10-08 | #73、#74 → [ZK-6187](https://zkoss.atlassian.net/browse/ZK-6187)；#1 → [ZK-6188](https://zkoss.atlassian.net/browse/ZK-6188) |
+
+B 線合計：修好 7（#66 #71 #4 #6 #40 #47 #61）＋ #72 = 8；ZK-CORE 3（#73 #74 #1）。共 11 個 issue 全數處理完。合併後才貼 Jess 留言（#73、#74、#1 的連結留言已貼）。
 
 ## 八、紀錄（逐批追加）
 

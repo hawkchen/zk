@@ -125,6 +125,7 @@
     cd ZK10/jess-b/zkcml && withjdk.sh 17 bash ./gradlew :zkex:jar :zkmax:jar :zuti:jar :za11y:jar -x test --console=plain   # 39 秒
     ```
   - 打包後啟動：`cd ZK10/jess-b/zk/zkpreview && tail -f /dev/null | withjdk.sh 17 bash ./gradlew appRun -PhttpPort=8105 --console=plain`，**31 秒**後 `/web/button.zul` 回 200。以 `lsof` 確認該 java 行程載入的是 `jess-b/zk/zul/build/libs/zul-…jar`（不是主目錄）。
+  - **坑 3（第 10 批）：8105 運行中時，`jess-b/zkcml` 跑 `:zkmax:jar` 會失敗**（`:zk:zkbind:compileJava` 找不到 `jess-b/zk/zul/build/libs/zul-…jar`）。zkcml 的 composite build 會重建 zk 的 jar，與運行中的預覽站讀同一個檔案互相競爭。zkcml 的 CSS 改動，先用 `node ../zk/scripts/build-css.js --module zkmax` 產出，served CSS 已含新規則；需要重打 jar 時，**先停 8105 → 打 jar → 再啟動**。這次實際上 served CSS 是新的，但要靠 `zk.wcs` 內容比對確認，不要只看 gradle 結果。
   - **每次改 CSS 的重建流程（B 線第 9 批實測）：** 在 `jess-b/zk` 跑 `node scripts/build-css.js --module zul`，再 `withjdk.sh 17 bash ./gradlew :zul:jar -x test --console=plain`（43 秒），然後重啟 8105（約 30 秒）。重啟後取 `zk.wcs` 內容確認含新規則（例：新增的 `order:1`）。zkcml 的 CSS 同理，改用 `:zkmax:jar`／`:zkex:jar`。**只重啟 8105，8085 不受影響**（重啟時兩台都仍回 200）。
 - 8105 與 8085 同時跑：兩台同時回 200（`messagebox.zul`、`fisheyebar.zul`）。當時機器 load average 約 100（許多 gradle／node 行程在跑），首次編譯因此較慢；穩態的記憶體與兩個 Verifier 同時量測的競爭**仍未驗證**。
 - `lines/` 結構合併時的人工作業量是否合理，若太高改回「兩線輪流追加、合併時解衝突」。
