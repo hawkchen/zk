@@ -66,6 +66,7 @@
 | A | 7 | `zul/.../wgt/css/selectbox.css`、`zul/.../sel/css/listbox.css`（D53-A）、`zkpreview/doc/screenshots/selectbox-{gallery,hover,focus}.png`（已完成並提交） |
 | A | 8 | `zul/.../menu/css/menu.css`（menubar 在 zul，不在 zkcml）、`zkcml/zkmax/.../nav/css/nav.css`（已完成並提交） |
 | A | 11 | `zul/.../tab/css/tabbox.css`（accordion 區段）、`zul/.../wnd/css/panel.css`、`zul/.../wnd/css/window.css`、預覽頁 `zkpreview/.../web/borderlayout.zul`、`zkpreview/doc/screenshots/{tabbox,tabbox-misc,panel,borderlayout}-gallery.png`（已完成並提交；本批無 zkcml 檔案） |
+| A | 12 | `zul/.../wgt/css/checkbox.css`（只動 switch 區段）、預覽頁 `zkpreview/.../web/checkbox.zul`、`doc/contracts/checkbox.md`、`zkpreview/doc/screenshots/checkbox-{gallery,tablet}.png`（已完成並提交 `11217ddc48`；本批無 zkcml 檔案） |
 | B | 9 | （待填） |
 | B | 10 | （待填） |
 

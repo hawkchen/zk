@@ -55,6 +55,6 @@ The errorbox is draggable because the widget attaches a `zk.Draggable` when it i
 
 No theme change. Letting the errorbox stay put is part of ZK-XXXX. The cursor no longer shows "move" where the box cannot be moved (#67, already fixed).
 
-### #69 (not yet commented; it is a ZK-CORE item from the deferred list)
+### #69 (commented 2026-10-09 at the user's request; text in the issue)
 
 Only comment if the user also wants #69 answered now. Same Jira, point 3.

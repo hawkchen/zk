@@ -43,6 +43,8 @@
 | 圓角外框變體（panel `border="rounded"`） | 外框與 `border="normal"` 同色同寬，保留圓角；陰影與 head 分隔線不加 | #54 |
 | 巢狀導覽（navbar）縮排 | 每層 +26px，縮排放在內容元素的 `padding-left`，hover 狀態層仍滿寬 | #51 |
 | 清單／表頭的捲軸欄位 | 與表頭同色，不另上色 | D53-A（#3） |
+| Switch（checkbox `mold="switch"`） | MD3：軌道 52×32、2px outline（關）／primary 實心（開）、滑塊 16（關）／24（開）、40px 狀態層；關閉態滑塊用 `on-surface-variant` 以達 3:1（偏離 MD3 的 `outline`）。圖示（打勾）未做 | D62-A（#10） |
+| 欄位錯誤訊息 | 11.0 維持彈出的 errorbox；行內模式、可關閉拖曳、預設位置改下方都在 ZK-6191，不在主題做 | D60-A（#30 #68 #69） |
 
 新處理一個元件時，把它的結論補進這張表。
 
@@ -136,6 +138,10 @@
 | D83-A | #47 兩個方向一起修（CSS 分不出方向），水平方向的預設外觀因此改變 | 10 |
 | D84-A | D80-B 的落地：保留公開 token `--zk-window-close-hover-bg`，只改預設值（動共用 `_component-theme.css` 一行與 spec 一列），不改規則了事讓旋鈕失效 | 9 |
 | D85-A | #4 與 `marble` 上別人的提交 `1c739948643` 重疊：丟掉 B 線重複的五行，保留 marble 的 | 平行線（10） |
+| D59-A | 第 12 批做 DECIDE 批，每題各開議題頁；順序 #30 → #68 → #10 + #11 | 12 |
+| D60-A | #30（連帶 #68 #69）：11.0 維持彈出的 errorbox，開 ZK Jira 提 opt-in 行內錯誤模式、可關閉拖曳、預設位置；行內模式要改 widget 與 Java，CSS 做不到 | 12 |
+| D61-A | 照草稿建立 ZK-6191（New Feature，Affects 11.0.0）並貼 #30 #68 留言；#69 之後補貼 | 12 |
+| D62-A | #10 Switch 改成 MD3（退掉 contract sw1–sw9 的 MUI 規格）、預覽頁 Switch 獨立成區塊；#11 不改 CSS，留言請設計師決定是否保留 `mold="toggle"` | 12 |
 
 ### 第六批學到的做法
 
@@ -163,6 +169,18 @@
 - **`gallery` 專案的 1% 容差對淡色底變動不敏感**（borderlayout 差 9% 像素仍通過）。baseline 預期變動不會以失敗呈現，要另用像素量；該元件的 gallery 在通過但像素有變時用 `--update-snapshots=all`（只針對該元件）。
 - **8085 的 jar 可能在執行中被重建**（頁面回 500、`NoClassDefFoundError`）。重啟後等 jar 的 mtime 穩定、四個頁面回 200 再交給 Verifier；Verifier 遇到 500 停下回報，不重啟。
 - **拖曳 ghost 是 ZK 建立的外框，不含視窗內容。** 「內容變透明」有兩層：標題列被 opacity 淡化（最小解讀）與內部透出背景（D57-B）。要讓 ghost 顯示真實內容需改 widget，不是 theme。
+
+### 第十二批學到的做法
+
+- **剩餘清單以追蹤 repo 重算，不信看板。** 以 `# Root cause` 留言為準，看板的「剩餘 21 = P1 17 + DECIDE 4」早已過期（P1 實際為 0）；開工第一步先重算並用議題頁給使用者選方向。
+- **DECIDE 類先查 widget 與預設值再列選項。** #30 #68 #69 都落在 `Errorbox.ts`（`bind_` 的 `zk.Draggable`、`_defaultPos = 'end_before'`），CSS 做不到；把事實與「11.0 工程量」並列，使用者才能一句話裁示。
+- **Contract 規格要退掉時先問。** #10 的 contract 明寫「MD3 spec-sheet switch must NOT be used」；改成 MD3 等於退掉一整條規格（例外 4），議題頁要附現況與設計師期望的圖（圖要內嵌成 data URI，artifact 擋外部圖片）。
+- **RED 發現方法本身互斥時，Planner 看到結果後裁定並揭露。** #10 的「關閉態滑塊 = `outline`」與「滑塊對軌道 ≥ 3:1」在 Marble 的淡色 outline token 下只有 1.41:1；裁定改用 `on-surface-variant`，並在留言與看板寫明偏離 MD3 的這一項（R7、R10）。
+- **半透明 token 的 ΔE 要先疊在實際背景再比。** `outline`、`on-surface` 是 `rgba`，直接比 rgb 分量會得到假值；背景要取取樣位置下方的實際色（邊框下方是軌道填色）。
+- **有邊框的絕對定位子元素相對 padding box。** 52×32 軌道加 2px 邊框後 padding box 是 48×28，滑塊的 `left` 要以此推算（關 6px、開 `calc(100% - 26px)`）。
+- **Verifier 的報告檔被 hook 擋下時，由 Planner 依其回報寫入**，數字不改，並在檔案首段註明。
+- **提交者身分不能區分 session。** 所有 session 都用同一個 git 身分，`git log` 只能指出「是這個帳號」；要歸因失敗到某個提交，用提交內容與檔案日期，不用作者。
+- **對文件做批次文字替換前先看 diff 範圍。** 為改一列計數而用的 `sed` 誤改了批次 7 那一列，靠 `git diff -U0` 才發現並還原。
 
 ### 第九、十批（B 線）學到的做法
 

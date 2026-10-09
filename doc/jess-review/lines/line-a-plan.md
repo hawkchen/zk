@@ -387,7 +387,7 @@ RED 證實六項判定今天全 FAIL，方法可用；以下是 Verifier 指出�
 |---|---|---|
 | Fixed and verified in `zk` (batch 12, checkbox switch; Fable gate PASS, pure CSS plus a preview-page change), committed 2026-10-09 (`11217ddc48`), commented 2026-10-09, awaiting the designer to close | #10 (switch follows MD3: track 52×32, thumb 16/24; off-state thumb uses `on-surface-variant` for contrast; own `Switch` section on the preview page, D62-A) — [gates/batch12-final.md](../gates/batch12-final.md) | 1 |
 | Answered without a code change, commented 2026-10-09 | #11 (`mold="toggle"` is a public checkbox mold with no MD3 counterpart; asked the designer to decide, D62-A) | 1 |
-| ZK-CORE, ZK Jira filed 2026-10-09, comment with the link posted | #30, #68 → [ZK-6191](https://zkoss.atlassian.net/browse/ZK-6191) (opt-in inline error mode, non-draggable errorbox; D60-A, D61-A). #69 is covered by the same Jira but has no comment yet | 2 |
+| ZK-CORE, ZK Jira filed 2026-10-09, comment with the link posted | #30, #68 → [ZK-6191](https://zkoss.atlassian.net/browse/ZK-6191) (opt-in inline error mode, non-draggable errorbox; D60-A, D61-A). #69 (default position `end_before` → below) is covered by the same Jira, point 3; commented 2026-10-09 | 3 |
 
 Follow-ups（不是 tracker issue）：
 
@@ -399,3 +399,5 @@ Follow-ups（不是 tracker issue）：
 - `gallery › grid-paging` 在 merge-1 失敗、本次回歸未失敗，可能已被其他人重切，合併時再確認。
 
 | 2026-10-09 | **第 12 批完成**：DECIDE 4 題全部處理（#30 #68 → ZK-6191；#10 修正；#11 回覆）。看板剩餘（範圍內）0；範圍外 DEMO 14、ZK-CORE 12（其中 #30 #68 已開 Jira）。尚未併入共用文件。 | line-a-plan.md |
+
+| 2026-10-09 | **A 線第 12 批合併完成**：方法與結果併入 verification-plan（第十二批）、decision-principles（D59–D62、第十二批做法、一致性基準表兩列）、triage 看板（51/82 已修或已答覆＋6 個 ZK-CORE，追蹤 repo 57 個有留言；範圍內剩餘 0）、parallel-lines（第五節檔案所有權）。#69 留言已補貼。 | 共用文件 |
