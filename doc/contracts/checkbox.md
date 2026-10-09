@@ -7,7 +7,7 @@ contract-approved: false
 zk-version: 10.2.1-jakarta
 
 ## References
-- MUI CSS: Checkbox.css; Inputs/Switch.css (switch mold — visual benchmark is MUI v7 medium, NOT the MD3 spec sheet)
+- MUI CSS: Checkbox.css; Inputs/Switch.css (switch mold — visual benchmark is the MD3 switch, see Switch section)
 - DESIGN.md sections: §2, §3, §7, §8, §11
 
 ## Expected values
@@ -24,23 +24,24 @@ zk-version: 10.2.1-jakarta
 | c8 | `.z-checkbox[disabled]` | opacity | 0.38 |
 | c9 | `.z-checkbox-content` | font-size | 13–14px |
 
-### Switch mold (`mold="switch"`) — MUI v7 medium values, token-adapted
+### Switch mold (`mold="switch"`) — MD3 values, token-adapted
 
-MUI medium: root 58×38 = 34×14 visible track (radius 7, no border) + 20px thumb that
-**overhangs the track** by 3px on every side; checked travel = translateX(20px).
-The MD3 spec-sheet switch (52×32 track, 2px outline border) must NOT be used — it is
-~2.3× the visual height of the theme's other row controls (18px checkbox, 13–14px labels).
+MD3 switch: 52×32 track (outer border box, 2px border, radius 16) with a thumb whose
+centre is 16px from the track's outer edge (off: left, on: right); thumb 16px off / 24px on.
+Retired by D62-A (2026-10-09, #10): Switch now follows MD3. Deviation: off-state thumb uses
+--zk-color-on-surface-variant (not outline) so the thumb keeps >= 3:1 against the track with
+Marble's light outline token.
 
 | id | selector | property | expected |
 |----|----------|----------|----------|
-| sw1 | `.z-checkbox-switch > .z-checkbox-mold` (track) | width × height | 34 × 14px |
-| sw2 | track | border-radius / border | 7px / none |
-| sw3 | track (off) | background-color | on-surface via color-mix ≈ rgba(0, 0, 0, 0.38) (MUI: #000 @ .38) |
-| sw4 | `.z-checkbox-switch-on > .z-checkbox-mold` | background-color | `color-mix(… var(--zk-color-primary) 50% …)` ≈ rgba(55, 111, 208, 0.5) |
-| sw5 | thumb (`::after`) | size / shape / clipping | 20 × 20px, border-radius 50%, overhangs track 3px each side (track must NOT be `overflow: hidden`) |
-| sw6 | thumb (off) | background / box-shadow | `var(--zk-color-surface)` (#fff) / `var(--zk-elevation-1)` |
-| sw7 | thumb (on) | background / position | `var(--zk-color-primary)` rgb(55, 111, 208); `left: calc(100% - 17px)` ⇒ 20px travel from off (`left: -3px`) |
-| sw8 | hover (non-disabled) | state-layer halo (`::before`) | 38px circle centered on the thumb; opacity `--zk-state-hover-opacity`; on-surface (off) / primary (on) |
+| sw1 | `.z-checkbox-switch > .z-checkbox-mold` (track) | width × height (border-box) | 52 × 32px |
+| sw2 | track | border-radius / border | 16px / 2px solid |
+| sw3 | track (off) | background-color / border-color | `var(--zk-color-surface-container-highest)` / `var(--zk-color-outline)` |
+| sw4 | `.z-checkbox-switch-on > .z-checkbox-mold` | background-color / border-color | `var(--zk-color-primary)` / `var(--zk-color-primary)` (no visible ring) |
+| sw5 | thumb (`::after`) | size / shape | off 16 × 16px, on 24 × 24px, border-radius 50%, no box-shadow |
+| sw6 | thumb (off) | background | `var(--zk-color-on-surface-variant)` (deviation from MD3 outline, see note) |
+| sw7 | thumb (on) | background / position | `var(--zk-color-on-primary)`; off `left: 6px`, on `left: calc(100% - 26px)` (padding box 48 wide ⇒ centre 16px from outer left / right edge) |
+| sw8 | hover (non-disabled) | state layer (`::before`) | 40px circle centred on the thumb (off `left: -6px`, on `left: calc(100% - 34px)`); opacity `--zk-state-hover-opacity`; on-surface (off) / primary (on) |
 | sw9 | `.z-checkbox-switch-disabled` | opacity | 0.38 |
 
 ### Toggle mold (`mold="toggle"`) — MD3 filled-toggle reading, compact
@@ -79,6 +80,6 @@ checked = checkmark on a primary fill, indeterminate = dash on a primary fill. (
 
 ## States to evaluate
 - [ ] unchecked, checked, indeterminate (if supported), hover, focus-visible, disabled
-- [ ] switch mold: off, on, hover, focus-visible, disabled (sw1–sw9)
+- [ ] switch mold (MD3, 52×32 track): off, on, hover, focus-visible, disabled (sw1–sw9)
 - [ ] toggle mold: off, on, hover, focus-visible, disabled (tg1–tg7)
 - [ ] tristate mold: off, on (checkmark), indeterminate (dash), disabled (tr1–tr5)

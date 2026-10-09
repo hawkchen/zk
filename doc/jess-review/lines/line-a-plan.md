@@ -306,3 +306,75 @@ Follow-ups：`.z-panel-move-ghost` 是死規則（panel 不建 ghost）；forced
 | 2026-10-09 | 第 11 批 baseline 重生（使用者同意 Bash 權限；tabbox、tabbox-misc、panel 用 `changed`，borderlayout 與 tabbox-misc 因在 gallery 容差內用 `=all` 只針對該元件）；提交 zk `3c4c4f066a`（無 zkcml 變更）、證據 `5314332b7e`；四則 Jess 留言已貼（#53 #54 #55 #57），截圖在追蹤 repo `screenshots/batch11/`。D56-A、D57-B 已實作。 | gates/batch11-comments.md |
 
 | 2026-10-09 | **A 線第 11 批合併完成**：方法與結果併入 verification-plan（第十一批）、decision-principles（D56-A、D57-B、第十一批做法、一致性基準表三列）、triage 看板（41/82，剩餘 21）、parallel-lines（第五節檔案所有權）。B 線（`jess/line-b`）仍未合併，本次未處理。 | 共用文件 |
+
+## 八、第 12 批：DECIDE 類（#30 #68 #10 #11）
+
+建立日期：2026-10-09。決策編號從 **D59** 起（D58「推送」仍未裁示）。議題頁標題加 `[A]`。證據 `gates/batch12-*`。
+
+### 剩餘清單重算（2026-10-09，以追蹤 repo 為準）
+
+- 82 個 issue 全部仍 open；52 個有 `# Root cause` 留言（49 已修 + 3 已開 ZK Jira）。沒有留言的 30 個：DECIDE 4（#30 #10 #68 #11）、DEMO 14、ZK-CORE 12（尚未開 Jira）。**P1 剩 0**，看板「剩餘 21 = P1 17 + DECIDE 4」與「尚未開始：P1 (6) + DECIDE (4)」已過期，合併時改為只剩 DECIDE 與範圍外兩類。
+- B 線（批次 9、10）已於 2026-10-09 併入 `marble`（`gates/merge-1.md`），沒有所有權衝突。
+- 工作樹有不屬於本批的變更（不碰、不推論歸屬）：zk 的 `.gitignore`、`lib/spel2js/package-lock.json`；zkcml 的 `zk85themebuilder/`。
+
+### 裁示
+
+- **D59-A：** 第 12 批做 DECIDE 批，每題各開議題頁。順序：#30 → #68 → #10 + #11。
+- **D60-A（#30，連帶 #68 #69）：** 11.0 維持彈出的 errorbox，不做行內模式。開一個 ZK Jira（feature request：opt-in 行內錯誤模式、errorbox 可關閉拖曳、遮擋問題），並在 #30、#68 留言說明。依據：行內模式要改 widget 與 Java（原則第五節例外 3），errorbox 的拖曳來自 `Errorbox.ts` `bind_` 的 `zk.Draggable`，CSS 關不掉。Jira 與留言草稿在 [../gates/batch12-drafts.md](../gates/batch12-drafts.md)，**尚未送出**，等使用者確認（例外 10）。
+
+### 狀態
+
+| 項目 | 狀態 |
+|---|---|
+| #30 #68 | D61-A：已建立 ZK-6191（New Feature，Affects 11.0.0），#30 #68 留言已貼（2026-10-09）；#69 未留言 |
+| #10 #11 | 待開議題頁（D62） |
+
+### D62-A（2026-10-09，使用者「照你的建議做」）
+
+- **#10-A：** Switch 改成 MD3 規格，純 CSS；預覽頁 Switch 獨立成區塊。這是退掉 `doc/contracts/checkbox.md` sw1–sw9 的整條規格（原則第五節例外 4，使用者已裁示；contract 原寫「MD3 spec-sheet switch must NOT be used」）。依 R8 更新 contract 並在看板記錄。
+- **#11-A：** 不改 CSS；在 #11 留言說明 `mold="toggle"` 是什麼、MD3 沒有對應元件，請設計師決定要不要保留。
+
+### 第 12 批方法：#10 Switch（R6 最小解讀：幾何與配色照 MD3，不加圖示）
+
+**範圍：** `zul/.../wgt/css/checkbox.css` 的 switch 區段（約 393–501 行）、預覽頁 `zkpreview/.../web/checkbox.zul`（Switch 獨立成區塊）、`doc/contracts/checkbox.md`（sw1–sw9）、`checkbox` gallery baseline（RED 後視像素變動決定）。**不動** `_forced-colors.css`（共用檔），除非 Verifier 證明 forced-colors 下壞掉，那時先問。不加新的公開 token（switch 目前沒有 `--zk-checkbox-*` 旋鈕）。圖示（打勾）是 MD3 的選配，不在最小解讀內，列 follow-up。
+
+**環境：** `PREVIEW_URL=http://localhost:8085`，頁面 `/web/checkbox.zul`，viewport 1280×900，量測前注入 `*{transition:none!important;animation:none!important}` 並等 `document.fonts.ready`，每個狀態重新載入。`ignoreDefaultArgs:['--hide-scrollbars']`。證據首行宣告使用 8085，量測前比對 `zk.wcs`。
+
+**判定（今天必須失敗）：**
+
+- **J10-1：** 關、開兩態的軌道外框（`.z-checkbox-switch > .z-checkbox-mold` 的 `getBoundingClientRect`）為 52×32，各邊 ±1px。
+- **J10-2：** 滑塊（`::after`，用 `getComputedStyle(mold,'::after')` 讀寬高，並以像素 ink 外框交叉驗證）：關閉 16×16、開啟 24×24（±1px），皆為圓形。
+- **J10-3（位置）：** 滑塊中心垂直位於軌道中線 ±1px；水平：關閉時中心距軌道左緣 16px（±1.5）、開啟時距軌道右緣 16px（±1.5）。
+- **J10-4（關閉態配色）：** 軌道有 2px 外框，外框 ink 與 `--zk-color-outline` 的 ΔE ≤ 3；軌道填色與 `--zk-color-surface-container-highest` 的 ΔE ≤ 3；滑塊色與 `--zk-color-outline` 的 ΔE ≤ 3。
+- **J10-5（開啟態配色）：** 軌道填色與 `--zk-color-primary` 的 ΔE ≤ 3，且沒有與填色不同的外框環（外緣內 1px 的取樣色與填色 ΔE ≤ 3）；滑塊色與 `--zk-color-on-primary` 的 ΔE ≤ 3。
+- **J10-6（hover 狀態層）：** hover 時滑塊外有 40px 的圓形狀態層（`::before`，寬高 40±1），中心與滑塊中心差 ≤ 1px；不透明度取 `--zk-state-hover-opacity`（0.08，取樣 ΔE 驗證有色差）。關閉態用 on-surface，開啟態用 primary。
+
+**保護項（今天必須通過）：**
+
+1. 點擊軌道、滑塊、標籤文字任一處都能切換；空白鍵（focus 後）能切換；切換後 class 為 `-on`／`-off`。
+2. focus-visible 時外圈（狀態層或 focus ring）可見，且 `focus-ring-scan` 通過。
+3. disabled（關、開）：opacity 為 `--zk-state-disabled-opacity`（0.38），不回應點擊，游標 not-allowed。
+4. 標籤與軌道的水平間距不變（±1px）；標籤文字字型不變。整列高度：`min-height: var(--zk-control-height)` 維持，記錄前後差值（軌道由 14 變 32，預期列高變動 ≤ 4px，在報告標出）。
+5. checkbox、radio、toggle、tristate 的像素與位置不變（ΔE ≤ 1，±0px）。
+6. 其他用到 switch 的頁面不壞：`usecase/account-settings.zul`、`usecase/brand-switcher.zul`、`usecase/index.zul` 的 switch 不與相鄰文字重疊、不被裁切；記錄前後位移。
+7. 暗色與 compact（`--zk-control-height` 縮小）下，軌道仍垂直置中（±1px）。
+8. R10：滑塊對軌道的對比 ≥ 3:1（關、開兩態），不達標要標出。
+9. forced-colors：on 與 off 仍可分辨（軌道或滑塊色不同，ink 非空）；現有 `_forced-colors.css` 規則維持。
+10. 回歸：component-theming、focus-scan、hit-target、forced-colors（排除 `forced-colors-gallery`）、chromium、gallery、tablet；已知失敗（`calendar-tablet`、`slider-tablet`、`grid-header-gallery`）不計。
+
+**預覽頁（DEMO，R5）：** Switch 四個範例從目前的 Mold 網格移出，成為自己的區塊，標題為 `Switch`；Toggle 與 Tristate 保持原位。Verifier 的判定：頁面有獨立的 `Switch` 標題，四個 switch 在該區塊內，Mold 網格中不再有 `.z-checkbox-switch`。
+
+### #10 方法修訂（RED 後、Generator 之前，Planner 裁定，2026-10-09）
+
+RED 證實六項判定今天全 FAIL，方法可用；以下是 Verifier 指出的缺陷與裁定。**這是在看到 RED 結果後裁的**；修訂後定稿，GREEN 不再改。
+
+1. **ΔE 基準：** 半透明 token 先疊在取樣位置下方的實際背景色（預覽頁為 `body` 的 `#fff`）再比。
+2. **J10-2 ink：** 隱藏 `::after` 後做像素 diff，ink 外框以 ΔE > 12（去陰影）計；ink 與 computed 容許差 ±1px。
+3. **J10-4 與保護項 8 互斥的裁定：** Marble 的 `--zk-color-outline` 是 `rgba(0,0,0,.23)`，與 MD3 參考色不同，直接照 MD3 對應會讓關閉態滑塊對軌道只有 1.41:1。**裁定：關閉態滑塊色改用 `--zk-color-on-surface-variant`（比 outline 深，其餘不變）**，軌道外框與軌道填色仍用 `--zk-color-outline`、`--zk-color-surface-container-highest`。判定 J10-4 的滑塊項改為「滑塊色與 `--zk-color-on-surface-variant`（疊底後）ΔE ≤ 3」。保護項 8（滑塊對軌道 ≥ 3:1，關、開兩態）維持為必須通過；軌道外框對頁面的對比（outline 在白底約 1.6:1）屬 Marble 全站 outline token 的問題，**只記錄並標出，不在本批處理**（R10、R9）。偏離 MD3 的只有關閉態滑塊色，並在留言與看板如實說明（R7）。
+4. **保護項 7：** 刪除暗色一半（主題沒有暗色模式，N/A）；保留 compact。
+5. **DEMO 判定：** 改為「頁面有獨立的 `Switch` 標題；四個 switch 在該區塊內；`States` 網格內 `.z-checkbox-switch` 為 0」。
+6. **保護項 10：** 排除 `usecase/index.zul` 的 live-reload（`localhost:50000`）console error。
+7. **保護項 3：** 游標只保護 computed 值（root `cursor:not-allowed`、`pointer-events:none` 不變），不要求實際顯示 not-allowed。
+8. **J10-3 容差：** 水平 ±1.5 對 computed 幾何；ink 與 computed 差 ≤ 1px 視為一致。
+9. **「已達標、GREEN 要維持」的子項：** J10-3 垂直置中、J10-5 無外框環、J10-6 的中心對齊／opacity／顏色。
+10. **列高：** RED 量到列高 40px = `min-height`，軌道 14→32 預期列高變動為 0；保護項 4 的容許 ≤ 4px 收緊為 ±0（若不是 0，要在報告標出原因）。
