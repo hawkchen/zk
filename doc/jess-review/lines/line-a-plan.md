@@ -401,3 +401,5 @@ Follow-ups（不是 tracker issue）：
 | 2026-10-09 | **第 12 批完成**：DECIDE 4 題全部處理（#30 #68 → ZK-6191；#10 修正；#11 回覆）。看板剩餘（範圍內）0；範圍外 DEMO 14、ZK-CORE 12（其中 #30 #68 已開 Jira）。尚未併入共用文件。 | line-a-plan.md |
 
 | 2026-10-09 | **A 線第 12 批合併完成**：方法與結果併入 verification-plan（第十二批）、decision-principles（D59–D62、第十二批做法、一致性基準表兩列）、triage 看板（51/82 已修或已答覆＋6 個 ZK-CORE，追蹤 repo 57 個有留言；範圍內剩餘 0）、parallel-lines（第五節檔案所有權）。#69 留言已補貼。 | 共用文件 |
+
+- **menubar baseline 重生（D63，2026-10-09，`8cc85e8a6c`）：** `menubar-gallery.png`、`menubar-tablet.png` 以現況重生（原因：`221d6ed74b` 的圖示間距與垂直對齊）。重生時看到 **tablet 版的「Scrollable Menubar」不正常**：item 3–5 溢出到底色之外、沒有左右捲動箭頭（gallery 版同一區正常）。可能是 tablet 版面本來就如此，也可能是退化；baseline 已固化現況，原因未查，待決定要不要查。
