@@ -1389,7 +1389,7 @@ test.describe('notification', () => {
     await page.evaluate(() => document.fonts.ready.then(() => true));
   });
 
-  test('shell-is-bare-and-icon-clears-stripe', async ({ page }) => {
+  test('shell-is-bare-and-no-stripe', async ({ page }) => {
     const m = await page.evaluate(() => {
       const shell = document.querySelector('.z-notification-info') as HTMLElement;
       const content = document.querySelector('.z-notification-info .z-notification-content') as HTMLElement;
@@ -1406,10 +1406,12 @@ test.describe('notification', () => {
     });
     // shell must be transparent — the dark inverse-surface frame is the bug
     expect(m.shellBg, 'shell .z-notification must be transparent (no dark frame)').toBe('rgba(0, 0, 0, 0)');
-    // no padding on the shell — padding shifts the absolute icon onto the stripe
+    // no padding on the shell — padding would shift the absolute icon off its inset
     expect(parseFloat(m.shellPaddingLeft), 'shell .z-notification must have no padding-left').toBe(0);
-    // icon must sit clear of the 4px accent stripe, not on top of it
-    expect(m.iconLeftFromContent, `icon must clear the ${m.stripeWidth}px stripe`).toBeGreaterThanOrEqual(8);
+    // the 4px accent stripe was removed from the card; it must stay removed
+    expect(m.stripeWidth, 'content ::before accent stripe must stay removed (width 0)').toBe(0);
+    // icon keeps its inset from the content's left edge
+    expect(m.iconLeftFromContent, 'icon must sit at least 8px in from the content left edge').toBeGreaterThanOrEqual(8);
   });
 
   // A notification floats over arbitrary page content (e.g. top_left lands on the
