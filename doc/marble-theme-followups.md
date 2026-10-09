@@ -378,3 +378,39 @@ Batch 4 did not cover: the touch variant (`zkmax/css/tablet/_scrollbar.css`), `f
 
 - [ ] Measure the touch variant and a `frozenCols` biglistbox against the batch 4 checks.
 - [ ] Decide whether DESIGN.md needs a biglistbox scrollbar note.
+
+## 19. The tablet scrollable menubar overflows its bar
+
+Found while regenerating `menubar-tablet.png` (2026-10-09, D63; commit `8cc85e8a6c`). In the "Scrollable Menubar" block at the tablet viewport, items 3–5 run past the end of the grey bar and there are no scroll arrows. The desktop gallery (`menubar-gallery.png`) shows the same block correctly (arrows, clipped items). It may be how the tablet layout has always behaved or a regression; the regenerated baseline now stores the current picture.
+
+- [ ] Find out whether the tablet picture is intended (compare with the baseline before `221d6ed74b` and with the touch scroll behaviour).
+- [ ] If it is a defect, fix it and regenerate `menubar-tablet.png`.
+
+## 20. Stray closing brace in `checkbox.css`
+
+Found while reading the switch section for Jess #10 (batch 12, 2026-10-09). `zul/.../wgt/css/checkbox.css` ends with an extra `}` after the toggle disabled rules (around line 580). Not caused by batch 12 and not checked for build impact.
+
+- [ ] Check whether the brace is really stray (an unclosed block earlier in the file) and whether the CSS build or minifier hides it.
+
+## 21. Switch follow-ups left after the MD3 change
+
+Jess #10 (batch 12) made `mold="switch"` follow MD3. Left out on purpose:
+
+- The check mark inside the thumb (optional in MD3, shown in the designer's picture).
+- `tokens/_forced-colors.css` still carries the old switch rules (1px track border, `CanvasText` thumb). The forced-colors suite passes; it is a shared file, so any rule change needs a ruling first.
+- The off-state thumb uses `--zk-color-on-surface-variant` instead of MD3's `outline` (reason: 1.41:1 against the track with Marble's light outline token). Revisit if the outline token gets darker.
+
+- [ ] Decide whether the thumb icon is wanted.
+- [ ] Re-check the forced-colors rules for the 52×32 track.
+
+## 22. The outline and surface-container tokens are light on white
+
+Measured for Jess #10 (batch 12). The switch track border is 2.13:1 against a white page (the `--zk-color-outline` token on white is 1.74:1) and the off-state track fill is 1.23:1. WCAG 1.4.11 asks 3:1 for the boundary of a control, so this affects every control that draws its boundary with `--zk-color-outline`, not only the switch.
+
+- [ ] Decide whether Marble's `--zk-color-outline` should be darker (design call; touches many components).
+
+## 23. `grid-paging` gallery flipped between runs
+
+`gallery › grid-paging` failed in the merge-1 regression (2026-10-09) and passed in the batch 12 regression the same day. Someone may have regenerated `grid-paging-gallery.png` in between; the 1% pixel tolerance may also hide it.
+
+- [ ] Confirm which commit regenerated it, or whether the test is flaky.
