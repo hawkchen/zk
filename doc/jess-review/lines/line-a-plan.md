@@ -378,3 +378,24 @@ RED 證實六項判定今天全 FAIL，方法可用；以下是 Verifier 指出�
 8. **J10-3 容差：** 水平 ±1.5 對 computed 幾何；ink 與 computed 差 ≤ 1px 視為一致。
 9. **「已達標、GREEN 要維持」的子項：** J10-3 垂直置中、J10-5 無外框環、J10-6 的中心對齊／opacity／顏色。
 10. **列高：** RED 量到列高 40px = `min-height`，軌道 14→32 預期列高變動為 0；保護項 4 的容許 ≤ 4px 收緊為 ±0（若不是 0，要在報告標出原因）。
+
+### 第 12 批最終判定與看板列草稿（2026-10-09）
+
+`GATE12-10-FINAL: PASS`（[../gates/batch12-final.md](../gates/batch12-final.md)）。#10：軌道 34×14 → 52×32、滑塊 20 → 16／24、位置 7 → 16、列高 ±0；R10 滑塊對軌道 off 2.71 → 5.36、on 2.37 → 4.83；回歸 component-theming／forced-colors／hit-target／focus-scan 全綠。提交 `11217ddc48`（zk；本批無 zkcml 檔案），baseline 重生 `checkbox-gallery.png`、`checkbox-tablet.png`（`--update-snapshots=changed`，已逐張看圖）。留言：#10 https://github.com/hawkchen/marble-issue/issues/10#issuecomment-6081832769 ；#11 https://github.com/hawkchen/marble-issue/issues/11#issuecomment-6081325796 ；#30 #68 見 `batch12-drafts.md`。D59-A、D60-A、D61-A、D62-A 已執行。
+
+| State | Issues | Count |
+|---|---|---|
+| Fixed and verified in `zk` (batch 12, checkbox switch; Fable gate PASS, pure CSS plus a preview-page change), committed 2026-10-09 (`11217ddc48`), commented 2026-10-09, awaiting the designer to close | #10 (switch follows MD3: track 52×32, thumb 16/24; off-state thumb uses `on-surface-variant` for contrast; own `Switch` section on the preview page, D62-A) — [gates/batch12-final.md](../gates/batch12-final.md) | 1 |
+| Answered without a code change, commented 2026-10-09 | #11 (`mold="toggle"` is a public checkbox mold with no MD3 counterpart; asked the designer to decide, D62-A) | 1 |
+| ZK-CORE, ZK Jira filed 2026-10-09, comment with the link posted | #30, #68 → [ZK-6191](https://zkoss.atlassian.net/browse/ZK-6191) (opt-in inline error mode, non-draggable errorbox; D60-A, D61-A). #69 is covered by the same Jira but has no comment yet | 2 |
+
+Follow-ups（不是 tracker issue）：
+
+- `checkbox.css` 結尾多一個孤立的 `}`（第 580 行附近，既有，未確認是否影響 build）。
+- switch 的打勾圖示（MD3 選配）未做。
+- 軌道外框 ink 對白底 2.13:1（outline token 全站偏淡），關閉態軌道填色對白底 1.23:1；屬 Marble 全站 outline／surface token，不在本批。
+- `menubar-gallery.png`、`menubar-tablet.png` 與 `221d6ed74b`（menubar 圖示間距，不屬本批）不一致，baseline 要由該提交的持有者重生。
+- `_forced-colors.css` 的 switch 規則（1px border）仍沿用，forced-colors 套件通過；若日後要與 MD3 軌道配合調整，屬共用檔，須先問。
+- `gallery › grid-paging` 在 merge-1 失敗、本次回歸未失敗，可能已被其他人重切，合併時再確認。
+
+| 2026-10-09 | **第 12 批完成**：DECIDE 4 題全部處理（#30 #68 → ZK-6191；#10 修正；#11 回覆）。看板剩餘（範圍內）0；範圍外 DEMO 14、ZK-CORE 12（其中 #30 #68 已開 Jira）。尚未併入共用文件。 | line-a-plan.md |
