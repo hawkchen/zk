@@ -138,6 +138,12 @@
 | D83-A | #47 兩個方向一起修（CSS 分不出方向），水平方向的預設外觀因此改變 | 10 |
 | D84-A | D80-B 的落地：保留公開 token `--zk-window-close-hover-bg`，只改預設值（動共用 `_component-theme.css` 一行與 spec 一列），不改規則了事讓旋鈕失效 | 9 |
 | D85-A | #4 與 `marble` 上別人的提交 `1c739948643` 重疊：丟掉 B 線重複的五行，保留 marble 的 | 平行線（10） |
+| D110-A | 批次 14（C 線，CSS 相關 follow-ups）做 P1–P4；P5 不做 | 14 |
+| D111-A、D116-A | toast info 圖示對比 3.68 → 4.85:1：保留公開旋鈕，只把預設值 `--zk-toast-accent` 改成混 20% `on-surface`（動共用 `_component-theme.css` 一行，同 D84-A）；規則內混深會讓旋鈕設的色不再原樣呈現，兩條 component-theming 測試因此失敗 | 14 |
+| D112-A | notification 改用與 toast 相同的 `*-container` token（info 用 `surface-container-highest`），箭頭用同一組實色 | 14 |
+| D113-B | 動共用檔 S1（selectbox forced-colors 移到 `_forced-colors.css`）、S3（修空轉測試）、S4（捲軸欄位測試） | 14 |
+| D114-A | forced-colors 下 `border="none"` 的 panel 仍畫 1px 黑框：維持現狀，是刻意（那條規則就是為了保留邊界，`.z-window` 同） | 14 |
+| D115、D117、D118-B | gallery 容差由 1% 收緊為 0.2%；先把預覽頁標題變更（`47d26068ed`）造成的 37 頁與 11 頁其他過期 baseline 重切，progressmeter 擷取時加等待 | 14 |
 | D59-A | 第 12 批做 DECIDE 批，每題各開議題頁；順序 #30 → #68 → #10 + #11 | 12 |
 | D60-A | #30（連帶 #68 #69）：11.0 維持彈出的 errorbox，開 ZK Jira 提 opt-in 行內錯誤模式、可關閉拖曳、預設位置；行內模式要改 widget 與 Java，CSS 做不到 | 12 |
 | D61-A | 照草稿建立 ZK-6191（New Feature，Affects 11.0.0）並貼 #30 #68 留言；#69 之後補貼 | 12 |
@@ -193,6 +199,16 @@
 - **jar 與預覽站的流程。** worktree 第一次要先打包 jar；打任何 jar 之前先停預覽站；`zkpreview/gradlew` 在 git 裡不可執行，用 `bash ./gradlew`。
 - **方法歧義由 Planner 裁定，並說明是看到結果之後裁的。** P71-d（框位置）與 tbeditor 的 hover 都這樣處理，理由與可能的反面讀法都寫進計畫。
 - **GitHub API 檢查檔案是否存在，要看 HTTP 狀態碼。** `gh api … --jq .sha` 在 404 時輸出 `null`，不是空字串，會讓「已存在」的判斷全部誤判。
+
+### 第十四批（C 線）學到的做法
+
+- **看板上的數字要回到原始碼重算。** 看板的「toast 圖示 3.13:1」用 token 算是 3.68:1；「`.z-panel-move-ghost` 是死規則」其實被 zkcml 的 `Portallayout.ts` 用到；「`checkbox.css:580` 孤立的 `}`」是在關 `@layer`。逐項核對撤掉了 8 個候選。
+- **公開旋鈕的預設值，不要靠規則內混色調整。** 在規則裡 `color-mix` 會讓使用者設的色不再原樣顯示，旋鈕契約（含測試）就破了；改預設值才保留契約（D84-A、D116-A）。
+- **minifier 會合併 selector list。** 為了隔離「不支援的 selector」而另寫的獨立規則，served CSS 裡可能被併回同一個 list；要隔離得分在不同的區塊，驗收看 served CSS，不看原始碼。
+- **gallery 的 1% 容差累積了 48 頁的過期。** 根因是 `47d26068ed` 把預覽頁的字型 utility 從外層 div 搬到 label，baseline 之後沒重切。收緊容差之前先分類：元件 crop 平移後相同 = HEADING-ONLY，可以整批重切；其餘逐頁歸因。收緊後 82/82 連跑兩次全過。
+- **「非決定性」要先在乾淨環境重現。** Verifier 回報 barcode 連擷兩次差 321px，用預設 Desktop Chrome context 連擷四次雜湊完全相同；progressmeter 才是真的不穩（widget JS 逐步更新 inline width，`transition-duration:0` 擋不住），解法是等 fill 寬度等於 `aria-valuenow`。
+- **新測試要證明不會空轉。** S3、S4 都用「注入壞狀態後必須失敗」驗證；S4 的 selector 錯了一次（`label` 應為 `.z-label`），是這個驗證抓到的。
+- **mutation 驗證的探針可以用 `!important`，正式測試不行。**
 
 ## 八、尚未驗證的事
 

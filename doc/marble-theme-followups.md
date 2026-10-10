@@ -414,3 +414,22 @@ Measured for Jess #10 (batch 12). The switch track border is 2.13:1 against a wh
 `gallery › grid-paging` failed in the merge-1 regression (2026-10-09) and passed in the batch 12 regression the same day. Someone may have regenerated `grid-paging-gallery.png` in between; the 1% pixel tolerance may also hide it.
 
 - [ ] Confirm which commit regenerated it, or whether the test is flaky.
+
+## 24. Nested lists inside a horizontal navbar dropdown are clipped
+
+Found in batch 14 (line C). `.z-navbar-horizontal .z-nav > ul` is `position:absolute`, so a nested group's list lands on the parent list's bottom edge and `.z-nav > ul { overflow:hidden }` clips it. The nested group title is now indented to match its sibling items, but its children (third level) cannot be seen.
+
+- [ ] Decide whether nested groups in the horizontal dropdown should expand statically (change the selector to `.z-navbar-horizontal > ul > .z-nav > ul`).
+
+## 25. Menu popup `image` icons carry a 1px side margin
+
+Batch 14 added `margin: 0 1px` to `.z-menupopup .z-menuitem-image, .z-menupopup .z-menu-image` so a 16px image sits in the same 18px slot as an iconSclass glyph. A popup that holds only image rows shifts its text right by about 2px (rows stay consistent). Nested `z-menu` images and colorbox chips were measured and are fine.
+
+- [ ] Confirm nobody needs the old 16px slot; otherwise nothing to do.
+
+## 26. The selectbox forced-colors rule is merged into the combobox list by the minifier
+
+Batch 14 (S1) moved `.z-selectbox::picker-icon { background-color: CanvasText }` into `tokens/_forced-colors.css` as its own rule `(2e-cont)`. The served `norm.css.dsp` shows the minifier merged it into the selector list of (2e). A browser that does not recognise `::picker-icon` would drop the whole list, including the combobox caret. Every browser Marble targets today supports it.
+
+- [ ] If an older browser must be supported, keep the two rules in separate blocks the minifier cannot merge.
+

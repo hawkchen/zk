@@ -67,6 +67,7 @@
 | A | 8 | `zul/.../menu/css/menu.css`（menubar 在 zul，不在 zkcml）、`zkcml/zkmax/.../nav/css/nav.css`（已完成並提交） |
 | A | 11 | `zul/.../tab/css/tabbox.css`（accordion 區段）、`zul/.../wnd/css/panel.css`、`zul/.../wnd/css/window.css`、預覽頁 `zkpreview/.../web/borderlayout.zul`、`zkpreview/doc/screenshots/{tabbox,tabbox-misc,panel,borderlayout}-gallery.png`（已完成並提交；本批無 zkcml 檔案） |
 | A | 12 | `zul/.../wgt/css/checkbox.css`（只動 switch 區段）、預覽頁 `zkpreview/.../web/checkbox.zul`、`doc/contracts/checkbox.md`、`zkpreview/doc/screenshots/checkbox-{gallery,tablet}.png`（已完成並提交 `11217ddc48`；本批無 zkcml 檔案） |
+| C | 14 | `zul/.../wgt/css/{toast,notification,selectbox}.css`、`zul/.../menu/css/menu.css`、`zkcml/zkmax/.../nav/css/nav.css`、共用檔 `tokens/_component-theme.css`（一行，D116-A）、`tokens/_forced-colors.css`（D113-B）、`screenshot.spec.ts`、`gallery-scan.spec.ts`、新增 `listhead-bar-screenshot.spec.ts`、48 張 gallery／tablet baseline（已完成並提交，詳見 `lines/line-c-plan.md`） |
 | B | 9 | （待填） |
 | B | 10 | （待填） |
 
