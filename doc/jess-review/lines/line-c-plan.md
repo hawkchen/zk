@@ -129,3 +129,12 @@ D110 批次切法與範圍、D111 P1 修法、D112 P2 方向、D113 S1／S3／S4
 - **S6：** 三個已知失敗都是過期 baseline，已重切並各連跑兩次零差：`calendar-tablet`、`slider-tablet`、`grid-header-gallery`。同時重切 merge-1 已列的 `toolbar-tablet`、`biglistbox-tablet`、`panel-tablet`、`selectbox-tablet`（A 線元件，早已過期）、`component-theming-gallery`，以及本批的 `toast-gallery`。
 - **S5（未做，待裁示 D117）：** 試跑把 `maxDiffPixelRatio` 降為 0.002，gallery **82 個中 49 個失敗**（5,000–10,000 px，約 0.5–1%）。意思是容差現在吸收了大量累積的變化，收緊就得盲目重切 49 張，會把真正的迴歸一起蓋掉。已還原為 0.01，`gallery-scan.spec.ts` 沒有變更。
 - **Follow-ups（新增）：** 水平 navbar 下拉內的巢狀清單被 `overflow:hidden` 裁掉，今天看不到第三層；menu popup 的 image 類圖示現在多 1px 邊距；notification／menubar／navbar gallery 的像素已變但在 1% 內。
+
+## 九、S5／D117／D118 結果（2026-10-10）
+
+- **D117（使用者）：** 只有預覽頁標題文字差異的頁面視為預期變更，重切 baseline。根因是 `47d26068ed`（2026-09-11）把字型 utility class 從外層 `<div>` 搬到 `<label>`，baseline 早於它。Verifier 逐頁分類（[../gates/batch14-gallery-classify.md](../gates/batch14-gallery-classify.md)）：37 頁 HEADING-ONLY（`d1f67d8f17` 已重切，連跑兩次全過）、11 頁 OTHER。
+- **D118-B（使用者）：** 11 頁一起處理並收緊容差。9 頁是早期 commit 的預期變更（grid 欄頭左移 4px、selectbox chevron 與 radio 字級、rating 圖示、chosenbox chip、anchor 間距）；`progressmeter` 與 `barcode` 原本被判為不穩定。
+  - `progressmeter`：根因是 widget JS 逐步更新 fill 的 inline width（擷取瞬間 84%，約 1.5s 後 100%），`transition-duration:0` 擋不住。`gallery-scan.spec.ts` 加一段 `waitForFunction`，等每個 `.z-progressmeter-image` 寬度等於 `aria-valuenow`（其他頁無此元素，等於不執行）。
+  - `barcode`：Verifier 說連擷兩次差 321px，但我用預設 context（Desktop Chrome）連擷四次，雜湊完全相同（`fa6f49`），3 秒後也相同；判定是 Verifier 自己擷取環境的差異，不是頁面不穩。重切後連跑三次全過。
+  - 11 頁重切後各連跑三次全過；容差由 `0.01` 收緊為 `0.002`，**整個 gallery 82/82 連跑兩次全過**。
+- **S5 完成。** 容差約 1,800px（1280×704），原本約 9,000px。

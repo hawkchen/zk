@@ -58,6 +58,14 @@ test.describe('gallery', () => {
       // fill's antialiased leading edge. Zero duration completes any in-flight transition
       // immediately (chat D68).
       await page.addStyleTag({ content: '*{transition-duration:0s !important}' });
+      // progressmeter's widget JS also steps the fill's inline width up to the value
+      // (84% mid-run, 100% about 1.5s later), which transition-duration cannot stop, so
+      // wait until every fill has reached its aria-valuenow. No-op on other pages.
+      await page.waitForFunction(() => Array.from(document.querySelectorAll('.z-progressmeter')).every((el) => {
+        const v = el.getAttribute('aria-valuenow');
+        const fill = el.querySelector('.z-progressmeter-image') as HTMLElement | null;
+        return v === null || !fill || fill.style.width === `${v}%`;
+      }));
       const wrapper = page.locator('.z-p-8').first();
       // Every standard preview page renders the .z-p-8 wrapper; fail loudly if a
       // newly-added page uses a different shell so it gets an explicit decision
@@ -70,7 +78,7 @@ test.describe('gallery', () => {
       await expect(wrapper).toHaveScreenshot(`${comp}-gallery.png`, {
         animations: 'disabled',
         // small tolerance for sub-pixel AA differences across runs
-        maxDiffPixelRatio: 0.01,
+        maxDiffPixelRatio: 0.002,
       });
     });
   }
