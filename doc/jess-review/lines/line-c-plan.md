@@ -138,3 +138,14 @@ D110 批次切法與範圍、D111 P1 修法、D112 P2 方向、D113 S1／S3／S4
   - `barcode`：Verifier 說連擷兩次差 321px，但我用預設 context（Desktop Chrome）連擷四次，雜湊完全相同（`fa6f49`），3 秒後也相同；判定是 Verifier 自己擷取環境的差異，不是頁面不穩。重切後連跑三次全過。
   - 11 頁重切後各連跑三次全過；容差由 `0.01` 收緊為 `0.002`，**整個 gallery 82/82 連跑兩次全過**。
 - **S5 完成。** 容差約 1,800px（1280×704），原本約 9,000px。
+
+## 十、第 15 批：follow-up 9、13、14、19（2026-10-10，D119-B）
+
+證據 [../gates/batch15-final-r2.md](../gates/batch15-final-r2.md)，結論 `GATE15-FINAL-R2: PASS`。
+
+- **第 9 節（tab 省略號）：已修。** `.z-tab-content`／`.z-tab-text` 加 `min-width: 0`，純文字標籤改 `display:block`（`text-overflow` 對 flex 容器無效，第一輪就是這樣失敗）。**限制：帶圖示的標籤不顯示省略號**（文字被 overflow 裁掉），因為標籤 span 內有 `<i>` 子元素，維持 flex 才能排版。
+- **第 14 節（平板 frozen 表頭錯位）：已修，而且影響 grid、listbox、tree 三者。** 根因是轉 Marble 時漏了 `.z-frozen-sticky` 的 `position: sticky`。順手補了三種 footer（舊 LESS 也沒有）。`grid-tablet.png`、`listbox-tablet.png` 重切。
+- **第 13 節（表頭文字偏 4px）：不重現。** 三種元件、排序前後都是 0px。不知道是哪個提交順帶修好，**沒有找出來**。
+- **第 19 節（平板 scrollable menubar）：不是 CSS。** 平板 UA 下 widget `_scrollable` 為 false，所以沒有箭頭，item 超出灰底。`Menubar.java`、`Menubar.ts` 沒有 mobile 分支，也沒有看到錯誤，**server 端為何沒有套用 `setScrollable(true)` 未查出**。依 R9 不在本批修，維持 follow-up。
+- **數字更正：** 第 14 節原本寫「平板版面不同」，實測是 mobile UA 才會觸發（桌面正常），不是視窗寬度。不影響結論。
+
